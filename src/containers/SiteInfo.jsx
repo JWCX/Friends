@@ -4,7 +4,7 @@ import { Fade, Typography, Grid } from '@material-ui/core';
 
 import { TextField, Button, Dialog } from 'components';
 
-class JoinForm extends React.Component {
+class SiteInfo extends React.Component {
 	state = {
 		id: "",	pw: "",	pw2: "",	// ID, PW, PW2 입력정보
 		idError: false,	pwError: false,	pw2Error: false,	// ID, PW, PW2 형식일치? false : true;
@@ -156,119 +156,86 @@ class JoinForm extends React.Component {
 			});
 		}); // FIXME: REMOVE LOG
 	}
-	handleCancel = e => {
+	handleClick = e => {
 		e.preventDefault();
 		this.setState({showPage: false});
 		this.redirectToLogin();
 	}
-	handleDialogClose = () => {
-		this.setState({ dialogOpen: false,
-			dialogIcon: 0,
-			dialogTitle:"",
-			dialogContent:"" });
-	  };
 	redirectToLogin = () => {
-		// 화면전환 애니메이션. 300ms 후 Login페이지로 이동
-		this.props.countError({idError:0, pwError: 0, pw2Error: 0});
 		setTimeout(() => this.props.history.push('/login'), 300);
 	}
 	render() {
-		const { id, pw, pw2,
-				idError, pwError, pw2Error,
-				idOk, pwOk, pw2Ok,
-				idProcess, pwProcess, pw2Process,
-				idErrorMessage, pwErrorMessage,
-				joinProcess,
+		const {
 				showPage,
-				dialogOpen, dialogIcon, dialogTitle, dialogContent, dialogRedirect
 			} = this.state;
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
-				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
+					<Grid container direction="column" justify="center" alignItems="center" spacing={16}>
 						<Grid item>
-							<Typography variant="headline">회원가입</Typography>
+							<Typography variant="headline">FRIENDS</Typography>
 						</Grid>
 						<Grid item>
-							<TextField
-								id="id"
-								value={id}
-								type="email"
-								onChange={this.handleChange}
-								placeholder="이메일 주소를 입력해주세요"
-								label="아이디"
-								error={idError}
-								errorMessage={idErrorMessage}
-								process={idProcess}
-								disabled={joinProcess}
-								ok={idOk}
-								margin={"dense"}
-							/>
+							<Typography variant="subheading">내용은</Typography>
+							<Typography variant="body2">Lorem ipsum dolor sit amet,
+							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+							 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							 nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							  mollit anim id est laborum.
+							</Typography>
 						</Grid>
 						<Grid item>
-							<TextField
-								id="pw"
-								value={pw}
-								type="password"
-								onChange={this.handleChange}
-								placeholder="비밀번호를 입력해주세요"
-								label="비밀번호"
-								error={pwError}
-								errorMessage={pwErrorMessage}
-								process={pwProcess}
-								disabled={joinProcess}
-								ok={pwOk}
-								autoComplete="current-password"
-								margin={"dense"}
-							/>
+							<Typography variant="subheading">이곳에</Typography>
+							<Typography variant="body2">Lorem ipsum dolor sit amet,
+							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+							 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							 nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							  mollit anim id est laborum.
+							</Typography>
 						</Grid>
 						<Grid item>
-							<TextField
-								id="pw2"
-								value={pw2}
-								type="password"
-								onChange={this.handleChange}
-								placeholder="비밀번호를 입력해주세요"
-								label="비밀번호 재확인"
-								error={pw2Error}
-								errorMessage="비밀번호가 일치하지 않습니다"
-								process={pw2Process}
-								disabled={joinProcess}
-								ok={pw2Ok}
-								autoComplete="current-password"
-								margin={"dense"}
-							/>
+							<Typography variant="subheading">입력</Typography>
+							<Typography variant="body2">Lorem ipsum dolor sit amet,
+							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+							 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+							 nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+							  mollit anim id est laborum.
+							</Typography>
 						</Grid>
 						<Grid item>
-							<Button
-								type="submit"
-								process={joinProcess}
-								disabled={!(idOk && pwOk && pw2Ok) || joinProcess}
-								margin="30px 5px 5px 5px">
-								확인
-							</Button>
+							<Typography variant="subheading">개발자들</Typography>
+							<Grid container direction="row" justify="center" alignItems="center" spacing={24}>
+								<Grid item>
+									<Typography variant="body2">AVATAR는 이곳에</Typography>
+								</Grid>
+								<Grid item>
+									<Typography variant="body2">AVATAR는 이곳에</Typography>
+								</Grid>
+								<Grid item>
+									<Typography variant="body2">AVATAR는 이곳에</Typography>
+								</Grid>
+								<Grid item>
+									<Typography variant="body2">AVATAR는 이곳에</Typography>
+								</Grid>
+								<Grid item>
+									<Typography variant="body2">AVATAR는 이곳에</Typography>
+								</Grid>
+							</Grid>
+						</Grid>
+						<Grid item>
 							<Button
 							type="button"
-							onClick={this.handleCancel}
-							disabled={joinProcess}
+							onClick={this.handleClick}
 							margin="30px 5px 5px 5px">
-							취소
-						</Button>
+								돌아가기
+							</Button>
 						</Grid>
 					</Grid>
-					<Dialog
-						open={dialogOpen}
-						onClose={this.handleDialogClose}
-						title={dialogTitle}
-						content={dialogContent}
-						disableBackdrop={true}
-						icon={dialogIcon}
-						redirect={dialogRedirect}
-					/>
-				</form>
 			</Fade>
 		);
 	}
 }
 
-export default JoinForm;
+export default SiteInfo;

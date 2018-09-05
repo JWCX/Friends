@@ -56,8 +56,8 @@ class AmnesiaForm extends React.Component {
 			this.setState({findProcess: false,
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "가입이 완료되었습니다",
-				dialogContent: "가입하신 이메일로 전송된 인증 메일을 확인해주세요!",
+				dialogTitle: "임시 비밀번호가 발급되었습니다",
+				dialogContent: "가입하신 이메일로 전송된 임시 비밀번호를 확인해주세요.",
 				dialogRedirect: "/login"
 			});
 		}).catch(err => {
@@ -91,8 +91,7 @@ class AmnesiaForm extends React.Component {
 			dialogContent:"" });
 	  };
 	redirectToLogin = () => {
-		// 화면전환 애니메이션. 300ms 후 Login페이지로 이동
-		console.log("REDIRECT", this.props);
+		this.props.countError({idError:0, pwError: 0, pw2Error: 0});
 		setTimeout(() => this.props.history.push('/login'), 300);
 	}
 	render() {
@@ -142,8 +141,8 @@ class AmnesiaForm extends React.Component {
 							onClick={this.handleCancel}
 							disabled={findProcess}
 							margin="30px 5px 5px 5px">
-							취소
-						</Button>
+								취소
+							</Button>
 						</Grid>
 					</Grid>
 					<Dialog

@@ -130,7 +130,6 @@ class JoinForm extends React.Component {
 		this.handleRedirect(url);
 	}
 	handleSocialClick = type => {
-		console.log(`http://192.168.0.26:8080/login?name=${type}`);
 		window.open(`http://192.168.0.26:8080/login?name=${type}`);
 	}
 	handleDialogClose = () => {		// Dialog 닫기시 호출 이벤트
@@ -140,6 +139,7 @@ class JoinForm extends React.Component {
 			dialogContent:"" });
 	  };
 	handleRedirect = url => {	// 페이지 이동
+		this.props.countError({idError:0, pwError: 0});
 		this.setState({showPage: false});
 			setTimeout(() => this.props.history.push(url), 300);
 	}
@@ -224,7 +224,7 @@ class JoinForm extends React.Component {
 							<Grid item>
 								<Anchor
 									onClick={e => this.handleClick(e, "/amnesia")}>
-									비밀번호 잊어버렸어요!
+									비밀번호를 잊어버렸어요!
 								</Anchor>
 							</Grid>
 							<Grid item>
