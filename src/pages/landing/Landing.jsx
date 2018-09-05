@@ -10,20 +10,18 @@ class Landing extends Component {
 		console.log(this);
 		return (
 			<div>
-					<Link to="/"><button>to main</button></Link>
-					<Route exact path="/welcome" component={LoginForm}/>
-					{/* <Route exact path="/welcome" component={LoginForm}/> */}
-					{/* <JoinForm></JoinForm> */}
-					{/* <LoginForm></LoginForm> */}
-					<button onClick={() => {
-						const data ={
-							dataSi: {},
-							dataGu: {},
-							dataInterest: {},
-							token: "helloworlda"
-						}
-						this.props.userLoggedIn(data);
-					}}>로그인처리</button>
+				<Link to="/"><button>to main</button></Link>
+				<Route exact path="/login" component={LoginForm}/>
+				<Route exact path="/join" component={JoinForm}/>
+				<button onClick={() => {
+					const data ={
+						dataSi: {},
+						dataGu: {},
+						dataInterest: {},
+						token: "helloworlda"
+					}
+					this.props.userLoggedIn(data);
+				}}>로그인처리</button>
 			</div>
 		);
 	}

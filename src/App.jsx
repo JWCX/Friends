@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 	},
 	palette: {
 	  primary: {
-		main: '#b3bae6',
+		main: '#03a9f4',
 	  },
 	  secondary: {
 		main: '#8c98d9',
@@ -44,7 +44,8 @@ class App extends Component {
 					<Fragment>
 						<CssBaseline/>
 						<Switch>
-							<Route exact path="/welcome" component={Landing}/>
+							<Route exact path="/login" component={Landing}/>
+							<Route exact path="/join" component={Landing}/>
 							<Route path="/" render={() =>
 								store.getState().token ?
 								( <Main /> ) : ( <Redirect to="/welcome"/> ) }/>

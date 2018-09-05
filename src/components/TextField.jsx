@@ -22,42 +22,50 @@ const StatusContainer = styled.div`
 	width: 29px;
 `;
 
-const TextField = (props) => {
+const TextField = ({ id, type, label, placeholder, value, onChange,
+	autoComplete, disabled, margin, ok, process, error, errorMessage }) => {
 	return (
-		<FormControl error={props.error} aria-describedby={`${props.id}-text`} margin="dense">
-			<MyInputLabel htmlFor={props.id}>
-				{props.label}
+		<FormControl error={error} aria-describedby={`${id}-text`} margin="dense">
+			<MyInputLabel htmlFor={id}>
+				{label}
 			</MyInputLabel>
 			<MyInput
-			id={props.id}
-			placeholder={props.placeholder}
-			value={props.value}
-			onChange={props.onChange}
-			autoComplete={props.autoComplete}
-			type={props.type}
-			margin={props.margin}
+			id={id}
+			placeholder={placeholder}
+			value={value}
+			onChange={onChange}
+			autoComplete={autoComplete}
+			type={type}
+			disabled={disabled}
+			margin={margin}
 			endAdornment={
 				<InputAdornment position="end">
 					<StatusContainer>
-						<Fade in={props.ok}>
-							{/* 체크(v) SVG Animation */}
-							<MtSvgLines animate={props.ok} duration={1000}>
-								<svg viewBox="0 0 100 100">
-									<path stroke="#00e600" strokeWidth="7" fill="none" d="M20.8,51c0,0,20.8,18.2,21.5,18.2c0.6,0,33.3-38.5,33.3-38.5" />
-								</svg>
-							</MtSvgLines>
-						</Fade>
-						<Fade in={props.process}>
-							{/* Spinning Process Animation */}
-							<CircularProgress style={{ position: "absolute", right:"7px", top:"5px", color:"#667cff" }} size={17} thickness={6} />
-						</Fade>
+						{
+							ok ?
+							<Fade in={ok}>
+								{/* 체크(v) SVG Animation */}
+								<MtSvgLines animate={ok} duration={1000}>
+									<svg viewBox="0 0 100 100">
+										<path stroke="#00e600" strokeWidth="7" fill="none" d="M20.8,51c0,0,20.8,18.2,21.5,18.2c0.6,0,33.3-38.5,33.3-38.5" />
+									</svg>
+								</MtSvgLines>
+							</Fade> : ""
+						}
+						{
+							process ?
+							<Fade in={process}>
+								{/* Spinning Process Animation */}
+								<CircularProgress style={{ position: "absolute", right:"7px", top:"5px", color:"#667cff" }} size={17} thickness={6} />
+							</Fade> : ""
+						}
 					</StatusContainer>
 				</InputAdornment>}
 			/>
-			<Collapse in={props.error} timeout={{enter: 300, exit: 600}}>
-				<Fade in={props.error}>
-					<FormHelperText id={`${props.id}-text`} /* hidden={!props.error} */>
-						{props.errorMessage}
+			<Collapse in={error} timeout={{enter: 300, exit: 600}}>
+				<Fade in={error}>
+					<FormHelperText id={`${id}-text`}>
+						{errorMessage}
 					</FormHelperText>
 				</Fade>
 			</Collapse>

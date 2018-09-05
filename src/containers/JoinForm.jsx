@@ -2,10 +2,10 @@ import React from 'react';
 import Axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { Fade } from '@material-ui/core';
+import { Fade, Typography, Grid } from '@material-ui/core';
 // import { connect } from 'react-redux';
 
-import { TextField, Button } from 'components';
+import { TextField, Button, Dialog } from 'components';
 
 const Form = styled.form`
 	position: absolute;
@@ -29,6 +29,11 @@ class JoinForm extends React.Component {
 		pwErrorMessage: "",		// PW 자리수 허용범위 초과시 출력할 에러 메세지
 		joinProcess: false,		// 확인버튼 클릭시 Process Spinner 및 버튼 Disable처리를 위한 state
 		showPage: false,	// FadeIn/Out Animaition 처리를 위한 변수
+		dialogOpen: false,	// true : Dialog 팝업
+		dialogIcon: 0,
+		dialogTitle: "",
+		dialogContent: "",
+		dialogRedirect: "",
 	};
 	t_checkId = null;	// ID 유효성 검사 Timeout 객체. 설정값 700 ms
 	t_checkPw = null;	// PW 유효성 검사 Timeout 객체. 설정값 500 ms
@@ -52,8 +57,7 @@ class JoinForm extends React.Component {
 							Axios.get('http://localhost:8080/email/check', { params : { email : value } })
 								.then(resp => {
 									console.log(resp.status); // FIXME: REMOVE ME
-									this.setState({idOk: true});
-									this.setState({idProcess: false});
+									this.setState({idOk: true, idProcess: false});
 								})
 								.catch(err => {
 									console.log(err.response); // FIXME: REMOVE ME
@@ -114,14 +118,38 @@ class JoinForm extends React.Component {
 			pw: this.state.pw
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
-		}).catch(err => console.log(err.response)); // FIXME: REMOVE LOG
+			this.setState({joinProcess: false,
+				dialogOpen: true,
+				dialogIcon: 1,
+				dialogTitle: "가입이 완료되었습니다",
+				dialogContent: "가입하신 이메일로 전송된 인증 메일을 확인해주세요!",
+				dialogRedirect: "/login"
+			});
+		}).catch(err => {
+			console.log(err.response);
+			this.setState({joinProcess: false,
+				dialogOpen: true,
+				dialogIcon: 2,
+				dialogTitle: "서버와 연결할 수 없습니다",
+				dialogContent: "잠시후 다시 시도해주세요..",
+			});
+		}); // FIXME: REMOVE LOG
 	}
 	handleCancel = e => {
 		e.preventDefault();
 		this.setState({showPage: false});
-		setTimeout(() => {
-			this.props.history.push('/');	// 화면전환 애니메이션. 500ms 후 Login페이지로 이동
-		}, 500);
+		this.redirectToLogin();
+	}
+	handleDialogClose = () => {
+		this.setState({ dialogOpen: false,
+			dialogIcon: 0,
+			dialogTitle:"",
+			dialogContent:"" });
+	  };
+	redirectToLogin = () => {
+		// 화면전환 애니메이션. 200ms 후 Login페이지로 이동
+		console.log("REDIRECT", this.props);
+		setTimeout(() => this.props.history.push('/login'), 0);
 	}
 	render() {
 		const { id, pw, pw2,
@@ -130,67 +158,92 @@ class JoinForm extends React.Component {
 				idProcess, pwProcess, pw2Process,
 				idErrorMessage, pwErrorMessage,
 				joinProcess,
-				showPage
+				showPage,
+				dialogOpen, dialogIcon, dialogTitle, dialogContent, dialogRedirect
 			} = this.state;
 		return (
-			<Fade in={showPage} timeout={{enter: 500, exit: 500}}>
+			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
 				<Form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-				{/* <p>새 계정 만들기</p> */}
-					<TextField
-						id="id"
-						value={id}
-						type="email"
-						onChange={this.handleChange}
-						placeholder="이메일 주소를 입력해주세요"
-						label="아이디"
-						error={idError}
-						errorMessage={idErrorMessage}
-						process={idProcess}
-						ok={idOk}
-						margin={"dense"}/>
-					<br/>
-					<TextField
-						id="pw"
-						value={pw}
-						type="password"
-						onChange={this.handleChange}
-						placeholder="비밀번호를 입력해주세요"
-						label="비밀번호"
-						error={pwError}
-						errorMessage={pwErrorMessage}
-						process={pwProcess}
-						ok={pwOk}
-						autoComplete="current-password"
-						margin={"dense"}/>
-					<br/>
-					<TextField
-						id="pw2"
-						value={pw2}
-						type="password"
-						onChange={this.handleChange}
-						placeholder="비밀번호를 입력해주세요"
-						label="비밀번호 재확인"
-						error={pw2Error}
-						errorMessage="비밀번호가 일치하지 않습니다"
-						process={pw2Process}
-						ok={pw2Ok}
-						autoComplete="current-password"
-						margin={"dense"}/>
-					<br/>
-					<br/>
-					<Button
-						type="submit"
-						process={joinProcess}
-						disabled={!(idOk && pwOk && pw2Ok) || joinProcess}
-						margin="20px 5px 10px 5px">
-						확인
-					</Button>
-					<Button
-						type="button"
-						onClick={this.handleCancel}
-						margin="20px 5px 10px 5px">
-						취소
-					</Button>
+					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
+						<Grid item>
+							<Typography variant="headline">회원가입</Typography>
+						</Grid>
+						<Grid item>
+							<TextField
+								id="id"
+								value={id}
+								type="email"
+								onChange={this.handleChange}
+								placeholder="이메일 주소를 입력해주세요"
+								label="아이디"
+								error={idError}
+								errorMessage={idErrorMessage}
+								process={idProcess}
+								disabled={joinProcess}
+								ok={idOk}
+								margin={"dense"}
+							/>
+						</Grid>
+						<Grid item>
+							<TextField
+								id="pw"
+								value={pw}
+								type="password"
+								onChange={this.handleChange}
+								placeholder="비밀번호를 입력해주세요"
+								label="비밀번호"
+								error={pwError}
+								errorMessage={pwErrorMessage}
+								process={pwProcess}
+								disabled={joinProcess}
+								ok={pwOk}
+								autoComplete="current-password"
+								margin={"dense"}
+							/>
+						</Grid>
+						<Grid item>
+							<TextField
+								id="pw2"
+								value={pw2}
+								type="password"
+								onChange={this.handleChange}
+								placeholder="비밀번호를 입력해주세요"
+								label="비밀번호 재확인"
+								error={pw2Error}
+								errorMessage="비밀번호가 일치하지 않습니다"
+								process={pw2Process}
+								disabled={joinProcess}
+								ok={pw2Ok}
+								autoComplete="current-password"
+								margin={"dense"}
+							/>
+						</Grid>
+						<Grid item>
+							<Button
+								type="submit"
+								process={joinProcess}
+								disabled={!(idOk && pwOk && pw2Ok) || joinProcess}
+								margin="30px 5px 5px 5px">
+								확인
+							</Button>
+							<Button
+							type="button"
+							onClick={this.handleCancel}
+							disabled={joinProcess}
+							margin="30px 5px 5px 5px">
+							취소
+						</Button>
+						</Grid>
+					</Grid>
+					<Dialog
+						open={dialogOpen}
+						onClose={this.handleDialogClose}
+						title={dialogTitle}
+						content={dialogContent}
+						disableBackdrop={true}
+						icon={dialogIcon}
+						redirect={dialogRedirect}
+					/>
 				</Form>
 			</Fade>
 		);
