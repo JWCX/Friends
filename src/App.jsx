@@ -48,7 +48,7 @@ class App extends Component {
 							<Route exact path="/join" component={Landing}/>
 							<Route path="/" render={() =>
 								store.getState().token ?
-								( <Main /> ) : ( <Redirect to="/welcome"/> ) }/>
+								( <Main /> ) : ( <Redirect to="/login"/> ) }/>
 						</Switch>
 					</Fragment>
 				</BrowserRouter>

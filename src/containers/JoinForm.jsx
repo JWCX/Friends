@@ -1,9 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
-import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { Fade, Typography, Grid } from '@material-ui/core';
-// import { connect } from 'react-redux';
 
 import { TextField, Button, Dialog } from 'components';
 
@@ -30,10 +28,10 @@ class JoinForm extends React.Component {
 		joinProcess: false,		// 확인버튼 클릭시 Process Spinner 및 버튼 Disable처리를 위한 state
 		showPage: false,	// FadeIn/Out Animaition 처리를 위한 변수
 		dialogOpen: false,	// true : Dialog 팝업
-		dialogIcon: 0,
+		dialogIcon: 0,		// dialog에 표시할 아이콘. 0:none, 1:v, 2:x
 		dialogTitle: "",
 		dialogContent: "",
-		dialogRedirect: "",
+		dialogRedirect: "",	// dialog에서 Redirect할 url
 	};
 	t_checkId = null;	// ID 유효성 검사 Timeout 객체. 설정값 700 ms
 	t_checkPw = null;	// PW 유효성 검사 Timeout 객체. 설정값 500 ms
@@ -54,7 +52,7 @@ class JoinForm extends React.Component {
 				this.t_checkId = setTimeout(() => {
 					if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)){
 						console.log("is email", value);
-							Axios.get('http://localhost:8080/email/check', { params : { email : value } })
+							Axios.get('http://192.168.0.26:8080/email/check', { params : { email : value } })
 								.then(resp => {
 									console.log(resp.status); // FIXME: REMOVE ME
 									this.setState({idOk: true, idProcess: false});
@@ -113,7 +111,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({joinProcess: true});
-		Axios.post('http://localhost:8080/join', {
+		Axios.post('http://192.168.0.26:8080/join', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -147,9 +145,9 @@ class JoinForm extends React.Component {
 			dialogContent:"" });
 	  };
 	redirectToLogin = () => {
-		// 화면전환 애니메이션. 200ms 후 Login페이지로 이동
+		// 화면전환 애니메이션. 300ms 후 Login페이지로 이동
 		console.log("REDIRECT", this.props);
-		setTimeout(() => this.props.history.push('/login'), 0);
+		setTimeout(() => this.props.history.push('/login'), 300);
 	}
 	render() {
 		const { id, pw, pw2,
@@ -250,10 +248,4 @@ class JoinForm extends React.Component {
 	}
 }
 
-// const mapStateToProps = (state) => ({
-// })
-
-// const mapDispatchToProps = {
-// }
-
-export default withRouter(JoinForm);
+export default JoinForm;

@@ -13,17 +13,17 @@ const styles = {
 		color: "white",
 		border: 0,
 		borderRadius: 5,
-		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.9)",
+		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.7)",
 		// margin: "10px",
 	},
 	disabled: {
 		background: "linear-gradient(135deg, #8c98d9 10%, #66ffff 270%)",
-		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.5)",
+		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.3)",
 		opacity: "0.85",
 	}
 };
 
-const Button = ({ classes, type, children, margin, width, height, disabled, process, onClick }) => {
+const Button = ({ classes, type, children, margin, width, height, disabled, process, onClick, autoFocus }) => {
 	return (
 		<MuiButton type={type}
 		classes={{ root: classes.root,
@@ -31,6 +31,7 @@ const Button = ({ classes, type, children, margin, width, height, disabled, proc
 		disabled={disabled}
 		onClick={onClick}
 		style={{margin, width, height}}
+		autoFocus={autoFocus}
 		>
 			{!process ? children : "processing"}
 			{

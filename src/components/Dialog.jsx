@@ -31,7 +31,7 @@ class Dialog extends React.Component {
 		else
 			this.props.onClose();
 	}
-	render() {
+	render() {	// Dialog icon은 각각 0:none, 1:success(v), 2:failed(x)
 		const { classes, onClose, title, content, disableBackdrop, icon, redirect, ...other } = this.props;
 		return (
 			<MuiDialog
@@ -94,6 +94,7 @@ class Dialog extends React.Component {
 						</Grid>
 						<Grid item>
 							<Button
+								autoFocus
 								onClick={this.handleClose}
 								margin="50px 0 0 0">
 								확인
