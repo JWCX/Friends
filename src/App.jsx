@@ -46,9 +46,12 @@ class App extends Component {
 						<Switch>
 							<Route exact path="/login" component={Landing}/>
 							<Route exact path="/join" component={Landing}/>
-							<Route path="/" render={() =>
+							<Route exact path="/amnesia" component={Landing}/>
+							<Route exact path="/info" component={Landing}/>
+							<Route exact path="/" component={Main}/>
+							{/* <Route path="/" render={() =>
 								store.getState().token ?
-								( <Main /> ) : ( <Redirect to="/login"/> ) }/>
+								( <Main /> ) : ( <Redirect to="/login"/> ) }/> */}
 						</Switch>
 					</Fragment>
 				</BrowserRouter>

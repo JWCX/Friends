@@ -8,16 +8,15 @@ import { TextField, Button, Dialog } from 'components';
 import { GoogleButton, NaverButton, FacebookButton } from 'components/SocialButtons';
 import { userLoggedIn } from 'actions';
 
-const Form = styled.form`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	padding: 10px 20px;
-	border-radius: 10px;
-	text-align: center;
-	background: white;
-	margin: auto;
+const Anchor = styled.div`
+	color: rgb(160,160,250);
+	transition: all .2s ease-in-out;
+	cursor: pointer;
+	font-size: 13px;
+	padding: 5px 0;
+	&:hover {
+		color: rgb(80,80,255);
+	}
 `;
 
 class JoinForm extends React.Component {
@@ -50,29 +49,42 @@ class JoinForm extends React.Component {
 			case "id":
 				clearTimeout(this.t_checkId);
 				this.setState({idError: false, idOk: false});
+				this.props.countError({idError: 0});
 				this.t_checkId = setTimeout(() => {
 					if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)){
 						this.setState({idOk: true});
 					}
 					else {
-						if(value)
+						if(value) {
 							this.setState({idError: true, idErrorMessage: "잘못된 형식 입니다"})
-						else this.setState({idError: false, idErrorMessage: ""});
+							this.props.countError({idError: 1});
+						}
+						else {
+							this.setState({idError: false, idErrorMessage: ""});
+							this.props.countError({idError: 0});
+						}
 					}
 				}, 500);
 				break;
 			case "pw":
 				clearTimeout(this.t_checkPw);
 				this.setState({pwError: false, pwOk: false});
+				this.props.countError({pwError: 0});
 				this.t_checkPw = setTimeout(() => {
 					if(value.length >= 8 && value.length <= 20){
-							this.setState({pwOk: true, pwError: false});
+						this.setState({pwOk: true, pwError: false});
+						this.props.countError({pwError: 0});
 					}
 					else {
-						if(value)
+						if(value) {
 							this.setState({pwOk: false, pwError: true,
 							pwErrorMessage: (value.length >= 20) ? "비밀번호는 20자를 넘을 수 없습니다" : "비밀번호는 8자 이상 입력해주세요"});
-						else this.setState({pwOk: false, pwError: false, pwErrorMessage: ""});
+							this.props.countError({pwError: 1});
+						}
+						else {
+							this.setState({pwOk: false, pwError: false, pwErrorMessage: ""});
+							this.props.countError({pwError: 0});
+						}
 					}
 				}, 500);
 			break;
@@ -96,17 +108,26 @@ class JoinForm extends React.Component {
 			this.handleRedirect("/");
 		}).catch(err => {
 			console.log(err.response);	// FIXME: REMOVE
+			let errorTitle, errorMessage;
+			if(!err.response || !err.response.data) {
+				errorTitle = "서버와 연결할 수 없습니다";
+				errorMessage = "잠시후 다시 시도해 주세요...";
+			}
+			else {
+				errorTitle = err.response.data;
+			}
 			this.setState({
 				loginProcess: false,
 				dialogOpen: true,
 				dialogIcon: 2,
-				dialogTitle: err.response.data
+				dialogTitle: errorTitle,
+				dialogContent: errorMessage
 			});
 		});
 	}
-	handleClick = e => {
+	handleClick = (e, url) => {
 		e.preventDefault();
-		this.handleRedirect("/join");
+		this.handleRedirect(url);
 	}
 	handleSocialClick = type => {
 		console.log(`http://192.168.0.26:8080/login?name=${type}`);
@@ -133,7 +154,7 @@ class JoinForm extends React.Component {
 			} = this.state;
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
-				<Form onSubmit={this.handleSubmit} noValidate autoComplete="off">
+				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
 					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
 						<Grid item>
 							<Typography variant="headline">로그인</Typography>
@@ -179,7 +200,7 @@ class JoinForm extends React.Component {
 							</Button>
 							<Button
 								type="button"
-								onClick={this.handleClick}
+								onClick={e => this.handleClick(e, "/join")}
 								disabled={loginProcess}
 								margin="30px 5px 5px 5px">
 								회원가입
@@ -199,6 +220,22 @@ class JoinForm extends React.Component {
 									onClick={()=>{this.handleSocialClick("facebook")}}/>
 							</Grid>
 						</Grid>
+						<Grid item container direction="row" justify="center" alignItems="center" spacing={16}>
+							<Grid item>
+								<Anchor
+									onClick={e => this.handleClick(e, "/amnesia")}>
+									비밀번호 잊어버렸어요!
+								</Anchor>
+							</Grid>
+							<Grid item>
+								<span style={{background:"red", borderRight:"1px solid rgb(200,200,200)"}}></span>
+							</Grid>
+							<Grid item>
+								<Anchor onClick={e => this.handleClick(e, "/info")}>
+									사이트 소개
+								</Anchor>
+							</Grid>
+						</Grid>
 					</Grid>
 					<Dialog
 						open={dialogOpen}
@@ -209,7 +246,7 @@ class JoinForm extends React.Component {
 						icon={dialogIcon}
 						redirect={dialogRedirect}
 					/>
-				</Form>
+				</form>
 			</Fade>
 		);
 	}

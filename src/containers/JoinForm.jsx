@@ -1,21 +1,8 @@
 import React from 'react';
 import Axios from 'axios';
-import styled from 'styled-components';
 import { Fade, Typography, Grid } from '@material-ui/core';
 
 import { TextField, Button, Dialog } from 'components';
-
-const Form = styled.form`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	padding: 10px 20px;
-	border-radius: 10px;
-	text-align: center;
-	background: white;
-	margin: auto;
-`;
 
 class JoinForm extends React.Component {
 	state = {
@@ -49,6 +36,7 @@ class JoinForm extends React.Component {
 			case "id":
 				clearTimeout(this.t_checkId);
 				this.setState({idError: false, idOk: false, idProcess: true});
+				this.props.countError({idError: 0});
 				this.t_checkId = setTimeout(() => {
 					if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)){
 						console.log("is email", value);
@@ -59,13 +47,30 @@ class JoinForm extends React.Component {
 								})
 								.catch(err => {
 									console.log(err.response); // FIXME: REMOVE ME
-									this.setState({idError: true, idProcess: false, idErrorMessage: "사용중인 아이디 입니다"});
+									if(!err.response || !err.response.data) {
+										this.setState({
+											idProcess: false,
+											dialogOpen: true,
+											dialogIcon: 2,
+											dialogTitle: "서버와 연결할 수 없습니다",
+											dialogContent: "잠시후 다시 시도해 주세요..."
+										});
+									}
+									else {
+										this.setState({idError: true, idProcess: false, idErrorMessage: "사용중인 아이디 입니다"});
+										this.props.countError({idError: 1});
+									}
 								});
 					}
 					else {
-						if(value)
+						if(value) {
 							this.setState({idError: true, idProcess: false, idErrorMessage: "사용할 수 없는 형식 입니다"})
-						else this.setState({idError: false, idProcess: false, idErrorMessage: ""});
+							this.props.countError({idError: 1});
+						}
+						else {
+							this.setState({idError: false, idProcess: false, idErrorMessage: ""});
+							this.props.countError({idError: 0});
+						}
 					}
 				}, 700);
 				if(!value) this.setState({idProcess: false});
@@ -73,18 +78,28 @@ class JoinForm extends React.Component {
 			case "pw":
 				clearTimeout(this.t_checkPw);
 				this.setState({pwError: false, pwOk: false, pwProcess: true});
+				this.props.countError({pwError: 0});
 				this.t_checkPw = setTimeout(() => {
 					if(value.length >= 8 && value.length <= 20){
-						if(this.state.pw2 === value)
+						if(this.state.pw2 === value) {
 							this.setState({pwOk: true, pw2Ok: true, pwError: false, pw2Error: false});
-						else
-							this.setState({pwOk: true, pw2Ok: false, pwError: false, pw2Error: this.state.pw2 ? true: false});
+							this.props.countError({pwError: 0, pw2Error: 0});
+						}
+						else {
+							this.setState({pwOk: true, pw2Ok: false, pwError: false, pw2Error: this.state.pw2 ? true : false});
+							this.props.countError({pwError: 0, pw2Error: this.state.pw2 ? 1 : 0});
+						}
 					}
 					else {
-						if(value)
+						if(value) {
 							this.setState({pwOk: false, pw2Ok: false, pwError: true, pw2Error: this.state.pw2 ? true : false,
 							pwErrorMessage: (value.length >= 20) ? "비밀번호는 20자를 넘을 수 없습니다" : "비밀번호는 8자 이상 입력해주세요"});
-						else this.setState({pwOk: false, pwError: false, pwErrorMessage: "", pw2Error: this.state.pw2 ? true : false, pw2Ok: false});
+							this.props.countError({pwError: 1, pw2Error: this.state.pw2 ? 1 : 0});
+						}
+						else {
+							this.setState({pwOk: false, pwError: false, pwErrorMessage: "", pw2Error: this.state.pw2 ? true : false, pw2Ok: false});
+							this.props.countError({pwError: 0, pw2Error: this.state.pw2 ? 1 : 0});
+						}
 					}
 					this.setState({pwProcess: false});
 				}, 500);
@@ -93,13 +108,21 @@ class JoinForm extends React.Component {
 			case "pw2":
 				clearTimeout(this.t_checkPw2);
 				this.setState({pw2Error: false, pw2Ok: false, pw2Process: true});
+				this.props.countError({pw2Error: 0});
 				this.t_checkPw2 = setTimeout(() => {
-					if(this.state.pwOk && value === this.state.pw)
+					if(this.state.pwOk && value === this.state.pw) {
 						this.setState({pw2Ok: true, pw2Error: false});
+						this.props.countError({pw2Error: 0});
+					}
 					else {
-						if(value)
+						if(value) {
 							this.setState({pw2Ok: false, pw2Error: true});
-						else this.setState({pw2Ok: false, pw2Error: false});
+							this.props.countError({pw2Error: 1});
+						}
+						else {
+							this.setState({pw2Ok: false, pw2Error: false});
+							this.props.countError({pw2Error: 0});
+						}
 					}
 					this.setState({pw2Process: false});
 				}, 500);
@@ -161,7 +184,7 @@ class JoinForm extends React.Component {
 			} = this.state;
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
-				<Form onSubmit={this.handleSubmit} noValidate autoComplete="off">
+				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
 					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
 						<Grid item>
 							<Typography variant="headline">회원가입</Typography>
@@ -242,7 +265,7 @@ class JoinForm extends React.Component {
 						icon={dialogIcon}
 						redirect={dialogRedirect}
 					/>
-				</Form>
+				</form>
 			</Fade>
 		);
 	}

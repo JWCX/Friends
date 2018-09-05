@@ -16,10 +16,11 @@ class Main extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-	dataSi : state.dataSi,
-	dataGu : state.dataGu,
-	dataInterest : state.dataInterest,
+const mapStateToProps = state => ({
+	dataSi: state.dataSi,
+	dataGu: state.dataGu,
+	dataInterest: state.dataInterest,
+	token: state.token,
 })
 
 const mapDispatchToProps = {

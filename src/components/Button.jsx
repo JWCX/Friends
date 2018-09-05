@@ -13,12 +13,12 @@ const styles = {
 		color: "white",
 		border: 0,
 		borderRadius: 5,
-		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.7)",
+		boxShadow: "0 3px 15px -2px rgba(102, 180, 180, 0.7)",
 		// margin: "10px",
 	},
 	disabled: {
 		background: "linear-gradient(135deg, #8c98d9 10%, #66ffff 270%)",
-		boxShadow: "0 1px 10px 0 rgba(102, 180, 180, 0.3)",
+		boxShadow: "0 3px 15px -2px rgba(102, 180, 180, 0.2)",
 		opacity: "0.85",
 	}
 };

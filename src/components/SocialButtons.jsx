@@ -13,10 +13,10 @@ const StyledSocialButton = styled.div`
 	width: 40px;
 	height: 40px;
 	background-color: white;
-	border-radius: 25px;
+	border-radius: 20px;
 	padding: 5px;
 	border-bottom: 1px solid rgba(0,0,0,0.2);
-	box-shadow: 0 4px 15px -2px rgba(0,0,0,0.3);
+	box-shadow: 0 6px 12px -3px rgba(0,0,0,0.3);
 	margin: 10px;
 	transition: all .2s ease-in-out;
 	cursor: pointer;
@@ -49,7 +49,7 @@ export const FacebookButton = props => {
 	return (
 		<StyledSocialButton {...props}>
 			<svg viewBox="0 0 167.657 167.657">
-				<g><path fill="#3b5998" d="M83.829,0.349C37.532,0.349,0,37.881,0,84.178c0,41.523,30.222,75.911,69.848,82.57v-65.081H49.626
+				<g><path fill="#2d5ba3" d="M83.829,0.349C37.532,0.349,0,37.881,0,84.178c0,41.523,30.222,75.911,69.848,82.57v-65.081H49.626
 						v-23.42h20.222V60.978c0-20.037,12.238-30.956,30.115-30.956c8.562,0,15.92,0.638,18.056,0.919v20.944l-12.399,0.006
 						c-9.72,0-11.594,4.618-11.594,11.397v14.947h23.193l-3.025,23.42H94.026v65.653c41.476-5.048,73.631-40.312,73.631-83.154
 						C167.657,37.881,130.125,0.349,83.829,0.349z"/></g>
@@ -61,7 +61,7 @@ export const NaverButton = props => {
 	return (
 		<StyledSocialButton {...props}>
 			<svg viewBox="0 0 512 512">
-				<g><circle fill="green" cx="255.999" cy="256" r="246.455"/></g>
+				<g><circle fill="#54d14b" cx="255.999" cy="256" r="246.455"/></g>
 				<g><path fill="#FFFFFF" d="M124.152,139.41h91.746c0,0,83.332,125.871,85.793,129.246c2.52,3.41,2.812,0,2.812,0
 						c-3.844-19.477-8.016-28.219-8.016-59.379V139.41h91.359v233.18h-91.359c0,0-81.621-119.156-84.082-122.449
 						c-2.473-3.316-2.801,0-2.801,0c3.141,16.078,5.918,18.762,5.918,46.688v75.762h-91.371V139.41L124.152,139.41z"/></g>
