@@ -62,12 +62,10 @@ const TextField = ({ id, type, label, placeholder, value, onChange,
 					</StatusContainer>
 				</InputAdornment>}
 			/>
-			<Collapse in={error} timeout={{enter: 300, exit: 600}}>
-				<Fade in={error}>
-					<FormHelperText id={`${id}-text`}>
-						{errorMessage}
-					</FormHelperText>
-				</Fade>
+			<Collapse in={error} timeout={{enter: 200, exit: 200}}>
+				<FormHelperText id={`${id}-text`}>
+					{errorMessage}
+				</FormHelperText>
 			</Collapse>
 		</FormControl>
 	)

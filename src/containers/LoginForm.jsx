@@ -13,7 +13,7 @@ const Anchor = styled.div`
 	transition: all .2s ease-in-out;
 	cursor: pointer;
 	font-size: 13px;
-	padding: 5px 0;
+	padding: 8px 0;
 	&:hover {
 		color: rgb(80,80,255);
 	}
@@ -28,6 +28,7 @@ class JoinForm extends React.Component {
 		pwErrorMessage: "",		// PW 자리수 허용범위 초과시 출력할 에러 메세지
 		loginProcess: false,		// 확인버튼 클릭시 Process Spinner 및 버튼 Disable처리를 위한 state
 		showPage: false,
+		mount: false,
 		dialogOpen: false,	// true : Dialog 팝업
 		dialogIcon: 0,		// dialog에 표시할 아이콘. 0:none, 1:v, 2:x
 		dialogTitle: "",
@@ -38,7 +39,9 @@ class JoinForm extends React.Component {
 	t_checkPw = null;	// PW 유효성 검사 Timeout 객체. 설정값 500 ms
 
 	componentWillMount() {
-		this.setState({showPage: true});
+		setTimeout(() => {
+			this.setState({mount: true, showPage: true});
+		}, 230);
 	}
 	handleChange = e => {
 		// ============================ 입력정보 STATE에 저장 ===========================
@@ -141,7 +144,12 @@ class JoinForm extends React.Component {
 	handleRedirect = url => {	// 페이지 이동
 		this.props.countError({idError:0, pwError: 0});
 		this.setState({showPage: false});
-			setTimeout(() => this.props.history.push(url), 300);
+		setTimeout(() => {
+			this.setState({mount: false});
+			setTimeout(() => {
+				this.props.history.push(url);
+			}, 50);
+		}, 200);
 	}
 	render() {
 		const { id, pw,
@@ -149,11 +157,13 @@ class JoinForm extends React.Component {
 				idOk, pwOk,
 				idErrorMessage, pwErrorMessage,
 				loginProcess,
-				showPage,
+				showPage, mount,
 				dialogOpen, dialogIcon, dialogTitle, dialogContent, dialogRedirect
 			} = this.state;
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
+			{
+				mount ?
 				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
 					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
 						<Grid item>
@@ -246,7 +256,8 @@ class JoinForm extends React.Component {
 						icon={dialogIcon}
 						redirect={dialogRedirect}
 					/>
-				</form>
+				</form> : <span></span>
+			}
 			</Fade>
 		);
 	}

@@ -1,14 +1,6 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const fade = keyframes`
-	from {
-		transform: scale(1.0, 1.0);
-	}
-	to {
-		transform: scale(1.25, 1.25);
-	}
-`;
 const StyledSocialButton = styled.div`
 	width: 40px;
 	height: 40px;
@@ -18,7 +10,7 @@ const StyledSocialButton = styled.div`
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 	box-shadow: 0 6px 12px -3px rgba(0,0,0,0.3);
 	margin: 10px;
-	transition: all .2s ease-in-out;
+	transition: all .15s ease-in-out;
 	cursor: pointer;
 	&:hover {
 		transform: scale(1.25);

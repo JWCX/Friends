@@ -158,7 +158,6 @@ class JoinForm extends React.Component {
 	}
 	handleCancel = e => {
 		e.preventDefault();
-		this.setState({showPage: false});
 		this.redirectToLogin();
 	}
 	handleDialogClose = () => {
@@ -169,6 +168,7 @@ class JoinForm extends React.Component {
 	  };
 	redirectToLogin = () => {
 		// 화면전환 애니메이션. 300ms 후 Login페이지로 이동
+		this.setState({showPage: false});
 		this.props.countError({idError:0, pwError: 0, pw2Error: 0});
 		setTimeout(() => this.props.history.push('/login'), 300);
 	}

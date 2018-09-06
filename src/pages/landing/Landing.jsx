@@ -17,7 +17,7 @@ const styles = {
 		maxWidth: "400px",
 		borderRadius: "10px",
 		padding: "30px",
-		transition: "all 0.3s ease-in-out"
+		transition: "all 0.2s ease-in-out"
 	},
 }
 
@@ -34,7 +34,7 @@ class Landing extends Component {
 		const style = {height: _.reduce(this.state, (x,y) => x+y)*12};
 		switch(this.props.match.url){
 			case "/login":
-				style.height += 360;
+				style.height += 370;
 				break;
 			case "/join":
 				style.height += 335;
@@ -43,8 +43,8 @@ class Landing extends Component {
 				style.height += 220;
 				break;
 			case "/info":
-				style.height += 800;
-				style.maxWidth = 1200;
+				style.height += 600;
+				style.maxWidth = 1000;
 				style.top = "50%";
 			break;
 			default:

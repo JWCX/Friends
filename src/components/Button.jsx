@@ -3,34 +3,46 @@ import { Button as MuiButton,
 	Fade,
 	CircularProgress, } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
 
 const styles = {
 	root: {
-		background: "linear-gradient(135deg, #03a9f4 15%, #00e600 300%)",
-		height: 40,
-		width: 120,
 		padding: "11px",
 		color: "white",
-		border: 0,
-		borderRadius: 5,
-		boxShadow: "0 3px 15px -2px rgba(102, 180, 180, 0.7)",
+		transition: "all .15s ease-in-out;"
 		// margin: "10px",
 	},
 	disabled: {
-		background: "linear-gradient(135deg, #8c98d9 10%, #66ffff 270%)",
-		boxShadow: "0 3px 15px -2px rgba(102, 180, 180, 0.2)",
-		opacity: "0.85",
-	}
-};
+		background: "linear-gradient(45deg, #8c98d9 10%, #66ffff 270%)",
+		boxShadow: "0 3px 15px -2px rgba(3, 169, 244, 0.2)",
+		opacity: "0.75",
+	},
+}
 
+const StyledButton = styled(MuiButton)`
+	background: linear-gradient(45deg, #03a9f4 40%, #ccffe6 200%);
+	height: 40px;
+	width: 120px;
+	border: 0;
+	border-Radius: 5;
+	box-Shadow: 0 3px 15px -2px rgba(3, 169, 244, 0.6);
+	transition: all .2s ease-in-out;
+	&:hover {
+		background: linear-gradient(45deg, #03a9f4 35%, #FFFFFF 160%);
+		box-Shadow: 0 3px 15px -2px rgba(3, 169, 244, 0.8);
+		transform: scale(1.03);
+		border-radius: 8px;
+	}
+`
 const Button = ({ classes, type, children, margin, width, height, disabled, process, onClick, autoFocus }) => {
 	return (
-		<MuiButton type={type}
+		<StyledButton type={type}
 		classes={{ root: classes.root,
 			disabled: classes.disabled }}
 		disabled={disabled}
 		onClick={onClick}
 		style={{margin, width, height}}
+		focusRipple={true}
 		autoFocus={autoFocus}
 		>
 			{!process ? children : "processing"}
@@ -40,7 +52,7 @@ const Button = ({ classes, type, children, margin, width, height, disabled, proc
 					<CircularProgress style={{ position: "absolute", color:"#3352ff" }} size={20} thickness={6} />
 				</Fade> : ""
 			}
-		</MuiButton>
+		</StyledButton>
 	);
 }
 
