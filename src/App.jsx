@@ -11,7 +11,11 @@ import store from './store';
 injectGlobal`
 	@import url('//cdn.rawgit.com/young-ha/webfont-archive/master/css/Godo.css');
 	* {
-	font-family: 'Godo', sans-serif;
+		font-family: 'Godo', sans-serif;
+		-ms-overflow-style: none;
+	}
+	*::-webkit-scrollbar {
+		width: 0 !important
 	}
 	`;
 

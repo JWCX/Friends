@@ -1,8 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Axios from 'axios';
 import styled from 'styled-components';
 import { Fade, Typography, Grid } from '@material-ui/core';
-import { connect } from 'react-redux';
 
 import { TextField, Button, Dialog } from 'components';
 import { GoogleButton, NaverButton, FacebookButton } from 'components/SocialButtons';

@@ -50,28 +50,26 @@ class Landing extends Component {
 			default:
 		}
 		return (
-			<div>
-				<div style={{height:"100vh",
-						background:"url(https://picsum.photos/1920/1080/?blur&gravitiy=east&random)"}}>
-					{/* TODO: DELETE MAIN BUTTON AFTER TEST */}
-					{/* <Link to="/"><button>to main</button></Link> */}
-					<Paper elevation={10}
-						classes={{root: this.props.classes.root}}
-						style={style}>
-						<Route exact path="/login" render={() =>
-							<LoginForm {...this.props} {...this.state} countError={this.handleCountError}/>
-						}/>
-						<Route exact path="/join" render={() =>
-							<JoinForm {...this.props} {...this.state} countError={this.handleCountError}/>
-						}/>
-						<Route exact path="/amnesia" render={() =>
-							<AmnesiaForm {...this.props} {...this.state} countError={this.handleCountError}/>
-						}/>
-						<Route exact path="/info" render={() =>
-							<SiteInfo {...this.props} {...this.state} countError={this.handleCountError}/>
-						}/>
-					</Paper>
-				</div>
+			<div style={{height:"100vh",
+					background:"url(https://picsum.photos/1920/1080/?blur&gravitiy=east&random)"}}>
+				{/* TODO: DELETE MAIN BUTTON AFTER TEST */}
+				{/* <Link to="/"><button>to main</button></Link> */}
+				<Paper elevation={10}
+					classes={{root: this.props.classes.root}}
+					style={style}>
+					<Route exact path="/login" render={() =>
+						<LoginForm {...this.props} {...this.state} countError={this.handleCountError}/>
+					}/>
+					<Route exact path="/join" render={() =>
+						<JoinForm {...this.props} {...this.state} countError={this.handleCountError}/>
+					}/>
+					<Route exact path="/amnesia" render={() =>
+						<AmnesiaForm {...this.props} {...this.state} countError={this.handleCountError}/>
+					}/>
+					<Route exact path="/info" render={() =>
+						<SiteInfo {...this.props} {...this.state} countError={this.handleCountError}/>
+					}/>
+				</Paper>
 			</div>
 		);
 	}
