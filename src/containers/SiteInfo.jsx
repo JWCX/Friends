@@ -34,7 +34,7 @@ class SiteInfo extends React.Component {
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
 			{
 				mount ?
-				<div style={{maxHeight:"560px", overflow:"scroll"}}>
+				<div className="hide-scroll" style={{maxHeight:"560px", overflow:"scroll"}}>
 					<Grid
 						container
 						direction="column"

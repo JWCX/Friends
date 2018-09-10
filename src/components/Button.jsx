@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { Button as MuiButton,
 	Fade,
 	CircularProgress, } from '@material-ui/core';
@@ -34,26 +34,36 @@ const StyledButton = styled(MuiButton)`
 		border-radius: 8px;
 	}
 `
-const Button = ({ classes, type, children, margin, width, height, disabled, process, onClick, autoFocus }) => {
-	return (
-		<StyledButton type={type}
-		classes={{ root: classes.root,
-			disabled: classes.disabled }}
-		disabled={disabled}
-		onClick={onClick}
-		style={{margin, width, height}}
-		focusRipple={true}
-		autoFocus={autoFocus}
-		>
-			{!process ? children : "processing"}
-			{
-				process ?
-				<Fade in={process}>
-					<CircularProgress style={{ position: "absolute", color:"#3352ff" }} size={20} thickness={6} />
-				</Fade> : ""
-			}
-		</StyledButton>
-	);
+class Button extends Component {
+	shouldComponentUpdate(nextProps) {
+		if(this.props.process !== nextProps.process ||
+			this.props.disabled !== nextProps.disabled)
+			return true;
+		else return false;
+	}
+	render() {
+		const { classes, type, children, margin, width, height,
+				disabled, process, onClick, autoFocus } = this.props;
+		return (
+			<StyledButton type={type}
+			classes={{ root: classes.root,
+				disabled: classes.disabled }}
+			disabled={disabled}
+			onClick={onClick}
+			style={{margin, width, height}}
+			focusRipple={true}
+			autoFocus={autoFocus}
+			>
+				{!process ? children : "processing"}
+				{
+					process ?
+					<Fade in={process}>
+						<CircularProgress style={{ position: "absolute", color:"#3352ff" }} size={20} thickness={6} />
+					</Fade> : ""
+				}
+			</StyledButton>
+		);
+	}
 }
 
 export default withStyles(styles)(Button);

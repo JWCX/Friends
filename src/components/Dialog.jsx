@@ -24,23 +24,26 @@ const styles = {
 }
 
 class Dialog extends React.Component {
-
+	shouldComponentUpdate(nextProps) {
+		if(this.props.open !== nextProps.oepn)
+			return true;
+		else return false;
+	}
 	handleClose = () => {
 		if(this.props.redirect)
-			setTimeout(() => this.props.history.push('/login'), 0);
+			setTimeout(() => this.props.history.push(this.props.redirect), 0);
 		else
 			this.props.onClose();
 	}
 	render() {	// Dialog icon은 각각 0:none, 1:success(v), 2:failed(x)
-		const { classes, onClose, title, content, disableBackdrop, icon, redirect, ...other } = this.props;
+		const { classes, onClose, title, content, disableBackdrop, icon, open } = this.props;
 		return (
 			<MuiDialog
 				classes={{paper: classes.paper, paperWidthXs: classes.paperWidthXs}}
 				disableBackdropClick={disableBackdrop}
 				onClose={onClose}
 				aria-labelledby="simple-dialog-title"
-				{...other}>
-				<div>
+				open={open}>
 					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
 						{
 							icon ?
@@ -78,7 +81,7 @@ class Dialog extends React.Component {
 										</div>
 									</Fade>
 								}
-							</Grid> : null
+							</Grid> : ""
 						}
 						<Grid item>
 							<DialogTitle
@@ -101,7 +104,6 @@ class Dialog extends React.Component {
 							</Button>
 						</Grid>
 					</Grid>
-				</div>
 			</MuiDialog>
 		);
 	}

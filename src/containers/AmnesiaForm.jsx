@@ -49,7 +49,7 @@ class AmnesiaForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({findProcess: true});
-		Axios.get('http://192.168.0.26:8080/password', {
+		Axios.get('http://192.168.0.201:8080/password', {
 			params: { email: this.state.id }
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
@@ -89,13 +89,12 @@ class AmnesiaForm extends React.Component {
 			dialogIcon: 0,
 			dialogTitle:"",
 			dialogContent:"" });
-	  };
+	};
 	redirectToLogin = () => {
 		this.props.countError({idError:0, pwError: 0, pw2Error: 0});
 		setTimeout(() => this.props.history.push('/login'), 300);
 	}
 	render() {
-		console.log(this.props);
 		const { id,
 				idError,
 				idOk,
@@ -108,7 +107,7 @@ class AmnesiaForm extends React.Component {
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
 				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
+					<Grid container direction="column" justify="center" alignItems="center" spacing={8}>
 						<Grid item>
 							<Typography variant="headline">비밀번호 찾기</Typography>
 						</Grid>
@@ -125,7 +124,7 @@ class AmnesiaForm extends React.Component {
 								process={idProcess}
 								disabled={findProcess}
 								ok={idOk}
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>

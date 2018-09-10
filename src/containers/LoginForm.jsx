@@ -97,16 +97,17 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({loginProcess: true});
-		Axios.post('http://192.168.0.200:8080/login', {
+		Axios.post('http://192.168.0.201:8080/login', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
 			console.log("Logged in: ", resp);	// FIXME: REMOVE
-			this.props.userLoggedIn({		// redux store에 시,구,관심사정보, 유저 token 저장
+			this.props.userLoggedIn({
 				dataInterest: resp.data.dataInterest,
 				dataSi: resp.data.dataSi,
 				dataGu: resp.data.dataGu,
-				token: resp.data.token
+				token: resp.data.token,
+				myInfo: resp.data.myInfo,
 			});
 			this.handleRedirect("/");
 		}).catch(err => {
@@ -133,7 +134,7 @@ class JoinForm extends React.Component {
 		this.handleRedirect(url);
 	}
 	handleSocialClick = type => {
-		window.open(`http://192.168.0.26:8080/login?name=${type}`);
+		window.open(`http://192.168.0.201:8080/login?name=${type}`);
 	}
 	handleDialogClose = () => {		// Dialog 닫기시 호출 이벤트
 		this.setState({ dialogOpen: false,
@@ -165,7 +166,7 @@ class JoinForm extends React.Component {
 			{
 				mount ?
 				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
+					<Grid container direction="column" justify="center" alignItems="center" spacing={8}>
 						<Grid item>
 							<Typography variant="headline">로그인</Typography>
 						</Grid>
@@ -181,7 +182,7 @@ class JoinForm extends React.Component {
 								errorMessage={idErrorMessage}
 								ok={idOk}
 								disabled={loginProcess}
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>
@@ -197,7 +198,7 @@ class JoinForm extends React.Component {
 								ok={pwOk}
 								disabled={loginProcess}
 								autoComplete="current-password"
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>
@@ -238,7 +239,7 @@ class JoinForm extends React.Component {
 								</Anchor>
 							</Grid>
 							<Grid item>
-								<span style={{background:"red", borderRight:"1px solid rgb(200,200,200)"}}></span>
+								<span style={{borderRight:"1px solid rgb(200,200,200)"}}></span>
 							</Grid>
 							<Grid item>
 								<Anchor onClick={e => this.handleClick(e, "/info")}>
@@ -264,10 +265,6 @@ class JoinForm extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	token : state.token,
-	dataInterest : state.dataInterest,
-	dataSi : state.dataSi,
-	dataGu : state.dataGu,
 })
 const mapDispatchToProps = {
 	userLoggedIn

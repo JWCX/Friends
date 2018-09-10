@@ -39,8 +39,7 @@ class JoinForm extends React.Component {
 				this.props.countError({idError: 0});
 				this.t_checkId = setTimeout(() => {
 					if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)){
-						console.log("is email", value);
-							Axios.get('http://192.168.0.26:8080/email/check', { params : { email : value } })
+							Axios.get('http://192.168.0.201:8080/email/check', { params : { email : value } })
 								.then(resp => {
 									console.log(resp.status); // FIXME: REMOVE ME
 									this.setState({idOk: true, idProcess: false});
@@ -134,7 +133,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({joinProcess: true});
-		Axios.post('http://192.168.0.26:8080/join', {
+		Axios.post('http://192.168.0.201:8080/join', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -185,7 +184,7 @@ class JoinForm extends React.Component {
 		return (
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
 				<form onSubmit={this.handleSubmit} noValidate autoComplete="off">
-					<Grid container direction="column" justify="center" alignItems="center" spacing={0}>
+					<Grid container direction="column" justify="center" alignItems="center" spacing={8}>
 						<Grid item>
 							<Typography variant="headline">회원가입</Typography>
 						</Grid>
@@ -202,7 +201,7 @@ class JoinForm extends React.Component {
 								process={idProcess}
 								disabled={joinProcess}
 								ok={idOk}
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>
@@ -219,7 +218,7 @@ class JoinForm extends React.Component {
 								disabled={joinProcess}
 								ok={pwOk}
 								autoComplete="current-password"
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>
@@ -236,7 +235,7 @@ class JoinForm extends React.Component {
 								disabled={joinProcess}
 								ok={pw2Ok}
 								autoComplete="current-password"
-								margin={"dense"}
+								margin="dense"
 							/>
 						</Grid>
 						<Grid item>

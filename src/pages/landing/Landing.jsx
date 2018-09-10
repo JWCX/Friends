@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import _ from 'lodash';
@@ -31,16 +31,16 @@ class Landing extends Component {
 		this.setState(state => ({...state, ...errors}));
 	}
 	render() {
-		const style = {height: _.reduce(this.state, (x,y) => x+y)*12};
+		const style = {height: _.reduce(this.state, (x,y) => x+y)*20};
 		switch(this.props.match.url){
 			case "/login":
-				style.height += 370;
+				style.height += 380;
 				break;
 			case "/join":
-				style.height += 335;
+				style.height += 330;
 				break;
 			case "/amnesia":
-				style.height += 220;
+				style.height += 225;
 				break;
 			case "/info":
 				style.height += 600;
@@ -52,8 +52,6 @@ class Landing extends Component {
 		return (
 			<div style={{height:"100vh",
 					background:"url(https://picsum.photos/1920/1080/?blur&gravitiy=east&random)"}}>
-				{/* TODO: DELETE MAIN BUTTON AFTER TEST */}
-				{/* <Link to="/"><button>to main</button></Link> */}
 				<Paper elevation={10}
 					classes={{root: this.props.classes.root}}
 					style={style}>
