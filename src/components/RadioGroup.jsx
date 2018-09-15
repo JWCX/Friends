@@ -9,13 +9,13 @@ import { Radio,
 
 class MyRadioGroup extends Component {
 	shouldComponentUpdate(nextProps) {
-		if(this.props.value !== nextProps.value)
+		if(this.props.value !== nextProps.value ||
+			this.props.disabled !== nextProps.disabled)
 			return true;
 		else return false;
 	}
 	render() {
-		const { name, value, data, label, label2, labelPlacement,
-			width, margin, row, handleChange } = this.props;
+		const { name, value, data, label, label2, labelPlacement, disabled, row, handleChange } = this.props;
 		return (
 			<div style={{paddingTop:"3px"}}>
 				<FormControl component="fieldset">
@@ -28,13 +28,14 @@ class MyRadioGroup extends Component {
 						row={row}
 						>
 						{
-							data.map( x =>
-								<FormControlLabel
+							data.map( (x, index) =>
+								<FormControlLabel key={index}
 									value={x.value}
 									control={<Radio color="primary" style={{width:"35px", height:"30px"}}/>}
 									label={x.label}
 									labelPlacement={labelPlacement}
 									style={{margin:"5px 10px 0px 0px"}}
+									disabled={disabled}
 								/>
 							)
 						}

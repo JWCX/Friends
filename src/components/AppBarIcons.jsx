@@ -11,8 +11,8 @@ const MiniIconWrapper = styled.div`
 	border-radius: 100%;
 `
 const NanoIconWrapper = styled.div`
-	width: 30px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 	border-radius: 100%;
 	padding: ${props => props.padding};
 	display: inline-block;
@@ -25,23 +25,38 @@ const StyledSvg = styled.svg`
 	width: ${props => props.width || "100px"};
 	height: ${props => props.height || "40px"};
 	transition: all .1s ease-in-out;
-	${IconWrapper}:hover &, ${MiniIconWrapper}:hover & {
+	/* fill: ${props => props.fill}; */
+	${IconWrapper}:hover & {
 		fill: white;
-		transform: translateY(-50%) scale(1.2);   /* TODO: FLIP ANIMATION 추가할것 AFTER 300ms */
+		transform: translateY(-50%) scale(1.2);
+	}
+	${MiniIconWrapper}:hover & {
+		fill: black;
+		transform: translateY(-50%) scale(1.2);
 	}
 `
 const NanoStyledSvg = styled.svg`
 	position: relative;
 	top: 50%;
 	left: 50%;
-	transform: ${props => props.selected ? "translate(-50%, -50%) scale(1.2)" : "translate(-50%, -50%)"};
-	fill: ${props => props.selected && "white"};
+	transform: translate(-50%, -50%);
+	fill: black;
 	width: ${props => props.width || "100px"};
 	height: ${props => props.height || "40px"};
 	transition: all .1s ease-in-out;
-	${IconWrapper}:hover &, ${MiniIconWrapper}:hover & {
-		fill: white;
-		transform: translate(-50%, -50%) scale(1.2);   /* TODO: FLIP ANIMATION 추가할것 AFTER 300ms */
+`
+const NanoClickAbleStyledSvg = styled.svg`
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: ${props => props.selected ? "translate(-50%, -50%) scale(1.3)" : "translate(-50%, -50%)"};
+	fill: ${props => props.selected && "black"};
+	width: ${props => props.width || "100px"};
+	height: ${props => props.height || "40px"};
+	transition: all .1s ease-in-out;
+	${NanoIconWrapper}:hover & {
+		fill: ${props => props.sfill ? props.sfill : "black"};
+		transform: ${props => props.selected ? "translate(-50%, -50%) scale(1.3)" : "translate(-50%, -50%) scale(1.2);"};
 	}
 `
 const StyledLabel = styled.span`
@@ -54,8 +69,6 @@ const StyledLabel = styled.span`
 	transition: all .3s ease-out;
 	${IconWrapper}:hover & {
 		color: rgba(0,0,0,1);
-
-		/* TODO: FLIP ANIMATION 추가할것 AFTER 300ms */
 	}
 `
 
@@ -563,27 +576,53 @@ export const GroupsIcon = props => {
 		<IconWrapper>
 			<StyledSvg
 				selected={props.selected}
-				viewBox="0 0 488.3 488.3">
-				<path d="M412.3,307.25c-19.3-15.9-40.1-26.4-44.3-28.4c-0.5-0.2-0.8-0.7-0.8-1.2v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2
-					c0-15.5-12.6-28.1-28.1-28.1H342h-3.4c-15.5,0-28.1,12.6-28.1,28.1v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.2,0,0.4-0.1,0.5
-					c5.9,4.1,12.1,8.6,18.1,13.5c7.1,5.8,11.1,14.4,11.1,23.6v25.1h71.8v-21.3C417.7,314.35,415.7,310.05,412.3,307.25z"/>
-				<path d="M326.8,301.45c-22.7-18.6-47.1-31-52.1-33.4c-0.6-0.3-0.9-0.8-0.9-1.5v-35.3c4.4-3,7.4-8,7.4-13.7v-36.6
-					c0-18.2-14.8-33-33-33h-4h-3.9c-18.2,0-33,14.8-33,33v36.6c0,5.7,2.9,10.8,7.4,13.7v35.3c0,0.6-0.4,1.2-0.9,1.5
-					c-5,2.4-29.4,14.8-52.1,33.4c-4.1,3.4-6.5,8.4-6.5,13.7v25.1h89h89v-25.1C333.2,309.85,330.9,304.75,326.8,301.45z"/>
-				<path d="M171.5,277.55v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2c0-15.5-12.6-28.1-28.1-28.1h-3.4h-3.4c-15.5,0-28.1,12.6-28.1,28.1
-					v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.5-0.3,1-0.8,1.2c-4.2,2.1-25,12.6-44.3,28.4c-3.5,2.9-5.5,7.2-5.5,11.7v21.3h71.8v-25.1
-					c0-9.2,4-17.8,11.1-23.6c6-5,12.2-9.5,18.1-13.5C171.6,277.85,171.5,277.65,171.5,277.55z"/>
-				<path d="M483.9,313.75c-15.5-12.7-32.1-21.1-35.5-22.8c-0.4-0.2-0.6-0.6-0.6-1v-24.1c3-2,5-5.5,5-9.4v-25
-					c0-12.4-10.1-22.5-22.5-22.5h-2.7h-2.7c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4v21.3c4.3,3,8.7,6.4,13.1,9.9
-					c6.5,5.4,10.3,13.3,10.3,21.8v21.3h57.5v-17.1C488.3,319.55,486.7,316.05,483.9,313.75z"/>
-				<path d="M80.9,265.95c3-2,5-5.5,5-9.4v-25c0-12.4-10.1-22.5-22.5-22.5h-2.7H58c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4
-					v24.1c0,0.4-0.2,0.8-0.6,1c-3.4,1.7-20.1,10.1-35.5,22.8c-2.8,2.3-4.4,5.7-4.4,9.3v17.1h57.5v-21.3c0-8.5,3.7-16.4,10.3-21.8
-					c4.3-3.6,8.8-6.9,13.1-9.9C80.9,287.25,80.9,265.95,80.9,265.95z"/>
+				viewBox="0 0 47 47">
+				<path d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+						c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+						C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+					<path d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+						c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+						C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+					<path d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+						c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+						C47,22.85,45.104,20.952,42.762,20.952z"/>
+					<path d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+						c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+					<path d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+						c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+						C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+					<circle cx="23.83" cy="23.323" r="7.271"/>
 			</StyledSvg>
 			<StyledLabel selected={props.selected}>Groups</StyledLabel>
 		</IconWrapper>
 	)
 }
+// export const GroupsIcon = props => {
+// 	return (
+// 		<IconWrapper>
+// 			<StyledSvg
+// 				selected={props.selected}
+// 				viewBox="0 0 488.3 488.3">
+// 				<path d="M412.3,307.25c-19.3-15.9-40.1-26.4-44.3-28.4c-0.5-0.2-0.8-0.7-0.8-1.2v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2
+// 					c0-15.5-12.6-28.1-28.1-28.1H342h-3.4c-15.5,0-28.1,12.6-28.1,28.1v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.2,0,0.4-0.1,0.5
+// 					c5.9,4.1,12.1,8.6,18.1,13.5c7.1,5.8,11.1,14.4,11.1,23.6v25.1h71.8v-21.3C417.7,314.35,415.7,310.05,412.3,307.25z"/>
+// 				<path d="M326.8,301.45c-22.7-18.6-47.1-31-52.1-33.4c-0.6-0.3-0.9-0.8-0.9-1.5v-35.3c4.4-3,7.4-8,7.4-13.7v-36.6
+// 					c0-18.2-14.8-33-33-33h-4h-3.9c-18.2,0-33,14.8-33,33v36.6c0,5.7,2.9,10.8,7.4,13.7v35.3c0,0.6-0.4,1.2-0.9,1.5
+// 					c-5,2.4-29.4,14.8-52.1,33.4c-4.1,3.4-6.5,8.4-6.5,13.7v25.1h89h89v-25.1C333.2,309.85,330.9,304.75,326.8,301.45z"/>
+// 				<path d="M171.5,277.55v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2c0-15.5-12.6-28.1-28.1-28.1h-3.4h-3.4c-15.5,0-28.1,12.6-28.1,28.1
+// 					v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.5-0.3,1-0.8,1.2c-4.2,2.1-25,12.6-44.3,28.4c-3.5,2.9-5.5,7.2-5.5,11.7v21.3h71.8v-25.1
+// 					c0-9.2,4-17.8,11.1-23.6c6-5,12.2-9.5,18.1-13.5C171.6,277.85,171.5,277.65,171.5,277.55z"/>
+// 				<path d="M483.9,313.75c-15.5-12.7-32.1-21.1-35.5-22.8c-0.4-0.2-0.6-0.6-0.6-1v-24.1c3-2,5-5.5,5-9.4v-25
+// 					c0-12.4-10.1-22.5-22.5-22.5h-2.7h-2.7c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4v21.3c4.3,3,8.7,6.4,13.1,9.9
+// 					c6.5,5.4,10.3,13.3,10.3,21.8v21.3h57.5v-17.1C488.3,319.55,486.7,316.05,483.9,313.75z"/>
+// 				<path d="M80.9,265.95c3-2,5-5.5,5-9.4v-25c0-12.4-10.1-22.5-22.5-22.5h-2.7H58c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4
+// 					v24.1c0,0.4-0.2,0.8-0.6,1c-3.4,1.7-20.1,10.1-35.5,22.8c-2.8,2.3-4.4,5.7-4.4,9.3v17.1h57.5v-21.3c0-8.5,3.7-16.4,10.3-21.8
+// 					c4.3-3.6,8.8-6.9,13.1-9.9C80.9,287.25,80.9,265.95,80.9,265.95z"/>
+// 			</StyledSvg>
+// 			<StyledLabel selected={props.selected}>Groups</StyledLabel>
+// 		</IconWrapper>
+// 	)
+// }
 
 // MINI ICONS
 export const NotificationIcon = props => {
@@ -593,7 +632,8 @@ export const NotificationIcon = props => {
 				selected={props.selected}
 				viewBox="0 0 24 24"
 				width="30px"
-				height="30px">
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
 				<path d="M12,22c1.1,0,2-0.9,2-2h-4C10,21.1,10.89,22,12,22z M18,16v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-0.83-0.67-1.5-1.5-1.5
 					S10.5,3.17,10.5,4v0.68C7.63,5.36,6,7.92,6,11v5l-1.29,1.29C4.08,17.92,4.52,19,5.41,19h13.17c0.89,0,1.34-1.08,0.71-1.71L18,16z"/>
 			</StyledSvg>
@@ -607,7 +647,8 @@ export const RequestIcon = props => {
 				selected={props.selected}
 				viewBox="0 0 24 24"
 				width="30px"
-				height="30px">
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
 				<path d="M20,4H4C2.9,4,2.01,4.9,2.01,6L2,18c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V6C22,4.9,21.1,4,20,4z M19.6,8.25l-7.07,4.42
 					c-0.32,0.2-0.74,0.2-1.06,0L4.4,8.25C4.15,8.09,4,7.82,4,7.53c0-0.67,0.73-1.07,1.3-0.72L12,11l6.7-4.19
 					C19.27,6.46,20,6.86,20,7.53C20,7.82,19.85,8.09,19.6,8.25z"/>
@@ -622,7 +663,8 @@ export const MoreIcon = props => {
 				selected={props.selected}
 				viewBox="0 0 24 24"
 				width="30px"
-				height="30px">
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
 				<path d="M6,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S7.1,10,6,10z M18,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S19.1,10,18,10z
 					M12,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S13.1,10,12,10z"/>
 			</StyledSvg>
@@ -636,7 +678,8 @@ export const MessangerIcon = props => {
 				selected={props.selected}
 				viewBox="0 0 24 24"
 				width="30px"
-				height="30px">
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
 				<path d="M20,2H4C2.9,2,2.01,2.9,2.01,4L2,22l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M9,11H7V9h2V11z M13,11h-2V9h2V11z
 						M17,11h-2V9h2V11z"/>
 			</StyledSvg>
@@ -650,7 +693,8 @@ export const FilterIcon = props => {
 				selected={props.selected}
 				viewBox="0 0 24 24"
 				width="30px"
-				height="30px">
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
 				<path d="M3,18L3,18c0,0.55,0.45,1,1,1h5v-2H4C3.45,17,3,17.45,3,18z M3,6L3,6c0,0.55,0.45,1,1,1h9V5H4C3.45,5,3,5.45,3,6z M13,20
 					v-1h7c0.55,0,1-0.45,1-1v0c0-0.55-0.45-1-1-1h-7v-1c0-0.55-0.45-1-1-1h0c-0.55,0-1,0.45-1,1v4c0,0.55,0.45,1,1,1h0
 					C12.55,21,13,20.55,13,20z M7,10v1H4c-0.55,0-1,0.45-1,1v0c0,0.55,0.45,1,1,1h3v1c0,0.55,0.45,1,1,1h0c0.55,0,1-0.45,1-1v-4
@@ -661,12 +705,28 @@ export const FilterIcon = props => {
 		</MiniIconWrapper>
 	)
 }
+export const MeIcon = props => {
+	return (
+		<MiniIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
+				<path d="M12,12c2.21,0,4-1.79,4-4s-1.79-4-4-4S8,5.79,8,8S9.79,12,12,12z M12,14c-2.67,0-8,1.34-8,4v1c0,0.55,0.45,1,1,1h14
+					c0.55,0,1-0.45,1-1v-1C20,15.34,14.67,14,12,14z"/>
+			</StyledSvg>
+		</MiniIconWrapper>
+	)
+}
+
 
 
 // NANO ICONS
 export const NanoStarIcon = props => {
 	return (
-		<NanoIconWrapper padding="0 0 1px 0">
+		<NanoIconWrapper padding={props.padding}>
 			<NanoStyledSvg
 				selected={props.selected}
 				viewBox="0 0 24 24"
@@ -726,9 +786,9 @@ export const NanoMysteryIcon = props => {
 			<NanoStyledSvg
 				selected={props.selected}
 				viewBox="0 0 384 512"
-				width="15px"
-				height="15px">
-					<path fill={props.fill || "rgb(100, 100, 100)"} d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816
+				width="13px"
+				height="13px">
+					<path fill={props.fill || "rgb(140, 140, 140)"} d="M202.021 0C122.202 0 70.503 32.703 29.914 91.026c-7.363 10.58-5.093 25.086 5.178 32.874l43.138 32.709c10.373 7.865 25.132 6.026 33.253-4.148 25.049-31.381 43.63-49.449 82.757-49.449 30.764 0 68.816 19.799 68.816
 					49.631 0 22.552-18.617 34.134-48.993 51.164-35.423 19.86-82.299 44.576-82.299 106.405V320c0 13.255 10.745 24 24 24h72.471c13.255 0 24-10.745 24-24v-5.773c0-42.86 125.268-44.645 125.268-160.627C377.504 66.256 286.902 0 202.021 0zM192 373.459c-38.196 0-69.271 31.075-69.271 69.271 0 38.195 31.075 69.27 69.271 69.27s69.271-31.075 69.271-69.271-31.075-69.27-69.271-69.27z"/>
 			</NanoStyledSvg>
 		</NanoIconWrapper>
@@ -761,6 +821,38 @@ export const NanoAgeIcon = props => {
 		</NanoIconWrapper>
 	)
 }
+export const NanoCakeIcon = props => {
+	return (
+		<NanoIconWrapper padding={props.padding}>
+			<NanoStyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="15px"
+				height="15px">
+				<path fill={props.fill || "white"} d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm4.6 9.99l-1.07-1.07-1.08 1.07c-1.3 1.3-3.58 1.31-4.89 0l-1.07-1.07-1.09 1.07C6.75 16.64 5.88 17 4.96 17c-.73 0-1.4-.23-1.96-.61V21c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-4.61c-.56.38-1.23.61-1.96.61-.92 0-1.79-.36-2.44-1.01zM18 9h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v1.54c0 1.08.88 1.96 1.96 1.96.52 0 1.02-.2 1.38-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.37.37.86.57 1.38.57 1.08 0 1.96-.88 1.96-1.96V12C21 10.34 19.66 9 18 9z"/>
+			</NanoStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoMegaphoneIcon = props => {
+	return (
+		<NanoIconWrapper padding={props.padding}>
+			<NanoStyledSvg
+				selected={props.selected}
+				viewBox="0 0 90 90"
+				width="15px"
+				height="15px">
+				<path fill={props.fill || "white"} d="M81.114,30.146C73.196,11.725,60.456-2.306,54.009,0.316C43.062,4.765,60.53,26.133,6.774,47.984
+					c-4.643,1.887-5.82,9.441-3.877,13.957c1.939,4.515,8.291,9.01,12.936,7.123c0.803-0.326,3.754-1.275,3.754-1.275
+					c3.316,4.45,6.787,1.811,8.018,4.639c1.479,3.398,4.697,10.785,5.789,13.298c1.096,2.511,3.576,4.837,5.377,4.153
+					c1.795-0.684,7.91-3.011,10.25-3.901c2.338-0.89,2.896-2.974,2.182-4.619c-0.771-1.772-3.932-2.292-4.832-4.36
+					c-0.902-2.068-3.848-8.696-4.695-10.785c-1.152-2.841,1.295-5.152,4.85-5.522c24.467-2.55,29.041,12.561,37.371,9.173
+					C90.343,67.243,89.03,48.568,81.114,30.146z M78.358,60.03c-1.432,0.582-11.061-7.013-17.215-21.334
+					c-6.152-14.318-5.379-27.408-3.949-27.989c1.43-0.582,10.822,8.58,16.975,22.898C80.321,47.923,79.79,59.448,78.358,60.03z"/>
+			</NanoStyledSvg>
+		</NanoIconWrapper>
+	)
+}
 export const NanoSearchIcon = props => {
 	return (
 		<NanoIconWrapper padding={props.padding}>
@@ -787,18 +879,187 @@ export const NanoSearchIcon = props => {
 		</NanoIconWrapper>
 	)
 }
-export const NanoCancelIcon = props => {
+export const NanoLockIcon = props => {
 	return (
 		<NanoIconWrapper padding="10px">
 			<NanoStyledSvg
 				style={{position:"relative", top:props.top}}
 				selected={props.selected}
-				viewBox="0 0 100 100"
-				width="20px"
-				height="20px">
-					<path stroke={props.fill || "white"} strokeWidth="15" fill="none" d="M50,50 L25,25 M50,50 L25,75"/>
-					<path stroke={props.fill || "white"} strokeWidth="15" fill="none" d="M50,50 L75,25 M50,50 L75,75"/>
+				viewBox="0 0 24 24"
+				width="15px"
+				height="15px">
+					  <path stroke={props.fill || "white"} d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
 			</NanoStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+
+// NANO ICONS Clickable
+export const NanoCancelIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				sfill={props.sfill}
+				fill={props.fill}>
+					{/* <path d="M18.3,5.71L18.3,5.71c-0.39-0.39-1.02-0.39-1.41,0L12,10.59L7.11,5.7c-0.39-0.39-1.02-0.39-1.41,0l0,0
+					c-0.39,0.39-0.39,1.02,0,1.41L10.59,12L5.7,16.89c-0.39,0.39-0.39,1.02,0,1.41h0c0.39,0.39,1.02,0.39,1.41,0L12,13.41l4.89,4.89
+					c0.39,0.39,1.02,0.39,1.41,0l0,0c0.39-0.39,0.39-1.02,0-1.41L13.41,12l4.89-4.89C18.68,6.73,18.68,6.09,18.3,5.71z"/> */}
+					<g id="Bounding_Boxes">
+						<path opacity="0.87" fill="none" d="M0,0h24v24H0V0z"/>
+					</g>
+					<g id="Rounded">
+						<path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z M16.3,16.3L16.3,16.3c-0.39,0.39-1.02,0.39-1.41,0
+							L12,13.41L9.11,16.3c-0.39,0.39-1.02,0.39-1.41,0h0c-0.39-0.39-0.39-1.02,0-1.41L10.59,12L7.7,9.11c-0.39-0.39-0.39-1.02,0-1.41
+							l0,0c0.39-0.39,1.02-0.39,1.41,0L12,10.59l2.89-2.89c0.39-0.39,1.02-0.39,1.41,0v0c0.39,0.39,0.39,1.02,0,1.41L13.41,12l2.89,2.89
+							C16.68,15.27,16.68,15.91,16.3,16.3z"/>
+					</g>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoAddIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				fill={props.fill}
+				sfill={props.sfill}>
+				<g id="Bounding_Boxes">
+					<g id="ui_x5F_spec_x5F_header_copy_3" display="none">
+					</g>
+					<path fill="none" d="M0,0h24v24H0V0z"/>
+				</g>
+				<g id="Rounded_1_">
+					<g id="ui_x5F_spec_x5F_header_copy_6" display="none">
+					</g>
+					<path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M16,13h-3v3c0,0.55-0.45,1-1,1h0c-0.55,0-1-0.45-1-1
+						v-3H8c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h3V8c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3h3c0.55,0,1,0.45,1,1v0
+						C17,12.55,16.55,13,16,13z"/>
+				</g>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoDeleteIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				fill={props.fill}
+				sfill={props.sfill}>
+				<g id="Header_x2F_BG" display="none">
+					<rect x="-270" y="-270" display="inline" fill="#F1F1F2" width="520" height="520"/>
+				</g>
+				<g id="Bounding_Boxes">
+					<g id="ui_x5F_spec_x5F_header_copy_3"></g>
+					<path fill="none" d="M0,0h24v24H0V0z"/>
+				</g>
+				<g id="Rounded">
+					<g id="ui_x5F_spec_x5F_header_copy_5"></g>
+					<path d="M6,19c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2V9c0-1.1-0.9-2-2-2H8C6.9,7,6,7.9,6,9V19z M18,4h-2.5l-0.71-0.71
+						C14.61,3.11,14.35,3,14.09,3H9.91C9.65,3,9.39,3.11,9.21,3.29L8.5,4H6C5.45,4,5,4.45,5,5v0c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1
+						v0C19,4.45,18.55,4,18,4z"/>
+				</g>
+				<g id="Sharp" display="none">
+					<g id="ui_x5F_spec_x5F_header_copy_4" display="inline"></g>
+					<path display="inline" d="M6,21h12V7H6V21z M19,4h-3.5l-1-1h-5l-1,1H5v2h14V4z"/>
+				</g>
+				<g id="Outline" display="none">
+					<g id="ui_x5F_spec_x5F_header" display="inline">
+					</g>
+					<path id="XMLID_282_" display="inline" d="M16,9v10H8V9H16 M14.5,3h-5l-1,1H5v2h14V4h-3.5L14.5,3L14.5,3z M18,7H6v12
+						c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2V7L18,7z"/>
+				</g>
+				<g id="Duotone" display="none">
+					<g id="ui_x5F_spec_x5F_header_copy_2" display="inline"></g>
+					<g display="inline">
+						<rect x="8" y="9" opacity="0.3" width="8" height="10"/>
+						<g>
+							<polygon points="15.5,4 14.5,3 9.5,3 8.5,4 5,4 5,6 19,6 19,4"/>
+							<path d="M6,19c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2V7H6V19z M8,9h8v10H8V9z"/>
+						</g>
+					</g>
+				</g>
+				<g id="Fill" display="none">
+					<g id="ui_x5F_spec_x5F_header_copy" display="inline"></g>
+					<path display="inline" d="M6,19c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2V7H6V19z M19,4h-3.5l-1-1h-5l-1,1H5v2h14V4z"/>
+				</g>
+				<g id="nyt_x5F_exporter_x5F_info" display="none"></g>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoMoreIcon = props => {
+	return (
+		<NanoIconWrapper>
+			<NanoClickAbleStyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill={props.fill}>
+				<path d="M6,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S7.1,10,6,10z M18,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S19.1,10,18,10z
+					M12,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S13.1,10,12,10z"/>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoFriendIcon = props => {
+	return (
+		<NanoIconWrapper>
+			<NanoClickAbleStyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="25px"
+				height="25px"
+				fill={props.fill}>
+					<path d="M16,11c1.66,0,2.99-1.34,2.99-3c0-1.66-1.33-3-2.99-3s-3,1.34-3,3C13,9.66,14.34,11,16,11z"/>
+					<path d="M8,11c1.66,0,2.99-1.34,2.99-3c0-1.66-1.33-3-2.99-3S5,6.34,5,8C5,9.66,6.34,11,8,11z"/>
+					<path d="M8,13c-2.33,0-7,1.17-7,3.5V18c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1v-1.5C15,14.17,10.33,13,8,13z"/>
+					<path d="M16,13c-0.29,0-0.62,0.02-0.97,0.05c0.02,0.01,0.03,0.03,0.04,0.04C16.21,13.92,17,15.03,17,16.5V18
+						c0,0.35-0.07,0.69-0.18,1H22c0.55,0,1-0.45,1-1v-1.5C23,14.17,18.33,13,16,13z"/>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoGroupIcon = props => {
+	return (
+		<NanoIconWrapper>
+			<NanoClickAbleStyledSvg
+				selected={props.selected}
+				viewBox="0 0 47 47"
+				width="25px"
+				height="25px"
+				fill={props.fill}>
+					<path d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+						c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+						C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+					<path d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+						c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+						C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+					<path d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+						c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+						C47,22.85,45.104,20.952,42.762,20.952z"/>
+					<path d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+						c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+					<path d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+						c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+						C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+					<circle cx="23.83" cy="23.323" r="7.271"/>
+			</NanoClickAbleStyledSvg>
 		</NanoIconWrapper>
 	)
 }

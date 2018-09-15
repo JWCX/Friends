@@ -161,6 +161,8 @@ class Filter extends Component {
 		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
 		const { keywordError, searchDisabled, filterExpanded, filtering, optionFader,
 				dialogOpen, dialogIcon, dialogTitle, dialogContent } = this.state;
+		console.log(this.state.filter);
+		console.log(dataGu[si]);
 		return (
 			<div style={{position:"absolute", top:"90px"}}>
 				<ExpansionPanel
@@ -182,6 +184,13 @@ class Filter extends Component {
 								displayEmpty
 								emptyLabel="전체"
 								width="200px"
+								MenuProps={{
+									PaperProps: {
+									style: {
+									maxHeight: "800px",
+									margin: "0 195px",
+									}}
+								}}
 								handleChange={this.handleChange}>
 								{_.map(dataInterest, interest => <MenuItem value={interest.code} key={interest.code}>{interest.name}</MenuItem>)}
 							</Select>
@@ -194,6 +203,13 @@ class Filter extends Component {
 								displayEmpty
 								emptyLabel="전체"
 								width="200px"
+								MenuProps={{
+									PaperProps: {
+									style: {
+									maxHeight: "800px",
+									margin: "0 195px",
+									}}
+								}}
 								handleChange={this.handleChange}>
 								{_.map(dataSi, si => <MenuItem value={si.code} key={si.code}>{si.name}</MenuItem>)}
 							</Select>
@@ -206,6 +222,13 @@ class Filter extends Component {
 								displayEmpty
 								emptyLabel="전체"
 								width="200px"
+								MenuProps={{
+									PaperProps: {
+									style: {
+									maxHeight: "800px",
+									margin: "0 195px",
+									}}
+								}}
 								handleChange={this.handleChange}>
 								{_.map(dataGu[si], gu => <MenuItem value={gu.guCode} key={gu.guCode}>{gu.name}</MenuItem>)}
 							</Select>
@@ -267,31 +290,31 @@ class Filter extends Component {
 							padding: "7px"}}>
 							{
 								interest && <BlueChip
-										avatar={<NanoStarIcon/>}
+										avatar={<NanoStarIcon padding="0 15px"/>}
 										label={dataInterest[interest].name}
 										onDelete={()=>{this.handleDelete("interest")}}
 										/>
 							}{
 								(si || gu) && <BlueChip
-										avatar={<NanoMapIcon/>}
+										avatar={<NanoMapIcon padding="0 15px"/>}
 										label={`${dataSi[si].name} ${ gu && dataGu[si][gu].name }`}
 										onDelete={()=>{this.handleDelete("sigu")}}
 										/>
 							}{
 								gender !== "0" && <BlueChip
-											avatar={<NanoGenderIcon/>}
+											avatar={<NanoGenderIcon padding="0 15px"/>}
 											label={gender === "1" ? "남성" : "여성"}
 											onDelete={()=>{this.handleDelete("gender")}}
 											/>
 							}{
 								(minAge!==0 || maxAge!==100) && <BlueChip
-										avatar={<NanoAgeIcon/>}
+										avatar={<NanoAgeIcon padding="0 15px"/>}
 										label={`${minAge}-${maxAge}`}
 										onDelete={()=>{this.handleDelete("age")}}
 										/>
 							}{
 								keyword && <BlueChip
-										avatar={<NanoSearchIcon/>}
+										avatar={<NanoSearchIcon padding="0 15px"/>}
 										label={keyword}
 										onDelete={()=>{this.handleDelete("keyword")}}
 										/>

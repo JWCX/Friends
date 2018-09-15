@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import styled from 'styled-components';
@@ -35,12 +35,13 @@ class Main extends Component {
 	}
 
 	componentDidMount() {
-		switch(this.props.location.pathname) {	// 새로고침시 Tab Index설정
-			case "/":		return this.setState({index: 0});
+		if(!this.props.location.pathname.match('/[a-z]+'))
+			return this.setState({index:0});
+		switch(this.props.location.pathname.match('/[a-z]+').toString()) {	// 새로고침시 Tab Index설정
 			case "/board":	return this.setState({index: 1});
 			case "/users":	return this.setState({index: 2});
 			case "/groups":	return this.setState({index: 3});
-			default:
+			default: return this.setState({index: 0});
 		}
 	}
 	handleChangeTab = (e, index) => {
@@ -77,34 +78,43 @@ class Main extends Component {
 		const { me } = this.props;
 		return (
 			<React.Fragment>
-				<AppBar
-					position="sticky"
-					index={index}
-					handleChangeTab={this.handleChangeTab}
-					handleToggleMessenger={this.handleToggleMessenger}
-					/>
-				<Container onClick={(e)=>{console.log(e.target)}}>
+				<Route path="(/|/board|/users|/groups|/me|/group)" render={() =>
+					<AppBar
+						position="sticky"
+						index={index}
+						handleChangeTab={this.handleChangeTab}
+						handleToggleMessenger={this.handleToggleMessenger}
+						/>
+				}/>
+				<Container>
 					<Div grow={left}>
-						<Route exact path="/" render={() =>
-							[1,2,3,4,5,6,7,8,9,10,
-							11,12,13,14,15,16,17,18,19,20,
-							21,22,23,24,25,26,27,28,29,30].map(x => <h1 key={x}>메인페이지{x}</h1>)
-						}/>
-						<Route path="/board" render={() =>
-							<Board/>
-						}/>
-						<Route path="/users" render={() =>
-							<Users/>
-						}/>
-						<Route path="/groups" render={() =>
-							<Groups/>
-						}/>
+						<Switch>
+							<Route path="/board" render={() =>
+								<Board/>
+							}/>
+							<Route path="/users" render={() =>
+								<Users/>
+							}/>
+							<Route path="/groups" render={() =>
+								<Groups/>
+							}/>
+							<Route path="/" render={() =>
+								[1,2,3,4,5,6,7,8,9,10,
+								11,12,13,14,15,16,17,18,19,20,
+								21,22,23,24,25,26,27,28,29,30].map(x => <h1 key={x}>메인페이지{x}</h1>)
+							}/>
+						</Switch>
 					</Div>
 					<Div grow={right}>
 						<Messenger open={openMessenger}/>
 					</Div>
 				</Container>
-				<Me open={me}/>
+				<Route path="(|/board|/users|/groups)/me/:id" render={() =>
+					<Me
+					open={true}
+					// open={me}
+					disableBackdrop={true}/>
+				}/>
 			</React.Fragment>
 		);
 	}

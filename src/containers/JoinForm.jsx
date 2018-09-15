@@ -39,7 +39,7 @@ class JoinForm extends React.Component {
 				this.props.countError({idError: 0});
 				this.t_checkId = setTimeout(() => {
 					if(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value)){
-							Axios.get('http://192.168.0.201:8080/email/check', { params : { email : value } })
+							Axios.get('http://192.168.0.23:8080/email/check', { params : { email : value } })
 								.then(resp => {
 									console.log(resp.status); // FIXME: REMOVE ME
 									this.setState({idOk: true, idProcess: false});
@@ -133,7 +133,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({joinProcess: true});
-		Axios.post('http://192.168.0.201:8080/join', {
+		Axios.post('http://192.168.0.23:8080/join', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -247,12 +247,12 @@ class JoinForm extends React.Component {
 								확인
 							</Button>
 							<Button
-							type="button"
-							onClick={this.handleCancel}
-							disabled={joinProcess}
-							margin="30px 5px 5px 5px">
-							취소
-						</Button>
+								type="button"
+								onClick={this.handleCancel}
+								disabled={joinProcess}
+								margin="30px 5px 5px 5px">
+								취소
+							</Button>
 						</Grid>
 					</Grid>
 					<Dialog

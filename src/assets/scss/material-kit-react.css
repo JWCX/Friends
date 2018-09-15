@@ -10,6 +10,7 @@
  * License Creative Tim (https://www.creative-tim.com/license)
  *
  * ========================================================= */
+@import "https://use.fontawesome.com/releases/v5.0.1/css/all.css";
 html * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -732,17 +733,13 @@ td.rdtYear:hover {
   -ms-touch-action: pan-y;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent; }
-  @media (min-width: 768px) {
-    .slick-slider .slick-caption {
-      display: block !important; } }
   .slick-slider .slick-caption {
-    padding-bottom: 45px;
+    display: block !important; }
+  .slick-slider .slick-caption {
     position: absolute;
-    right: 15%;
-    bottom: 20px;
-    left: 15%;
+    right: 10px;
+    top: 20px;
     z-index: 10;
-    padding-top: 20px;
     color: #ffffff;
     text-align: center;
     z-index: 3;
@@ -800,7 +797,7 @@ td.rdtYear:hover {
 .slick-slide {
   display: none;
   float: left;
-  height: 100%;
+  height: 300px;
   min-height: 1px; }
 
 [dir='rtl'] .slick-slide {
@@ -836,7 +833,7 @@ button.slick-arrow.slick-next {
   position: absolute;
   top: 50%;
   display: block;
-  height: 100%;
+  height: 40px;
   padding: 0;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -845,16 +842,16 @@ button.slick-arrow.slick-next {
   color: transparent;
   outline: none;
   background: transparent;
-  width: 15%;
+  width: 40px;
   z-index: 2;
-  opacity: 0.5; }
+  opacity: 0.7; }
 
 .slick-prev {
   left: 0; }
   .slick-prev::before {
     content: "\f053";
     font-weight: 600;
-    font-family: Font Awesome\ 5 Free;
+    font-family: 'Font Awesome\ 5 Free';
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     display: inline-block;
@@ -905,7 +902,7 @@ button.slick-arrow.slick-next {
 .slick-dots li {
   position: relative;
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 3px;
   padding: 0; }
 
 .slick-dots li button {
@@ -919,10 +916,11 @@ button.slick-arrow.slick-next {
   background: transparent; }
   .slick-dots li button::before {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
     content: "\2022";
     text-align: center;
     opacity: 1;
@@ -934,7 +932,9 @@ button.slick-arrow.slick-next {
     transition: all 300ms linear; }
 
 .slick-dots li.slick-active button:before {
-  width: 15px;
-  height: 15px;
-  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  top: -3px; }
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2); }

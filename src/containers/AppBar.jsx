@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { AppBar,
 		Toolbar,
 		Tabs,
@@ -12,6 +14,7 @@ import { LogoIcon,
 		BoardIcon,
 		UsersIcon,
 		GroupsIcon,
+		MeIcon,
 		NotificationIcon,
 		MessangerIcon,
 		RequestIcon,
@@ -33,8 +36,17 @@ class MyAppBar extends Component {
 			return true;
 		else return false;
 	}
+	handleOpenMe = () => {
+		console.log(this.props.match);
+		let url = `${this.props.match.url}/me/${this.props.token}`;
+		if(this.props.match.url === "/")
+			url = `${this.props.match.url}me/${this.props.token}`;
+		this.props.history.push(url);
+	}
 	render() {
-		const { classes, index, position, handleChangeTab, handleToggleMessenger } = this.props;
+		const { classes, index, position,
+			handleChangeTab,
+			handleToggleMessenger } = this.props;
 		return (
 			<AppBar
 				position={position}
@@ -72,6 +84,9 @@ class MyAppBar extends Component {
 									<p style={{margin:"10px 0 0 0"}}>여기엔 뭐가들어가야 할까?</p>
 								</Grid>
 								<Grid item>
+									<IconButton onClick={this.handleOpenMe}>
+										<MeIcon/>
+									</IconButton>
 									<IconButton>
 										<NotificationIcon/>
 									</IconButton>
@@ -94,4 +109,11 @@ class MyAppBar extends Component {
 	}
 }
 
-export default withStyles(styles)(MyAppBar);
+const mapStateToProps = state => ({
+	token: state.token
+})
+const mapDispatchToProps = {
+
+}
+
+export default  withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MyAppBar)));

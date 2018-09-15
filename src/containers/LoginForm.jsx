@@ -97,7 +97,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({loginProcess: true});
-		Axios.post('http://192.168.0.201:8080/login', {
+		Axios.post('http://192.168.0.23:8080/login', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -107,7 +107,7 @@ class JoinForm extends React.Component {
 				dataSi: resp.data.dataSi,
 				dataGu: resp.data.dataGu,
 				token: resp.data.token,
-				myInfo: resp.data.myInfo,
+				myInfo: {...resp.data.myInfo},
 			});
 			this.handleRedirect("/");
 		}).catch(err => {
@@ -134,7 +134,7 @@ class JoinForm extends React.Component {
 		this.handleRedirect(url);
 	}
 	handleSocialClick = type => {
-		window.open(`http://192.168.0.201:8080/login?name=${type}`);
+		window.open(`http://192.168.0.23:8080/login?name=${type}`);
 	}
 	handleDialogClose = () => {		// Dialog 닫기시 호출 이벤트
 		this.setState({ dialogOpen: false,

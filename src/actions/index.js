@@ -1,8 +1,9 @@
 import userLoggedIn from './userLoggedIn';
-import { openMe, closeMe } from './me';
+import { openMePage, closeMePage, updateMyInfo } from './me';
 
 export {
 	userLoggedIn,
-	openMe,
-	closeMe,
+	openMePage,
+	closeMePage,
+	updateMyInfo
 }

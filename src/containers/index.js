@@ -6,8 +6,13 @@ import AppBar from './AppBar';
 import Messenger from './Messenger';
 import Filter from './Filter';
 import Group from './Group';
-import User from './User';
+import UserMini from './UserMini';
+import GroupMini from './GroupMini';
 import MeInfo from './MeInfo';
+import MeMore from './MeMore';
+import MeMain from './MeMain';
+import MeFriends from './MeFriends';
+import MeGroups from './MeGroups';
 
 export {
 	JoinForm,
@@ -18,6 +23,11 @@ export {
 	Messenger,
 	Filter,
 	Group,
-	User,
+	UserMini,
+	GroupMini,
 	MeInfo,
+	MeMore,
+	MeMain,
+	MeFriends,
+	MeGroups,
 }

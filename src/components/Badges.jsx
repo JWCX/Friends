@@ -18,7 +18,7 @@ const styles = {
 		width: "15px",
 		height: "15px",
 		border: "1px solid rgba(255,255,255,0.8)",
-		background: "rgb(255, 207, 0)",
+		background: "#ffdb4d",
 	},
 	subManager: {
 		top: "0px",
@@ -32,7 +32,7 @@ const styles = {
 
 export const LoggedInBadge = withStyles(styles)( ({children, classes}) => {
 	return (
-		<Badge classes={{badge: classes.loggedIn}}>
+		<Badge badgeContent="" classes={{badge: classes.loggedIn}}>
 			{children}
 		</Badge>
 	)

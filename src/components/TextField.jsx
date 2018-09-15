@@ -33,17 +33,17 @@ class TextField extends Component {
 		else return false;
 	}
 	render() {
-		const { id, type, label, placeholder, value, onChange, multiline, rows, rowsMax,
+		const { id, type, label, placeholder, value, onChange, multiline, rows, rowsMax, style,
 			autoComplete, disabled, shrink, margin, width, ok, process, error, errorMessage } = this.props;
 		return (
-			<FormControl error={error} aria-describedby={`${id}-text`} margin="none">
+			<FormControl error={error} aria-describedby={`${id}-text`} margin="none" style={style}>
 				<MyInputLabel shrink={shrink} htmlFor={id}>
 					{label}
 				</MyInputLabel>
 				<MyInput
 					id={id}
 					placeholder={placeholder}
-					value={value}
+					value={value || ""}
 					onChange={onChange}
 					autoComplete={autoComplete}
 					type={type}

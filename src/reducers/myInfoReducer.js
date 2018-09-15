@@ -1,28 +1,29 @@
 import moment from 'moment';
 
 export default (myInfo = {
-	id: "jw.chox@gmail.com",
+	id: "",
 	nickName: "",
-	si: "",
-	gu: "",
-	birth: moment("2000. 1. 1", "YYYY. M. D"),
+	si: null,
+	gu: null,
+	birth: null,
 	age: "",
-	gender: "",
+	gender: "0",
 	intro: "",
 	msg: "",
 	images: [],
 	interests: [],
-	expLocation: 0,
-	expBirth: 0,
-	expAge: 0,
-	expGender: 0,
-	expFriends: 0,
-	expGroups: 0
+	areayn: false,
+	birthyn: false,
+	genderyn: false,
+	friendsyn: false,
+	groupsyn: false
 }, action) => {
 	switch (action.type) {
 		case "USER_LOGGED_IN":
+		case "UPDATE_MY_INFO":
 		 	const birth = moment(action.myInfo.birth, "YYYY. M. D");
-			return {...action.myInfo, birth};
+			// return {...action.myInfo, birth};
+			return {...myInfo, ...action.myInfo, birth};
 		default:
 			return myInfo;
 	}
