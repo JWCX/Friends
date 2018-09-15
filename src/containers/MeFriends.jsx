@@ -1,44 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
+import Axios from 'axios';
 import { Grid, Fade } from '@material-ui/core';
 
 import { UserMini } from 'containers';
 import Pagination from 'components/Pagination';
+import { updateMeFriends, clearMeFriends } from 'actions';
 
 class MeFriends extends Component {
 	state = {
-		maxPages: 0,
 		currentPage: 1,
+		friendsPages: 0,
 		st: 0,
 		ed: 0,
-
-		friends: [{id:"123", nickName: "피제리움", gender: "1", image: "https://picsum.photos/800/800/?random", online: true},
-		{id:"123", nickName: "조피자", gender: "1", image: "https://picsum.photos/800/801/?random", online: true},
-		{id:"123", nickName: "도미노피자", gender: "2", image: "https://picsum.photos/802/800/?random", online: false},
-		{id:"123", nickName: "미스터 피자", gender: "1", image: "https://picsum.photos/801/800/?random", online: false},
-		{id:"123", nickName: "피자헛", gender: "1", image: "https://picsum.photos/800/803/?random", online: false},
-		{id:"123", nickName: "알볼로피자", gender: "2", image: "https://picsum.photos/802/800/?random", online: true},
-		{id:"123", nickName: "피자에땅", gender: "0", image: "https://picsum.photos/804/800/?random", online: false},
-		{id:"123", nickName: "피제리아디부자", gender: "1", image: "https://picsum.photos/805/800/?random", online: false},
-		{id:"123", nickName: "피자스쿨", gender: "2", image: "https://picsum.photos/800/804/?random", online: true},
-		{id:"123", nickName: "피자마루", gender: "2", image: "https://picsum.photos/800/805/?random", online: true}],
-
 	}
 	componentDidMount() {
-		// FIXME: DELETE THIS TEST CODE
-		for(let i=11; i<100; i++)
-			this.state.friends.push({id:`${200+i}`, nickName: `조피자${i}`, gender: "1", image: `https://picsum.photos/${40+i}/${40+i}image?${i}`, online: true});
-		// FIXME: DELETE THIS TEST CODE
-
-
-		const maxPages = Math.ceil(this.state.friends.length/10); // TODO: maxPages는 서버에서 읽어온다
-		this.setState(state => ({maxPages,
-			st: maxPages-state.currentPage < 3 ? maxPages-4 < 1 ? 1 : maxPages-4 : state.currentPage-2 < 1 ? 1 : state.currentPage-2,
-			ed: state.currentPage < 3 ? maxPages > 5 ? 5 : maxPages : state.currentPage+2 > maxPages ? maxPages : state.currentPage+2,
+		this.updatePageNums();
+	}
+	componentWillReceiveProps(nextProps) {
+		if(this.props.meFriends !== nextProps.meFriends)
+			this.updatePageNums();
+	}
+	updatePageNums = () => {
+		const friendsPages = this.props.friendsPages;
+			this.setState(state => ({friendsPages,
+				st: friendsPages-state.currentPage < 3 ? friendsPages-4 < 1 ? 1 : friendsPages-4 : state.currentPage-2 < 1 ? 1 : state.currentPage-2,
+				ed: state.currentPage < 3 ? friendsPages > 5 ? 5 : friendsPages : state.currentPage+2 > friendsPages ? friendsPages : state.currentPage+2,
 		}));
-
-
-
 	}
 	handlePagination = target => {
 		let currentPage;
@@ -48,35 +37,81 @@ class MeFriends extends Component {
 				// currentPage = this.state.currentPage-5 <= 0 ? 1 : this.state.currentPage-5;
 				break;
 			case ">":
-				currentPage = this.state.ed+1 >= this.state.maxPages ? this.state.maxPages : this.state.ed+1;
-				// currentPage = this.state.currentPage+5 >= this.state.maxPages ? this.state.maxPages : this.state.currentPage+5;
+				currentPage = this.state.ed+1 >= this.state.friendsPages ? this.state.friendsPages : this.state.ed+1;
+				// currentPage = this.state.currentPage+5 >= this.state.friendsPages ? this.state.friendsPages : this.state.currentPage+5;
 				break;
 			default:
 				currentPage= target;
 		}
 		this.setState(state => ({
 			currentPage,
-			st: state.maxPages-currentPage < 3 ? state.maxPages-4 < 1 ? 1 : state.maxPages-4 : currentPage-2 < 1 ? 1 : currentPage-2,
-			ed: currentPage < 3 ? state.maxPages > 5 ? 5 : state.maxPages : currentPage+2 > state.maxPages ? state.maxPages : currentPage+2,
+			st: state.friendsPages-currentPage < 3 ? state.friendsPages-4 < 1 ? 1 : state.friendsPages-4 : currentPage-2 < 1 ? 1 : currentPage-2,
+			ed: currentPage < 3 ? state.friendsPages > 5 ? 5 : state.friendsPages : currentPage+2 > state.friendsPages ? state.friendsPages : currentPage+2,
 		}));
+
+		this.props.clearMeFriends();
+
+		const id = this.props.match.params.id;
+		let params = {
+			token: this.props.token,
+			memberlist: true,
+			page: currentPage
+		}
+
+		if(parseInt(id)!==this.props.token)
+			params.id = id;
+
+		// Axios.get('http://192.168.0.23:8080/me', {
+		// 		params
+		// 	}).then(resp => {
+		// 		console.log(resp);	// FIXME: 지워주세용
+		// 		this.props.updateMeFriends(resp.data.friends);
+		// 	}).catch(err => {
+		// 		console.log(err.response);	// FIXME: REMOVE
+		// 		let errorTitle, errorMessage;
+		// 		if(!err.response || !err.response.data) {
+		// 			errorTitle = "서버와 연결할 수 없습니다";
+		// 			errorMessage = "잠시후 다시 시도해 주세요...";
+		// 		}
+		// 		else {
+		// 			errorTitle = err.response.data;
+		// 		}
+		// 		this.props.handleOpenDialog({
+		// 			dialogOpen: true,
+		// 			dialogIcon: 2,
+		// 			dialogTitle: errorTitle,
+		// 			dialogContent: errorMessage
+		// 		});
+		// 	}); // FIXME: REMOVE LOG
+
+		setTimeout(() => {
+			this.props.updateMeFriends({
+				1123: {id:1123, nickName: `피자나라키친공주${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+				1124: {id:1124, nickName: `조피자냠냠${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+				1125: {id:1125, nickName: `도민호${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+				1126: {id:1126, nickName: `미피앤무스티${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+				1127: {id:1127, nickName: `헬로월드${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+				1128: {id:1128, nickName: `헬헬헬${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+				1129: {id:1129, nickName: `이맛피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+				1130: {id:1130, nickName: `코스트코피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+				1131: {id:1131, nickName: `소고기고고${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+				1132: {id:1132, nickName: `이름뭐짓지${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true}
+			});
+		}, 200);
+
 	}
 	render() {
-		const { friends, maxPages, currentPage, st, ed } = this.state;
+		const { currentPage, st, ed, friendsPages } = this.state;
+		const { meFriends }  = this.props;
 		const pages = [];
-		// const maxPages = 40;
-
-		if(maxPages > 5)
+		if(friendsPages > 5)
 			pages.push({text: "<", onClick: ()=>{this.handlePagination("<")}})
 		for(let i=st; i<=ed; i++){
 			pages.push({active: currentPage===i, text: i, onClick: ()=>{this.handlePagination(i)}})
 		}
-		if(maxPages > 5)
+		if(friendsPages > 5)
 			pages.push({text: ">", onClick: ()=>{this.handlePagination(">")}})
 
-		console.log("pages : ", pages);
-		console.log("friendsLeng: ", friends.length);
-		console.log("maxPages : ", maxPages);
-		console.log("currentPage : ", currentPage);
 		return (
 			<Fade in={true} timeout={{enter: 500, exit: 500}}>
 				<Grid container
@@ -85,11 +120,7 @@ class MeFriends extends Component {
 					alignItems="center"
 					spacing={8}>
 					{
-						friends.filter((x, index) => {
-							for(let i=1; i<=10;i++)
-								if(index===currentPage*10-i)
-									return true;
-						}).map(x =>
+						_.map(meFriends, x =>
 							<Grid item key={x.nickName}>
 								<UserMini
 									id={x.id}
@@ -101,9 +132,10 @@ class MeFriends extends Component {
 						)}
 					<Grid item>
 					{
-						friends.length > 10 &&
+						friendsPages > 1 &&
 						<Pagination
 							pages={pages}
+							currentPage={currentPage}
 							onClick={this.handlePagination}
 							color="info"
 							/>
@@ -115,11 +147,16 @@ class MeFriends extends Component {
 	}
 }
 
-
 const mapStateToProps = state => ({
+	meFriends: state.meFriends,
+	friendsPages: state.me && state.me.friendsPages,
+	token: state.token
 })
 const mapDispatchToProps = {
+	updateMeFriends,
+	clearMeFriends
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(MeFriends);
 
 

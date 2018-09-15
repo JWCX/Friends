@@ -14,8 +14,8 @@ export default props => {
 				height: "28px",
 			}}>
 			<NanoFriendIcon
-			selected={props.selected}
-			fill="rgb(80,80,80)"/>
+				selected={props.selected}
+				fill={props.fill || "rgb(80,80,80)"}/>
 		</IconButton>
 	)
 }

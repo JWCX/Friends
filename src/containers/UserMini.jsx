@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { openMePage } from 'actions';
 import { LoggedInBadge } from 'components/Badges';
 import { NanoMarsIcon, NanoVenusIcon, NanoMysteryIcon } from 'components/AppBarIcons';
 import { SmallUserAvatar } from 'components/Avatars';
@@ -22,12 +20,14 @@ const StyledCard = styled(Card)`
 `
 
 export class UserMini extends Component {
-
+	shouldComponentUpdate(nextProps) {
+		if(this.props.nickName !== nextProps.nickName)
+			return true;
+		return false;
+	}
 	handleClick = () => {
-		this.props.openMePage(this.props.id);
 		this.props.history.push(`${this.props.match.params[0]}/me/${this.props.id}`);
 	}
-
 	render() {
 		const { nickName, image, gender, online } = this.props;
 		return (
@@ -51,7 +51,10 @@ export class UserMini extends Component {
 					</Grid>
 					<Grid item>
 						<LabelMini
-							icon={!gender || gender==="0" ? <NanoMysteryIcon padding="0 0 6px 0"/> : gender==="1" ? <NanoMarsIcon padding="0 0 1px 0"/> : <NanoVenusIcon padding="0 0 1px 0"/>}
+							icon={
+								!gender || gender==="0" ? <NanoMysteryIcon padding="0 0 6px 0"/> :
+								gender==="1" ? <NanoMarsIcon padding="0 0 1px 0"/> :
+								<NanoVenusIcon padding="0 0 1px 0"/>}
 							label={nickName}
 						/>
 					</Grid>
@@ -61,11 +64,4 @@ export class UserMini extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-
-})
-const mapDispatchToProps = {
-	openMePage
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserMini));
+export default withRouter(UserMini);

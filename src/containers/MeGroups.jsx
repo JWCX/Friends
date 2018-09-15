@@ -53,8 +53,9 @@ class MeGroups extends Component {
 	}
 }
 
-
 const mapStateToProps = state => ({
+	me: state.me,
+	meGroups: state.meGroups
 })
 const mapDispatchToProps = {
 }

@@ -5,6 +5,12 @@ const IconWrapper = styled.div`
 	width: 140px;
 	height: 80px;
 `
+const LargeIconWrapper = styled.div`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+`
 const MiniIconWrapper = styled.div`
 	width: 50px;
 	height: 50px;
@@ -33,6 +39,19 @@ const StyledSvg = styled.svg`
 	${MiniIconWrapper}:hover & {
 		fill: black;
 		transform: translateY(-50%) scale(1.2);
+	}
+`
+const LargeStyledSvg = styled.svg`
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	fill: ${props => props.fill || "white"};
+	width: ${props => props.width || "100px"};
+	height: ${props => props.height || "40px"};
+	transition: all .2s ease-in-out;
+	${LargeIconWrapper}:hover & {
+		fill: rgba(80,80,80,0.1);
+		transform: translateY(-50%) scale(1.1);
 	}
 `
 const NanoStyledSvg = styled.svg`
@@ -624,6 +643,23 @@ export const GroupsIcon = props => {
 // 	)
 // }
 
+// LARGE ICONS
+export const LargeImageIcon = props => {
+	return (
+		<LargeIconWrapper>
+			<LargeStyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="350px"
+				height="350px"
+				fill="rgba(110,110,110,0.1)">
+				<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+				<path d="M0 0h24v24H0z" fill="none"/>
+			</LargeStyledSvg>
+		</LargeIconWrapper>
+	)
+}
+
 // MINI ICONS
 export const NotificationIcon = props => {
 	return (
@@ -918,6 +954,23 @@ export const NanoCancelIcon = props => {
 							l0,0c0.39-0.39,1.02-0.39,1.41,0L12,10.59l2.89-2.89c0.39-0.39,1.02-0.39,1.41,0v0c0.39,0.39,0.39,1.02,0,1.41L13.41,12l2.89,2.89
 							C16.68,15.27,16.68,15.91,16.3,16.3z"/>
 					</g>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoAddImageIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				fill={props.fill}
+				sfill={props.sfill}>
+				<path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/>
+				<path d="M0 0h24v24H0z" fill="none"/>
 			</NanoClickAbleStyledSvg>
 		</NanoIconWrapper>
 	)

@@ -1,9 +1,20 @@
 import userLoggedIn from './userLoggedIn';
-import { openMePage, closeMePage, updateMyInfo } from './me';
+import { openMePage,
+		closeMePage,
+		updateMyInfo,
+		updateMeFriends,
+		updateMeGroups,
+		clearMeFriends,
+		clearMeGroups
+	} from './me';
 
 export {
 	userLoggedIn,
 	openMePage,
 	closeMePage,
-	updateMyInfo
+	updateMyInfo,
+	updateMeFriends,
+	updateMeGroups,
+	clearMeFriends,
+	clearMeGroups
 }

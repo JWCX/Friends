@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Slick from 'react-slick';
 import defaultImage from 'assets/user_default.png';
-import { DeleteButton, AddButton } from 'components';
+import { DeleteButton, AddImageButton } from 'components';
 
 class Carousel2 extends Component {
 	shouldComponentUpdate(nextProps) {
@@ -36,7 +36,7 @@ class Carousel2 extends Component {
 
 							<div className="slick-caption">
 							{
-								images.length < 8 && <AddButton
+								images.length < 8 && <AddImageButton
 									onClick={openImageUploader}
 									fill="rgba(255,255,255,0.8)"
 									sfill="white"

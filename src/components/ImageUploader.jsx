@@ -3,18 +3,20 @@ import { withStyles } from '@material-ui/core/styles';
 import { Dialog as MuiDialog,
 		Grid,
 		Fade,
+		CircularProgress
 	 } from '@material-ui/core';
 import Dropzone from 'react-dropzone'
 import AvatarEditor from 'react-avatar-editor'
 import ImageCompressor from 'image-compressor.js';
 import { Button, ZoomSlider } from 'components';
-
+import { LargeImageIcon } from 'components/AppBarIcons';
 
 const styles = {
 	paper: {
 		padding: "30px 20px 30px 20px",
 		width: "550px",
 		height: "610px",
+		maxHeight: "100vh",
 		borderRadius: "10px",
 		margin: "0",
 	},
@@ -29,7 +31,8 @@ class ImageUploader extends Component {
 		super()
 		this.state = {
 			showImage: false,
-			proccess: false,
+			proccess: false,	// 등록중일시 true
+			imageCompressingProcess: false,	// 이미지 선택시(while uploading&compressing) true
 			editing: false,	// 현재 편집중인지 여부
 			rejected: [],	// 이미지 포맷이 아닌 파일을 올렸을 때 파일 데이터를 이곳에 저장(file object)
 			src: null,		// 현재 편집중인 이미지 데이터(base64)
@@ -56,13 +59,14 @@ class ImageUploader extends Component {
 	}
 	dropAccepted = files => {
 		if (files && files.length > 0) {
+			this.setState({imageCompressingProcess: true});
 			new ImageCompressor(files[0], {
 				maxWidth: 2000,
 				maxHeight: 2000,
 				success: (compressedFile) => {
 					const reader = new FileReader()
 					reader.addEventListener('load', () =>
-						this.setState({ src: reader.result, file: compressedFile, editing: true, showImage: true }), false)
+						this.setState({ src: reader.result, file: compressedFile, editing: true, showImage: true, imageCompressingProcess: false }), false)
 					reader.readAsDataURL(compressedFile)
 				}
 			});
@@ -77,7 +81,7 @@ class ImageUploader extends Component {
 	render() {
 		console.log("state..", this.state);
 		const { classes, open, closeImageUploader } = this.props;
-		 const { showImage, editing, process,
+		 const { showImage, editing, process, imageCompressingProcess,
 			src, rejected, zoomLevel } = this.state;
 		return (
 			<MuiDialog
@@ -85,7 +89,12 @@ class ImageUploader extends Component {
 				disableBackdropClick
 				aria-labelledby="simple-dialog-title"
 				open={open}>
-					<Grid style={{height:"100%"}} container direction="column" justify="space-between" alignItems="center" spacing={0}>
+					<Grid
+					container
+					direction="row"
+					justify="center"
+					alignItems="center"
+					spacing={0}>
 						<Grid item>
 								<div className="dropzone">
 									<Dropzone
@@ -97,7 +106,7 @@ class ImageUploader extends Component {
 										onDropRejected={this.dropRejected}
 									>
 									{
-										editing && <Fade in={showImage}>
+										editing && <Fade in={showImage} timeout={{enter: 500, exit: 500}}>
 											<AvatarEditor
 												ref={this.setEditorRef}
 												image={src}
@@ -115,16 +124,35 @@ class ImageUploader extends Component {
 										!editing && <span style={{color: rejected && rejected.length && "red", transition: "all 0.2s ease-in-out",
 																width:"80%", top: "50%", left:"50%", position:"absolute",
 																transform: "translate(-50%,-50%)", textAlign: "center"}}>
-											{ rejected && rejected.length ? `${rejected[0].name}은 이미지 파일이 아닙니다.` : "이미지를 업로드하세요." }
+																<LargeImageIcon/>
+											{
+												rejected && rejected.length ?
+													`${rejected[0].name}은 이미지 파일이 아닙니다.` :
+													(
+														imageCompressingProcess ?
+															<CircularProgress
+																style={{
+																	left: "130px",
+																	top: "-37px",
+																	position: "absolute",
+																	color:"rgba(100, 180, 255)"
+																}}
+																size={100}
+																thickness={2} />
+														: "이미지를 업로드하세요"
+													)
+											}
 										</span>
 									}
 									</Dropzone>
 								</div>
 								{
-									editing && <Fade in={showImage}>
-										<ZoomSlider
-											zoomLevel={zoomLevel}
-											handleSlider={this.handleSlider}/>
+									<Fade in={editing} timeout={{enter: 500, exit: 500}}>
+										<div>
+											<ZoomSlider
+												zoomLevel={zoomLevel}
+												handleSlider={this.handleSlider}/>
+										</div>
 									</Fade>
 								}
 						</Grid>
@@ -134,7 +162,7 @@ class ImageUploader extends Component {
 								disabled={!editing || process}
 								onClick={this.handleSubmit}
 								margin="0 5px">
-								등록
+								확인
 							</Button>
 							<Button
 								disabled={process}

@@ -169,14 +169,6 @@ export class MeInfo extends Component {
 		// console.log("req : ", id, pw, nickName, si, gu, birth, gender, interests, images,
 		// intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn);
 
-		this.setState({
-			updateProcess: false,
-			dialogOpen: true,
-			dialogIcon: 1,
-			dialogTitle: "회원정보를 업데이트",
-			dialogContent: "회원정보 업데이트를 성공적으로 마쳤습니다.",
-		});
-
 		Axios.post('http://192.168.0.23:8080/me/info', {
 			token, id, pw, nickName, si, gu, birth, gender, interests, images,
 			intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn

@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import paginationStyle from "./paginationStyle.jsx";
 
 function Pagination({ ...props }) {
-  const { classes, pages, color } = props;
+  const { classes, pages, color, currentPage } = props;
   return (
     <ul className={classes.pagination}>
       {pages.map((prop, key) => {
@@ -22,18 +22,9 @@ function Pagination({ ...props }) {
         });
         return (
           <li className={classes.paginationItem} key={key}>
-            {prop.onClick !== undefined ? (
-              <Button onClick={prop.onClick} className={paginationLink}>
+              <Button onClick={currentPage===prop.text ? null : prop.onClick} className={paginationLink}>
                 {prop.text}
               </Button>
-            ) : (
-              <Button
-                onClick={() => console.log("you've clicked " + prop.text)}
-                className={paginationLink}
-              >
-                {prop.text}
-              </Button>
-            )}
           </li>
         );
       })}

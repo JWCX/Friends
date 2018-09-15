@@ -141,7 +141,7 @@ class JoinForm extends React.Component {
 			dialogIcon: 0,
 			dialogTitle:"",
 			dialogContent:"" });
-	  };
+	};
 	handleRedirect = url => {	// 페이지 이동
 		this.props.countError({idError:0, pwError: 0});
 		this.setState({showPage: false});
