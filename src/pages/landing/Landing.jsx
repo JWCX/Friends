@@ -50,8 +50,13 @@ class Landing extends Component {
 			default:
 		}
 		return (
-			<div style={{height:"100vh",
-					background:"url(https://picsum.photos/1920/1080/?blur&gravitiy=east&random)"}}>
+			<div style={{
+					height:"100vh",
+					background:"url(https://picsum.photos/1000/562/?image=695&blur=true)",
+					backgroundSize: "cover",
+					backgroundRepeat: "no-repeat",
+
+				}}>
 				<Paper elevation={10}
 					classes={{root: this.props.classes.root}}
 					style={style}>

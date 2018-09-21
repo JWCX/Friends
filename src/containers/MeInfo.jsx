@@ -55,21 +55,28 @@ export class MeInfo extends Component {
 	t_checkPw2 = null;
 
 	componentDidMount() {
-		this.setState({...this.props.myInfo,
-			interests: this.props.myInfo.interests.map( x =>
-				({label: this.props.dataInterest[x].name, value: x}))
+		const myInfo = this.props.myInfo;
+		this.setState({...myInfo,
+			gender: this.props.myInfo.gender.toString(),
+			interests: myInfo.interests.map( x =>
+				({label: this.props.dataInterest[x].name, value: x})),
+			nickNameOk: myInfo.nickName ? true : false,
+			locationOk: myInfo.gu ? true : false,
+			genderOk: myInfo.gender!=="0" ? true : false,
+			birthOk: myInfo.birth ? true : false,
+			interestOk: myInfo.interests.length ? true : false
 		});
 	}
 	handleReset = () => {
 		this.setState({ pw: "", pw2: "",
 			nickNameOk: false, locationOk: false, genderOk: false, birthOk: false, interestOk: false,
 			...this.props.myInfo,
+			gender: this.props.myInfo.gender.toString(),
 			interests: this.props.myInfo.interests.map( x =>
 				({label: this.props.dataInterest[x].name, value: x}))
 		});
 	}
 	handleChange = ({target}) => {
-		console.log(target.value, target.value.length)
 		const { id, value } = target;
 		this.setState({[id]: value});
 		switch(id) {
@@ -109,7 +116,6 @@ export class MeInfo extends Component {
 					clearTimeout(this.t_checkPw);
 					this.setState({pwOk: true, pw2Ok: !this.state.pw2});
 				}
-				console.log(!value && !this.state.pw2)
 				break;
 			case "pw2":
 				clearTimeout(this.t_checkPw2);
@@ -139,7 +145,6 @@ export class MeInfo extends Component {
 			return this.setState({[target.name]: target.value, genderOk: true});
 	}
 	handleLocationChange = ({target}) => {
-		console.log("locationtar", target)
 		switch(target.name){
 			case "si":
 				return this.setState({si: target.value, gu: "", locationOk: false});
@@ -166,10 +171,7 @@ export class MeInfo extends Component {
 		const birth = this.state.birth._d;
 		const interests = _.map(this.state.interests, interest => interest.value);
 
-		// console.log("req : ", id, pw, nickName, si, gu, birth, gender, interests, images,
-		// intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn);
-
-		Axios.post('http://192.168.0.23:8080/me/info', {
+		Axios.post('http://192.168.0.200:8080/me/info', {
 			token, id, pw, nickName, si, gu, birth, gender, interests, images,
 			intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn
 		}).then(resp => {
@@ -185,15 +187,16 @@ export class MeInfo extends Component {
 				dialogContent: "회원정보 업데이트를 성공적으로 마쳤습니다.",
 			});
 		}).catch(err => {
+			console.log(err);	// FIXME: REMOVE
 			console.log(err.response);	// FIXME: REMOVE
 			let errorTitle, errorMessage;
-			if(!err.response || !err.response.data) {
+			// if(!err.response || !err.response.data) {
 				errorTitle = "서버와 연결할 수 없습니다";
 				errorMessage = "잠시후 다시 시도해 주세요...";
-			}
-			else {
-				errorTitle = err.response.data;
-			}
+			// }
+			// else {
+			// 	errorTitle = err.response.data;
+			// }
 			this.setState({
 				updateProcess: false,
 				dialogOpen: true,
@@ -255,7 +258,6 @@ export class MeInfo extends Component {
 			const images = this.state.images ? this.state.images : [];
 			const interests = this.state.interests ? this.state.interests : [];
 		const { dataSi, dataGu } = this.props;
-		console.log("statetaetaetaeteataetaet", this.state);
 		return (
 			<Fade in={showPage} timeout={{enter: 500, exit: 500}}>
 				<Grid container

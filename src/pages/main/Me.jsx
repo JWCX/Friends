@@ -7,7 +7,12 @@ import { Dialog as MuiDialog,
 import { withStyles } from '@material-ui/core/styles';
 import Axios from 'axios';
 
-import { openMePage, closeMePage } from 'actions';
+import { openMePage,
+		closeMePage,
+		updateMeFriends,
+		clearMeFriends,
+		updateMeGroups,
+		clearMeGroups } from 'actions';
 import { MeMain,
 		MeFriends,
 		MeGroups,
@@ -58,170 +63,231 @@ class Me extends React.Component {
 		groupsPages: 0,
 		st: 0,
 		ed: 0,
-
-
 	}
 	componentDidMount = () => {
 		this.getUserInfo(this.props.match.params.id);
+
+		if(!this.props.myInfo.nickName)
+			this.setState({currentView: 2});
+		// this.updatePageNums();
 	}
 	componentWillReceiveProps(nextProps) {
-		if(this.props.match.params.id === nextProps.match.params.id) return;
-			console.log("iiiiiiiiiiiiiiiiinooovoeooveovoeokkekkd");
+		if(this.props.match.params.id !== nextProps.match.params.id ||
+			this.props.myInfo !== nextProps.myInfo){
+			this.props.closeMePage();
 			this.getUserInfo(nextProps.match.params.id);
+		}
+		// if(this.props.meFriends !== nextProps.meFriends || this.props.me !== nextProps.me)
+			// this.updatePageNums();
+	}
+	updatePageNums = friendsPages => {
+		// const friendsPages = this.props.me ? this.props.me.friendsPages : this.state.friendsPages;
+			this.setState(state => ({groupsPages: state.currentView===1 && friendsPages, friendsPages: state.currentView===0 && friendsPages,
+				st: friendsPages-state.currentPage < 3 ? friendsPages-4 < 1 ? 1 : friendsPages-4 : state.currentPage-2 < 1 ? 1 : state.currentPage-2,
+				ed: state.currentPage < 3 ? friendsPages > 5 ? 5 : friendsPages : state.currentPage+2 > friendsPages ? friendsPages : state.currentPage+2,
+		}));
+	}
+	handleFriendsPagination = target => {
+		let currentPage;
+		switch(target){
+			case "<":
+				currentPage = this.state.st-1 <= 0 ? 1 : this.state.st-1;
+				// currentPage = this.state.currentPage-5 <= 0 ? 1 : this.state.currentPage-5;
+				break;
+			case ">":
+				currentPage = this.state.ed+1 >= this.state.friendsPages ? this.state.friendsPages : this.state.ed+1;
+				// currentPage = this.state.currentPage+5 >= this.state.friendsPages ? this.state.friendsPages : this.state.currentPage+5;
+				break;
+			default:
+				currentPage= target;
+		}
+		this.setState(state => ({
+			currentPage,
+			st: state.friendsPages-currentPage < 3 ? state.friendsPages-4 < 1 ? 1 : state.friendsPages-4 : currentPage-2 < 1 ? 1 : currentPage-2,
+			ed: currentPage < 3 ? state.friendsPages > 5 ? 5 : state.friendsPages : currentPage+2 > state.friendsPages ? state.friendsPages : currentPage+2,
+		}));
+
+		this.props.clearMeFriends();
+
+		const id = this.props.match.params.id;
+		let params = {
+			token: this.props.token,
+			memberlist: true,
+			page: currentPage
+		}
+		if(parseInt(id)!==this.props.token)
+			params.id = id;
+
+
+		Axios.get('http://192.168.0.200:8080/me', {
+				params
+			}).then(resp => {
+				console.log(resp);	// FIXME: 지워주세용
+				this.props.updateMeFriends(resp.data.friends);
+			}).catch(err => {
+				console.log(err.response);	// FIXME: REMOVE
+				let errorTitle, errorMessage;
+				// if(!err.response || !err.response.data) {
+					errorTitle = "서버와 연결할 수 없습니다";
+					errorMessage = "잠시후 다시 시도해 주세요...";
+				// }
+				// else {
+				// 	errorTitle = err.response.data;
+				// }
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: errorTitle,
+					dialogContent: errorMessage
+				});
+			}); // FIXME: REMOVE LOG
+
+
+
+		// setTimeout(() => {
+		// 	this.props.updateMeFriends({
+		// 		1123: {id:1123, nickName: `피자나라키친공주${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+		// 		1124: {id:1124, nickName: `조피자냠냠${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+		// 		1125: {id:1125, nickName: `도미노피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+		// 		1126: {id:1126, nickName: `미피앤무스티${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+		// 		1127: {id:1127, nickName: `헬로월드${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+		// 		1128: {id:1128, nickName: `피자헛${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+		// 		1129: {id:1129, nickName: `이맛피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+		// 		1130: {id:1130, nickName: `코스트코피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
+		// 		1131: {id:1131, nickName: `소고기고고${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
+		// 		1132: {id:1132, nickName: `이름뭐짓지${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true}
+		// 	});
+		// }, 200);
+
+	}
+	handleGroupsPagination = target => {
+		let currentPage;
+		switch(target){
+			case "<":
+				currentPage = this.state.st-1 <= 0 ? 1 : this.state.st-1;
+				// currentPage = this.state.currentPage-5 <= 0 ? 1 : this.state.currentPage-5;
+				break;
+			case ">":
+				currentPage = this.state.ed+1 >= this.state.groupsPages ? this.state.groupsPages : this.state.ed+1;
+				// currentPage = this.state.currentPage+5 >= this.state.groupsPages ? this.state.groupsPages : this.state.currentPage+5;
+				break;
+			default:
+				currentPage= target;
+		}
+		this.setState(state => ({
+			currentPage,
+			st: state.groupsPages-currentPage < 3 ? state.groupsPages-4 < 1 ? 1 : state.groupsPages-4 : currentPage-2 < 1 ? 1 : currentPage-2,
+			ed: currentPage < 3 ? state.groupsPages > 5 ? 5 : state.groupsPages : currentPage+2 > state.groupsPages ? state.groupsPages : currentPage+2,
+		}));
+
+		this.props.clearMeGroups();
+
+		const id = this.props.match.params.id;
+		let params = {
+			token: this.props.token,
+			grouplist: true,
+			page: currentPage
+		}
+		if(parseInt(id)!==this.props.token)
+			params.id = id;
+
+
+		Axios.get('http://192.168.0.200:8080/me', {
+				params
+			}).then(resp => {
+				console.log(resp);	// FIXME: 지워주세용
+				this.props.updateMeGroups(resp.data.groups);
+			}).catch(err => {
+				console.log(err.response);	// FIXME: REMOVE
+				let errorTitle, errorMessage;
+				// if(!err.response || !err.response.data) {
+					errorTitle = "서버와 연결할 수 없습니다";
+					errorMessage = "잠시후 다시 시도해 주세요...";
+				// }
+				// else {
+				// 	errorTitle = err.response.data;
+				// }
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: errorTitle,
+					dialogContent: errorMessage
+				});
+			}); // FIXME: REMOVE LOG
+
+
 	}
 	getUserInfo = id => {
-		this.props.closeMePage();
+		this.setState({currentPage: 1});
 		if(parseInt(id)===this.props.token) {
-			console.log("일치쓰!!!")	//TODO: SHOW MY INFO
+			Axios.get('http://192.168.0.200:8080/me', {
+				params: { token: this.props.token }
+			}).then(resp => {
+				console.log("REEEEEEEEEESPPPPOOONNGESEESEE", resp);	// FIXME: 지워주세용
+				this.props.openMePage({
+					me: {
+						...this.props.myInfo,
+						friendsPages: resp.data.friendsPages,
+						groupsPages: resp.data.groupsPages
+					},
+					friends: resp.data.friends,
+					groups: resp.data.groups
+				});
+				console.log("INFOOOOOOOOOO:",this.props.myInfo)
+				this.updatePageNums(resp.data.friendsPages, resp.data.groupsPages);
+			}).catch(err => {
+				console.log(err.response);	// FIXME: REMOVE
+				let errorTitle, errorMessage;
+				// if(!err.response || !err.response.data) {
+					errorTitle = "서버와 연결할 수 없습니다";
+					errorMessage = "잠시후 다시 시도해 주세요...";
+				// }
+				// else {
+				// 	errorTitle = err.response.data;
+				// }
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: errorTitle,
+					dialogContent: errorMessage
+				});
+			}); // FIXME: REMOVE LOG
 
-			// Axios.get('http://192.168.0.23:8080/me', {
-			// 	params: { token: this.props.token }
-			// }).then(resp => {
-			// 	console.log(resp);	// FIXME: 지워주세용
-			// 	this.props.openMePage({
-			// 		me: {
-			// 			...this.props.myInfo,
-			// 			friendsPages: resp.data.friendsPages,
-			// 			groupsPages: resp.data.groupsPages
-			// 		},
-			// 		friends: resp.data.friends,
-			// 		groups: resp.data.groups
-			// 	});
-			// }).catch(err => {
-			// 	console.log(err.response);	// FIXME: REMOVE
-			// 	let errorTitle, errorMessage;
-			// 	if(!err.response || !err.response.data) {
-			// 		errorTitle = "서버와 연결할 수 없습니다";
-			// 		errorMessage = "잠시후 다시 시도해 주세요...";
-			// 	}
-			// 	else {
-			// 		errorTitle = err.response.data;
-			// 	}
-			// 	this.setState({
-			// 		dialogOpen: true,
-			// 		dialogIcon: 2,
-			// 		dialogTitle: errorTitle,
-			// 		dialogContent: errorMessage
-			// 	});
-			// }); // FIXME: REMOVE LOG
-
-
-			this.props.openMePage({		// FIXME: REMOVE AFTER TEST
-				me: {...this.props.myInfo, friendsPages: 2, groupsPages: 1},
-				friends: {
-					123: {id: 123, nickName: "피제리움", gender: "1", image: "https://picsum.photos/800/800/?random", online: true},
-					124: {id:124, nickName: "조피자", gender: "1", image: "https://picsum.photos/800/801/?random", online: true},
-					125: {id:125, nickName: "도미노피자", gender: "2", image: "https://picsum.photos/802/800/?random", online: false},
-					126: {id:126, nickName: "미스터 피자", gender: "1", image: "https://picsum.photos/801/800/?random", online: false},
-					127: {id:127, nickName: "피자헛", gender: "1", image: "https://picsum.photos/800/803/?random", online: false},
-					128: {id:128, nickName: "알볼로피자", gender: "2", image: "https://picsum.photos/802/800/?random", online: true},
-					129: {id:129, nickName: "피자에땅", gender: "0", image: "https://picsum.photos/804/800/?random", online: false},
-					130: {id:130, nickName: "피제리아디부자", gender: "1", image: "https://picsum.photos/805/800/?random", online: false},
-					131: {id:131, nickName: "피자스쿨", gender: "2", image: "https://picsum.photos/800/804/?random", online: true},
-					132: {id:132, nickName: "피자마루", gender: "2", image: "https://picsum.photos/800/805/?random", online: true}
-				},
-				groups: {
-					2001: {id: 2001, groupName: "그룹 이름", image: "https://picsum.photos/800/800/?random"},
-					2002: {id: 2002, groupName: "리스트", image: "https://picsum.photos/800/801/?random"},
-					2003: {id: 2003, groupName: "입니다", image: "https://picsum.photos/802/800/?random"},
-					2004: {id: 2004, groupName: "미스터ㅁㄴㄹ ㅁㄴㄹ ㅁㄴ ㄻㄴ ㄻㄴㄻ 피자", image: "https://picsum.photos/801/800/?random"},
-					2005: {id: 2005, groupName: "피자헛", image: "https://picsum.photos/800/803/?random"},
-					2006: {id: 2006, groupName: "알볼로피자", image: "https://picsum.photos/802/800/?random"},
-					2007: {id: 2007, groupName: "피자에땅", image: "https://picsum.photos/804/800/?random"},
-					2008: {id: 2008, groupName: "피제리아디부자", image: "https://picsum.photos/805/800/?random"},
-					2009: {id: 2009, groupName: "피자스쿨", image: "https://picsum.photos/800/804/?random"},
-					2000: {id: 2000, groupName: "피자마루", image: "https://picsum.photos/800/805/?random"}
-				}
-			});
 		}
 		else {
-			console.log("부리리릴일치쓰!!!") 	//TODO: SHOW STRANGERS INFO
 
-			// Axios.get('http://192.168.0.23:8080/me', {
-			// 	params: { token: this.props.token, id: id }
-			// }).then(resp => {
-			// 	console.log(resp);	// FIXME: 지워주세용
-			// 	this.props.openMePage({
-			// 		me: {
-			// 			...resp.data.me,
-			// 			friendsPages: resp.data.friendsPages,
-			// 			groupsPages: resp.data.groupsPages
-			// 		},
-			// 		friends: resp.data.friends,
-			// 		groups: resp.data.groups
-			// 	});
-			// }).catch(err => {
-			// 	console.log(err.response);	// FIXME: REMOVE
-			// 	let errorTitle, errorMessage;
-			// 	if(!err.response || !err.response.data) {
-			// 		errorTitle = "서버와 연결할 수 없습니다";
-			// 		errorMessage = "잠시후 다시 시도해 주세요...";
-			// 	}
-			// 	else {
-			// 		errorTitle = err.response.data;
-			// 	}
-			// 	this.setState({
-			// 		dialogOpen: true,
-			// 		dialogIcon: 2,
-			// 		dialogTitle: errorTitle,
-			// 		dialogContent: errorMessage
-			// 	});
-			// }); // FIXME: REMOVE LOG
-
-			setTimeout(() => {
-				this.props.openMePage({		// FIXME: REMOVE AFTER TEST
+			Axios.get('http://192.168.0.200:8080/me', {
+				params: { token: this.props.token, id: id }
+			}).then(resp => {
+				console.log("REEEEEEEEEESPPPPOOONNGESEESEE", resp);	// FIXME: 지워주세용
+				this.props.openMePage({
 					me: {
-						id: id,
-						nickName: `USER-${id}`,
-						age: Math.ceil(Math.random(1)*50),
-						gender: "1",
-						interests: [Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6),Math.ceil(Math.random()*6)],
-						images: [`https://picsum.photos/400/${400+Math.ceil(Math.random()*100)}/?random`,
-								`https://picsum.photos/400/${400+Math.ceil(Math.random()*100)}/?random`,
-								`https://picsum.photos/400/${400+Math.ceil(Math.random()*100)}/?random`,
-								`https://picsum.photos/400/${400+Math.ceil(Math.random()*100)}/?random`,
-								`https://picsum.photos/400/${400+Math.ceil(Math.random()*100)}/?random`],
-						si: Math.ceil(Math.random()*2),
-						gu: Math.ceil(Math.random()*2),
-						birth: `${Math.ceil(Math.random()*110)+1900}. ${Math.ceil(Math.random()*12)}. ${Math.ceil(Math.random()*28)}`,
-						intro: "헬로 월드zzzzaaaaaaaaaaaazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
-						msg: "굳바이",
-						areayn: Math.random()>0.7,
-						birthyn: Math.random()>0.7,
-						genderyn: Math.random()>0.7,
-						friendsyn: Math.random()>0.7,
-						groupsyn: Math.random()>0.7,
-						isFriend: 0,
-						isCurious: false,
-						friendsPages: Math.ceil(Math.random()*20),
-						groupsPages: 2
+						...resp.data.me,
+						friendsPages: resp.data.friendsPages,
+						groupsPages: resp.data.groupsPages
 					},
-					friends: {
-						123: {id: 123, nickName: `피제리움${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
-						124: {id:124, nickName: `조피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
-						125: {id:125, nickName: `도미노피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
-						126: {id:126, nickName: `미스터 피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
-						127: {id:127, nickName: `피자헛${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
-						128: {id:128, nickName: `알볼로피자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
-						129: {id:129, nickName: `피자에땅${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
-						130: {id:130, nickName: `피제리아디부자${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: false},
-						131: {id:131, nickName: `피자스쿨${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true},
-						132: {id:132, nickName: `피자마루${Math.ceil(Math.random()*100)}`, gender: `${Math.ceil(Math.random()*2)}`, image: `https://picsum.photos/200/${Math.ceil(Math.random()*100)+200}/?random`, online: true}
-					},
-					groups: {
-						2001: {id: 2001, groupName: "그룹 이름", image: "https://picsum.photos/800/800/?random"},
-						2002: {id: 2002, groupName: "리스트", image: "https://picsum.photos/800/801/?random"},
-						2003: {id: 2003, groupName: "입니다", image: "https://picsum.photos/802/800/?random"},
-						2004: {id: 2004, groupName: "미스터ㅁㄴㄹ ㅁㄴㄹ ㅁㄴ ㄻㄴ ㄻㄴㄻ 피자", image: "https://picsum.photos/801/800/?random"},
-						2005: {id: 2005, groupName: "피자헛", image: "https://picsum.photos/800/803/?random"},
-						2006: {id: 2006, groupName: "알볼로피자", image: "https://picsum.photos/802/800/?random"},
-						2007: {id: 2007, groupName: "피자에땅", image: "https://picsum.photos/804/800/?random"},
-						2008: {id: 2008, groupName: "피제리아디부자", image: "https://picsum.photos/805/800/?random"},
-						2009: {id: 2009, groupName: "피자스쿨", image: "https://picsum.photos/800/804/?random"},
-						2000: {id: 2000, groupName: "피자마루", image: "https://picsum.photos/800/805/?random"}
-					}
+					friends: resp.data.friends,
+					groups: resp.data.groups
 				});
-			}, 1000);
+				this.updatePageNums(resp.data.friendsPages);
+			}).catch(err => {
+				console.log(err.response);	// FIXME: REMOVE
+				let errorTitle, errorMessage;
+				// if(!err.response || !err.response.data) {
+					errorTitle = "서버와 연결할 수 없습니다";
+					errorMessage = "잠시후 다시 시도해 주세요...";
+				// }
+				// else {
+				// 	errorTitle = err.response.data;
+				// }
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: errorTitle,
+					dialogContent: errorMessage
+				});
+			}); // FIXME: REMOVE LOG
+
 		}
 	}
 	handleClose = () => {
@@ -251,10 +317,16 @@ class Me extends React.Component {
 		}
 	}
 	handleSwitchView = view => {
-		this.setState({currentView: view});
-	}
-	handleOpenDialog = params => {
-		this.setState(params);
+		this.setState({currentView: view, currentPage:1});
+
+		if(view === 1) {
+			this.updatePageNums(this.props.me.groupsPages);
+			this.handleGroupsPagination(1);
+		}
+		else if(view === 0) {
+			this.updatePageNums(this.props.me.friendsPages);
+			this.handleFriendsPagination(1);
+		}
 	}
 	handleDialogClose = () => {
 		this.setState({
@@ -267,14 +339,22 @@ class Me extends React.Component {
 	friendsOrGroups = () => {
 		if(this.props.me) {
 			if(this.state.currentView === 0)
-				return this.props.meFriends ? <MeFriends history={this.props.history}
-														match={this.props.match}
-														handleOpenDialog={this.handleOpenDialog}/>
+				return this.props.meFriends ? <MeFriends
+												meFriends={this.props.meFriends}
+												currentPage={this.state.currentPage}
+												st={this.state.st}
+												ed={this.state.ed}
+												friendsPages={this.state.friendsPages}
+												handleFriendsPagination={this.handleFriendsPagination}/>
 											: <MeFriendsGroupsLoader/>
 			if(this.state.currentView === 1)
-				return this.props.meGroups ? <MeGroups history={this.props.history}
-														match={this.props.match}
-														handleOpenDialog={this.handleOpenDialog}/>
+				return this.props.meGroups ? <MeGroups
+												meGroups={this.props.meGroups}
+												currentPage={this.state.currentPage}
+												st={this.state.st}
+												ed={this.state.ed}
+												groupsPages={this.state.groupsPages}
+												handleGroupsPagination={this.handleGroupsPagination}/>
 											: <MeFriendsGroupsLoader/>
 		}
 		else return <MeFriendsGroupsLoader hideButtons/>
@@ -306,7 +386,7 @@ class Me extends React.Component {
 							</Grid>
 						}
 						<Grid item>
-							<CancelButton onClick={this.handleClose}/>
+							<CancelButton disabled={!this.props.myInfo.nickName ? true : false} onClick={this.handleClose}/>
 						</Grid>
 					</Grid>
 					{
@@ -319,12 +399,12 @@ class Me extends React.Component {
 								spacing={8}>
 								<Grid item>
 								{
-									this.props.me ? <MeMain history={history} match={match}/> :
+									this.props.me && this.props.me.id ? <MeMain history={history} match={match}/> :
 										<MeMainLoader/>
 								}
 								</Grid>
 								<Grid item
-									style={{padding:"10px 10px 0 10px", boxShadow: this.props.me && "0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px", minHeight:"787px"}}>
+									style={{padding:"10px 10px 10px 10px", boxShadow: this.props.me && "0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px", minWidth:"320px", maxHeight:"787px"}}>
 									<Grid container
 										direction="column"
 										justify="space-evenly"
@@ -375,11 +455,15 @@ const mapStateToProps = state => ({
 	myInfo: state.myInfo,
 	me: state.me,
 	meFriends: state.meFriends,
-	meGroups: state.meGroups
+	meGroups: state.meGroups,
 })
 const mapDispatchToProps = {
 	openMePage,
-	closeMePage
+	closeMePage,
+	updateMeFriends,
+	clearMeFriends,
+	updateMeGroups,
+	clearMeGroups,
 }
 
 export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Me)));

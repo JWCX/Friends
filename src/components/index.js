@@ -7,21 +7,34 @@ import CancelButton from './Buttons/CancelButton';
 import DeleteButton from './Buttons/DeleteButton';
 import MoreButton from './Buttons/MoreButton';
 import FriendButton from './Buttons/FriendButton';
+import FriendAcceptButton from './Buttons/FriendAcceptButton';
+import FriendRejectButton from './Buttons/FriendRejectButton';
 import GroupButton from './Buttons/GroupButton';
 
 import MeMainLoader from './ContentLoaders/MeMainLoader';
 import MeFriendsGroupsLoader from './ContentLoaders/MeFriendsGroupsLoader';
 
 import Dialog from './Dialog';
+import DialogYN from './DialogYN';
+import DialogFriendRequestForm from './DialogFriendRequestForm';
+import DialogFriendRequests from './DialogFriendRequests';
+
+import ChatBubble from './ChatBubble';
+import ChatBubbleMe from './ChatBubbleMe';
+import ChatInput from './ChatInput';
+
 import Select from './Select';
-import SelectInterest from './SelectInterest2';
+import SelectContact from './SelectContact';
+import SelectInterest from './SelectInterest';
 import RadioGroup from './RadioGroup';
 import Slider from './Slider';
 import ZoomSlider from './ZoomSlider';
+import ExpansionFriendRequest from './ExpansionFriendRequest';
 import ExpansionPanel from './ExpansionPanel';
 import DateTimePicker from './DateTimePicker';
 import Label from './Label';
 import LabelMini from './LabelMini';
+import LabelTiny from './LabelTiny';
 import GroupLabelMini from './GroupLabelMini';
 import Carousel from './Carousel';
 import Carousel2 from './Carousel2';
@@ -39,21 +52,34 @@ export {
 	DeleteButton,
 	MoreButton,
 	FriendButton,
+	FriendAcceptButton,
+	FriendRejectButton,
 	GroupButton,
 
 	MeMainLoader,
 	MeFriendsGroupsLoader,
 
 	Dialog,
+	DialogYN,
+	DialogFriendRequestForm,
+	DialogFriendRequests,
+
+	ChatBubble,
+	ChatBubbleMe,
+	ChatInput,
+
 	Select,
+	SelectContact,
 	SelectInterest,
 	RadioGroup,
 	Slider,
 	ZoomSlider,
+	ExpansionFriendRequest,
 	ExpansionPanel,
 	DateTimePicker,
 	Label,
 	LabelMini,
+	LabelTiny,
 	GroupLabelMini,
 	Carousel,
 	Carousel2,

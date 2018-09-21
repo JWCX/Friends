@@ -16,6 +16,11 @@ const MiniIconWrapper = styled.div`
 	height: 50px;
 	border-radius: 100%;
 `
+const MicroIconWrapper = styled.div`
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+`
 const NanoIconWrapper = styled.div`
 	width: 20px;
 	height: 20px;
@@ -37,6 +42,10 @@ const StyledSvg = styled.svg`
 		transform: translateY(-50%) scale(1.2);
 	}
 	${MiniIconWrapper}:hover & {
+		fill: black;
+		transform: translateY(-50%) scale(1.2);
+	}
+	${MicroIconWrapper}:hover & {
 		fill: black;
 		transform: translateY(-50%) scale(1.2);
 	}
@@ -616,32 +625,6 @@ export const GroupsIcon = props => {
 		</IconWrapper>
 	)
 }
-// export const GroupsIcon = props => {
-// 	return (
-// 		<IconWrapper>
-// 			<StyledSvg
-// 				selected={props.selected}
-// 				viewBox="0 0 488.3 488.3">
-// 				<path d="M412.3,307.25c-19.3-15.9-40.1-26.4-44.3-28.4c-0.5-0.2-0.8-0.7-0.8-1.2v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2
-// 					c0-15.5-12.6-28.1-28.1-28.1H342h-3.4c-15.5,0-28.1,12.6-28.1,28.1v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.2,0,0.4-0.1,0.5
-// 					c5.9,4.1,12.1,8.6,18.1,13.5c7.1,5.8,11.1,14.4,11.1,23.6v25.1h71.8v-21.3C417.7,314.35,415.7,310.05,412.3,307.25z"/>
-// 				<path d="M326.8,301.45c-22.7-18.6-47.1-31-52.1-33.4c-0.6-0.3-0.9-0.8-0.9-1.5v-35.3c4.4-3,7.4-8,7.4-13.7v-36.6
-// 					c0-18.2-14.8-33-33-33h-4h-3.9c-18.2,0-33,14.8-33,33v36.6c0,5.7,2.9,10.8,7.4,13.7v35.3c0,0.6-0.4,1.2-0.9,1.5
-// 					c-5,2.4-29.4,14.8-52.1,33.4c-4.1,3.4-6.5,8.4-6.5,13.7v25.1h89h89v-25.1C333.2,309.85,330.9,304.75,326.8,301.45z"/>
-// 				<path d="M171.5,277.55v-30c3.8-2.5,6.3-6.8,6.3-11.7v-31.2c0-15.5-12.6-28.1-28.1-28.1h-3.4h-3.4c-15.5,0-28.1,12.6-28.1,28.1
-// 					v31.2c0,4.9,2.5,9.2,6.3,11.7v30c0,0.5-0.3,1-0.8,1.2c-4.2,2.1-25,12.6-44.3,28.4c-3.5,2.9-5.5,7.2-5.5,11.7v21.3h71.8v-25.1
-// 					c0-9.2,4-17.8,11.1-23.6c6-5,12.2-9.5,18.1-13.5C171.6,277.85,171.5,277.65,171.5,277.55z"/>
-// 				<path d="M483.9,313.75c-15.5-12.7-32.1-21.1-35.5-22.8c-0.4-0.2-0.6-0.6-0.6-1v-24.1c3-2,5-5.5,5-9.4v-25
-// 					c0-12.4-10.1-22.5-22.5-22.5h-2.7h-2.7c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4v21.3c4.3,3,8.7,6.4,13.1,9.9
-// 					c6.5,5.4,10.3,13.3,10.3,21.8v21.3h57.5v-17.1C488.3,319.55,486.7,316.05,483.9,313.75z"/>
-// 				<path d="M80.9,265.95c3-2,5-5.5,5-9.4v-25c0-12.4-10.1-22.5-22.5-22.5h-2.7H58c-12.4,0-22.5,10.1-22.5,22.5v25c0,3.9,2,7.3,5,9.4
-// 					v24.1c0,0.4-0.2,0.8-0.6,1c-3.4,1.7-20.1,10.1-35.5,22.8c-2.8,2.3-4.4,5.7-4.4,9.3v17.1h57.5v-21.3c0-8.5,3.7-16.4,10.3-21.8
-// 					c4.3-3.6,8.8-6.9,13.1-9.9C80.9,287.25,80.9,265.95,80.9,265.95z"/>
-// 			</StyledSvg>
-// 			<StyledLabel selected={props.selected}>Groups</StyledLabel>
-// 		</IconWrapper>
-// 	)
-// }
 
 // LARGE ICONS
 export const LargeImageIcon = props => {
@@ -676,6 +659,29 @@ export const NotificationIcon = props => {
 		</MiniIconWrapper>
 	)
 }
+export const SquareAddIcon = props => {
+	return (
+		<MicroIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="25px"
+				height="25px"
+				fill="rgba(0,0,0,0.5)">
+				<g id="Bounding_Boxes">
+					<g id="ui_x5F_spec_x5F_header_copy_3" display="none"></g>
+					<path fill="none" d="M0,0h24v24H0V0z"/>
+				</g>
+				<g id="Rounded_1_">
+					<g id="ui_x5F_spec_x5F_header_copy_6" display="none"></g>
+					<path d="M19,3H5C3.89,3,3,3.9,3,5v14c0,1.1,0.89,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M16,13h-3v3c0,0.55-0.45,1-1,1h0
+						c-0.55,0-1-0.45-1-1v-3H8c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h3V8c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3h3
+						c0.55,0,1,0.45,1,1v0C17,12.55,16.55,13,16,13z"/>
+				</g>
+			</StyledSvg>
+		</MicroIconWrapper>
+	)
+}
 export const RequestIcon = props => {
 	return (
 		<MiniIconWrapper>
@@ -705,6 +711,28 @@ export const MoreIcon = props => {
 					M12,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S13.1,10,12,10z"/>
 			</StyledSvg>
 		</MiniIconWrapper>
+	)
+}
+export const SendMessageIcon = props => {
+	return (
+		<MicroIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill="rgba(0,0,0,0.5)">
+				<g id="Bounding_Boxes">
+					<g id="ui_x5F_spec_x5F_header_copy_3" display="none"></g>
+					<path fill="none" d="M0,0h24v24H0V0z"/>
+				</g>
+				<g id="Rounded_1_">
+					<g id="ui_x5F_spec_x5F_header_copy_6" display="none"></g>
+					<path d="M3.4,20.4l17.45-7.48c0.81-0.35,0.81-1.49,0-1.84L3.4,3.6C2.74,3.31,2.01,3.8,2.01,4.51L2,9.12c0,0.5,0.37,0.93,0.87,0.99
+						L17,12L2.87,13.88C2.37,13.95,2,14.38,2,14.88l0.01,4.61C2.01,20.2,2.74,20.69,3.4,20.4z"/>
+				</g>
+			</StyledSvg>
+		</MicroIconWrapper>
 	)
 }
 export const MessangerIcon = props => {
@@ -752,6 +780,43 @@ export const MeIcon = props => {
 				fill="rgba(0,0,0,0.5)">
 				<path d="M12,12c2.21,0,4-1.79,4-4s-1.79-4-4-4S8,5.79,8,8S9.79,12,12,12z M12,14c-2.67,0-8,1.34-8,4v1c0,0.55,0.45,1,1,1h14
 					c0.55,0,1-0.45,1-1v-1C20,15.34,14.67,14,12,14z"/>
+			</StyledSvg>
+		</MiniIconWrapper>
+	)
+}
+export const AcceptIcon = props => {
+	return (
+		<MiniIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill={props.fill || "rgba(0,0,0,0.5)"}>
+				<path d="M0 0h24v24H0z" fill="none"/>
+   				<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+			</StyledSvg>
+		</MiniIconWrapper>
+	)
+}
+export const CancelIcon = props => {
+	return (
+		<MiniIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill={props.fill || "rgba(0,0,0,0.5)"}>
+				<g id="Bounding_Boxes">
+					<path opacity="0.87" fill="none" d="M0,0h24v24H0V0z"/>
+				</g>
+				<g id="Rounded">
+					<path d="M12,2C6.47,2,2,6.47,2,12s4.47,10,10,10s10-4.47,10-10S17.53,2,12,2z M16.3,16.3L16.3,16.3c-0.39,0.39-1.02,0.39-1.41,0
+						L12,13.41L9.11,16.3c-0.39,0.39-1.02,0.39-1.41,0h0c-0.39-0.39-0.39-1.02,0-1.41L10.59,12L7.7,9.11c-0.39-0.39-0.39-1.02,0-1.41
+						l0,0c0.39-0.39,1.02-0.39,1.41,0L12,10.59l2.89-2.89c0.39-0.39,1.02-0.39,1.41,0v0c0.39,0.39,0.39,1.02,0,1.41L13.41,12l2.89,2.89
+						C16.68,15.27,16.68,15.91,16.3,16.3z"/>
+				</g>
 			</StyledSvg>
 		</MiniIconWrapper>
 	)

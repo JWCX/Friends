@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import Axios from 'axios';
 import { MenuItem, Grid, Paper, Fade } from '@material-ui/core';
-// import setFilter from '../../actions/setFilter';
 
+import { getMainUsers,
+		clearMainUsers,
+		getMainGroups,
+		clearMainGroups
+	} from 'actions';
 import { Select,
 		RadioGroup,
 		TextField,
@@ -77,25 +81,102 @@ class Filter extends Component {
 		this.setState(state => ({filter: {...state.filter, minAge: parseInt(values[0], 10), maxAge: parseInt(values[1], 10)}}));
 	}
 	handleFilter = () => {
-		// TODO: SEND AN AJAX(GET) CALL TO THE SERVER WITH interest, si, gu, gender, minAge, maxAge info.
 		this.setState({filterExpanded: false});
+
+		this.props.clearMainGroups();
+		this.props.clearMainUsers();
 		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
-		Axios.get("http://192.168.0.201:8080/groups", {
-			params: { filter: true, interest, si, gu, gender, minAge, maxAge, keyword }
+		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
+			params: { token: this.props.token, filter: true, page: 1,
+					interest, si, gu, gender, minAge, maxAge, keyword }
 		})
 		.then(resp => {
-			this.setState({groups : resp.data});
-			console.log("GROUPS : ", resp.data);
+			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
+			this.setState({optionFader: true, filtering: true});
+			switch(this.props.path) {
+				case "users":
+				this.props.getMainUsers(resp.data.users)
+					break;
+					case "groups":
+					this.props.getMainGroups(resp.data.groups)
+					break;
+				default:
+			}
 		}).catch(err => {
-			console.log(err.response);
+			console.log(err);
 			let errorTitle, errorMessage;
-			if(!err.response || !err.response.data) {
+			// if(!err.response || !err.response.data) {
 				errorTitle = "서버와 연결할 수 없습니다";
 				errorMessage = "잠시후 다시 시도해 주세요...";
+			// }
+			// else {
+			// 	errorTitle = err.response.data;
+			// }
+			this.setState({
+				dialogOpen: true,
+				dialogIcon: 2,
+				dialogTitle: errorTitle,
+				dialogContent: errorMessage
+			});
+		})
+	}
+	handleDelete = target => {
+		let filter = {...this.state.filter};
+		switch(target){
+			case "interest":
+				this.setState(state => ({filter: {...state.filter, interest: ""}}));
+				filter = {...filter, interest: ""};
+				break;
+			case "sigu":
+				this.setState(state => ({filter: {...state.filter, si: "", gu: ""}}));
+				filter = {...filter, si: "", gu: ""};
+				break;
+			case "gender":
+				this.setState(state => ({filter: {...state.filter, gender: "0"}}));
+				filter = {...filter, gender: "0"};
+				break;
+			case "age":
+				this.setState(state => ({filter: {...state.filter, minAge: 0, maxAge: 100}}));
+				filter = {...filter, minAge: 0, maxAge: 100};
+				break;
+			case "keyword":
+				this.setState(state => ({filter: {...state.filter, keyword: ""}}));
+				filter = {...filter, keyword: ""};
+				break;
+			default:
+		}
+
+		this.props.clearMainGroups();
+		this.props.clearMainUsers();
+
+		const { interest, si, gu, gender, minAge, maxAge, keyword } = filter;
+		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
+			params: { token: this.props.token, filter: true, page: 1,
+					interest, si, gu, gender, minAge, maxAge, keyword }
+		})
+		.then(resp => {
+			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
+			this.setState({optionFader: true, filtering: true});
+			switch(this.props.path) {
+				case "users":
+				this.props.getMainUsers(resp.data.users)
+					break;
+					case "groups":
+					this.props.getMainGroups(resp.data.groups)
+					break;
+				default:
 			}
-			else {
-				errorTitle = err.response.data;
-			}
+			console.log(`${this.props.path} 검색결과 . .. .`, resp.data);
+		}).catch(err => {
+			console.log(err);
+			let errorTitle, errorMessage;
+			// if(!err.response || !err.response.data) {
+				errorTitle = "서버와 연결할 수 없습니다";
+				errorMessage = "잠시후 다시 시도해 주세요...";
+			// }
+			// else {
+			// 	errorTitle = err.response.data;
+			// }
 			this.setState({
 				dialogOpen: true,
 				dialogIcon: 2,
@@ -104,34 +185,11 @@ class Filter extends Component {
 			});
 		})
 
-		if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
-			this.setState({optionFader: true, filtering: true});	//FIXME: Request SUCCESS시 실행하도록 옮길것
-	}
-	handleDelete = target => {
-		switch(target){
-			case "interest":
-				this.setState(state => ({filter: {...state.filter, interest: ""}}));
-				break;
-			case "sigu":
-				this.setState(state => ({filter: {...state.filter, si: "", gu: ""}}));
-				break;
-			case "gender":
-				this.setState(state => ({filter: {...state.filter, gender: "0"}}));
-				break;
-			case "age":
-				this.setState(state => ({filter: {...state.filter, minAge: 0, maxAge: 100}}));
-				break;
-			case "keyword":
-				this.setState(state => ({filter: {...state.filter, keyword: ""}}));
-				break;
-			default:
-		}
 		setTimeout(() => {
 			const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
 			if(!interest && !si && !gu && gender==="0" && !minAge && maxAge===100 && !keyword)
 				this.setState({optionFader: false});
 		}, 100);
-		// TODO: 필터 조건이 변경될떄마다 변경된 조건으로 AJAX
 	}
 	handleCancel = () => {
 		this.setState({optionFader: false});
@@ -147,6 +205,44 @@ class Filter extends Component {
 					maxAge: 100,
 					keyword: ""
 			}});
+
+			this.props.clearMainGroups();
+			this.props.clearMainUsers();
+
+
+			console.log("REQEQEQRQRRQRQRQRQ", `http://192.168.0.200:8080/${this.props.path}`, this.props.token )
+
+			Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
+				params: { token: this.props.token, page: 1 }
+			})
+			.then(resp => {
+				switch(this.props.path) {
+					case "users":
+						this.props.getMainUsers(resp.data.users)
+						break;
+					case "groups":
+						this.props.getMainGroups(resp.data.groups)
+						break;
+					default:
+				}
+				console.log(`${this.props.path} 검색결과 . .. .`, resp.data);
+			}).catch(err => {
+				console.log(err);
+				let errorTitle, errorMessage;
+				// if(!err.response || !err.response.data) {
+					errorTitle = "서버와 연결할 수 없습니다";
+					errorMessage = "잠시후 다시 시도해 주세요...";
+				// }
+				// else {
+					// errorTitle = err.response.data;
+				// }
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: errorTitle,
+					dialogContent: errorMessage
+				});
+			})
 		}, 100);
 		// TODO: 필터를 취소했으므로 기본 추천 유저들 재호출
 	}
@@ -161,10 +257,8 @@ class Filter extends Component {
 		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
 		const { keywordError, searchDisabled, filterExpanded, filtering, optionFader,
 				dialogOpen, dialogIcon, dialogTitle, dialogContent } = this.state;
-		console.log(this.state.filter);
-		console.log(dataGu[si]);
 		return (
-			<div style={{position:"absolute", top:"90px"}}>
+			<div style={{position:"absolute", top:"10px"}}>
 				<ExpansionPanel
 					onClick={this.expandFilter}
 					expanded={filterExpanded}
@@ -187,7 +281,7 @@ class Filter extends Component {
 								MenuProps={{
 									PaperProps: {
 									style: {
-									maxHeight: "800px",
+									maxHeight: "500px",
 									margin: "0 195px",
 									}}
 								}}
@@ -206,7 +300,7 @@ class Filter extends Component {
 								MenuProps={{
 									PaperProps: {
 									style: {
-									maxHeight: "800px",
+									maxHeight: "500px",
 									margin: "0 195px",
 									}}
 								}}
@@ -225,12 +319,12 @@ class Filter extends Component {
 								MenuProps={{
 									PaperProps: {
 									style: {
-									maxHeight: "800px",
+									maxHeight: "500px",
 									margin: "0 195px",
 									}}
 								}}
 								handleChange={this.handleChange}>
-								{_.map(dataGu[si], gu => <MenuItem value={gu.guCode} key={gu.guCode}>{gu.name}</MenuItem>)}
+								{_.map(dataGu[si], gu => <MenuItem value={gu.gucode} key={gu.gucode}>{gu.name}</MenuItem>)}
 							</Select>
 						</Grid>
 						<Grid item>
@@ -335,7 +429,10 @@ const mapStateToProps = (state) => ({
 	token: state.token,
 })
 const mapDispatchToProps = {
-
+	getMainUsers,
+	clearMainUsers,
+	getMainGroups,
+	clearMainGroups
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -49,7 +49,7 @@ class AmnesiaForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({findProcess: true});
-		Axios.get('http://192.168.0.23:8080/password', {
+		Axios.get('http://192.168.0.200:8080/password', {
 			params: { email: this.state.id }
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용

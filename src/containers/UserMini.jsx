@@ -52,8 +52,8 @@ export class UserMini extends Component {
 					<Grid item>
 						<LabelMini
 							icon={
-								!gender || gender==="0" ? <NanoMysteryIcon padding="0 0 6px 0"/> :
-								gender==="1" ? <NanoMarsIcon padding="0 0 1px 0"/> :
+								!gender || gender=="0" ? <NanoMysteryIcon padding="0 0 6px 0"/> :
+								gender=="1" ? <NanoMarsIcon padding="0 0 1px 0"/> :
 								<NanoVenusIcon padding="0 0 1px 0"/>}
 							label={nickName}
 						/>

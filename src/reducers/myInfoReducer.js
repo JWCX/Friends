@@ -3,8 +3,8 @@ import moment from 'moment';
 export default (myInfo = {
 	id: "",
 	nickName: "",
-	si: null,
-	gu: null,
+	si: 0,
+	gu: 0,
 	birth: null,
 	age: "",
 	gender: "0",
@@ -21,7 +21,7 @@ export default (myInfo = {
 	switch (action.type) {
 		case "USER_LOGGED_IN":
 		case "UPDATE_MY_INFO":
-		 	const birth = moment(action.myInfo.birth, "YYYY. M. D");
+			const birth = moment(action.myInfo.birth, "YYYY. M. D");
 			// return {...action.myInfo, birth};
 			return {...myInfo, ...action.myInfo, birth};
 		default:

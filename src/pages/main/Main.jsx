@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Grid } from '@material-ui/core';
+import SockJsClient from 'react-stomp';
 import styled from 'styled-components';
 
+import { receivedMessage, receivedNotification } from 'actions';
 import { AppBar,
-		Messenger
-	} from 'containers'; // FIXME: pages MUST IMPORT containers ONLY!! THIS IS FOR TESTING
-import { Board,
+		Messenger } from 'containers'; // FIXME: pages MUST IMPORT containers ONLY!! THIS IS FOR TESTING
+import {
+		Popular,
+		Board,
 		Users,
 		Groups,
 		Me,
@@ -19,19 +21,37 @@ const Container = styled.div`
 	width: 90vw;
 	margin-left: 5vw;
 `
-const Div = styled.div`
+const OuterContentContainer = styled.div`
 	/* background: rgba(255,0,0,0.1); */
-	margin: 2px 1px 0 2px;
-	flex-grow: ${props => props.grow};
+	position: relative;
+	height: 87vh;
+	overflow: auto;
+	width: 1000px;
+	margin: 15px 5px 0 5px;
+	border-radius: 10px;
+	padding: 10px;
+	/* flex-grow: ${props => props.grow}; */
 	transition: flex-grow 300ms linear;
+	box-shadow: 0 1px 10px -1px rgb(120,120,120);
 `
-
+const OuterChatContainer = styled.div`
+	/* background: rgba(255,0,0,0.1); */
+	position: relative;
+	height: 87vh;
+	width: 460px;
+	margin: 15px 5px 0 5px;
+	border-radius: 10px;
+	/* flex-grow: ${props => props.grow}; */
+	padding: 0 2px;
+	transition: flex-grow 300ms linear;
+	box-shadow: 0 1px 10px -1px rgb(120,120,120);
+`
 class Main extends Component {
 	state = {
 		index: 0,	// 현재 Tab의 index. 0:Main, 1:Board, 2:Users, 3:Group
 		openMessenger: false,	// true시 메신저 활성화
 		left: 10,
-		right: 0.1
+		right: 0.0000001,
 	}
 
 	componentDidMount() {
@@ -64,30 +84,58 @@ class Main extends Component {
 			this.setState({
 				openMessenger: false,
 				left: 10,
-				right: 0.001,
+				right: 0.0000001,
 			});
 		else
 			this.setState({
 				openMessenger: true,
 				left: 10,
-				right:3
+				right:5
 			});
 	}
+	onMessageReceive = (msg, topic) => {
+		console.log("MSG RECEIVED!!", msg);
+		console.log("MSG RECEIVED!!", topic);
+		switch(msg.type) {
+			case "message":
+				this.props.receivedMessage(this.props.messages, {[msg.message.messageid]: msg.message});
+				break;
+			case "notification":
+				console.log("CURRENT NOTIFI : ", this.props.notifications)
+				console.log("NEXT NOTIFI : ", {[msg.notification.notification]: msg.notification})
+				this.props.receivedNotification(this.props.notifications, {[msg.notification.notification]: msg.notification});
+				break;
+			default: console.log("RECIEVED UNKNOWN MESSAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		}
+	}
+	sendMessage = data => {
+		this.clientRef.sendMessage("/app/message", JSON.stringify(data));
+	}
+
 	render() {
-		const { index, openMessenger, left, right } = this.state;
-		const { me } = this.props;
+		console.log("NOTIFIIIIIIIIIIIIIIIIIIIIIIIIIIIIIC", this.props.notifications);
+		const { index, openMessenger } = this.state;
+		const { me, token } = this.props;
 		return (
 			<React.Fragment>
 				<Route path="(/|/board|/users|/groups|/me|/group)" render={() =>
-					<AppBar
-						position="sticky"
-						index={index}
-						handleChangeTab={this.handleChangeTab}
-						handleToggleMessenger={this.handleToggleMessenger}
-						/>
-				}/>
+					<React.Fragment>
+						<SockJsClient
+							url="http://192.168.0.200:8080/chat"
+							topics={[`/topic/${token}`]}
+							onMessage={this.onMessageReceive}
+							onConnect={ () => console.log("CONNECTTTA") }
+							subscribeHeaders
+							ref={client => this.clientRef = client}/>
+						<AppBar
+							position="sticky"
+							index={index}
+							handleChangeTab={this.handleChangeTab}
+							handleToggleMessenger={this.handleToggleMessenger}/>
+					</React.Fragment>
+					}/>
 				<Container>
-					<Div grow={left}>
+					<OuterContentContainer>
 						<Switch>
 							<Route path="/board" render={() =>
 								<Board/>
@@ -99,15 +147,15 @@ class Main extends Component {
 								<Groups/>
 							}/>
 							<Route path="/" render={() =>
-								[1,2,3,4,5,6,7,8,9,10,
-								11,12,13,14,15,16,17,18,19,20,
-								21,22,23,24,25,26,27,28,29,30].map(x => <h1 key={x}>메인페이지{x}</h1>)
+								<Popular/>
 							}/>
 						</Switch>
-					</Div>
-					<Div grow={right}>
-						<Messenger open={openMessenger}/>
-					</Div>
+					</OuterContentContainer>
+					<OuterChatContainer>
+						<Messenger open={openMessenger}
+							sendMessage={this.sendMessage}
+							onMessageReceive={this.onMessageReceive}/>
+					</OuterChatContainer>
 				</Container>
 				<Route path="(|/board|/users|/groups)/me/:id" render={() =>
 					<Me
@@ -122,8 +170,13 @@ class Main extends Component {
 
 const mapStateToProps = state => ({
 	me: state.me,
+	messages: state.messages,
+	notifications: state.notifications,
+	token: state.token
 })
 const mapDispatchToProps = {
+	receivedMessage,
+	receivedNotification
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

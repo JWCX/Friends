@@ -97,7 +97,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({loginProcess: true});
-		Axios.post('http://192.168.0.23:8080/login', {
+		Axios.post('http://192.168.0.200:8080/login', {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -107,11 +107,15 @@ class JoinForm extends React.Component {
 				dataSi: resp.data.dataSi,
 				dataGu: resp.data.dataGu,
 				token: resp.data.token,
-				myInfo: {...resp.data.myInfo},
+				myInfo: resp.data.myInfo,
+				myFriends: resp.data.myFriends || null,
+				contacts: resp.data.contacts || null,
+				messages: resp.data.messages || null,
+				notifications: resp.data.notifications || null,
 			});
 			this.handleRedirect("/");
 		}).catch(err => {
-			console.log(err.response);	// FIXME: REMOVE
+			console.log(err);	// FIXME: REMOVE
 			let errorTitle, errorMessage;
 			if(!err.response || !err.response.data) {
 				errorTitle = "서버와 연결할 수 없습니다";
@@ -134,7 +138,7 @@ class JoinForm extends React.Component {
 		this.handleRedirect(url);
 	}
 	handleSocialClick = type => {
-		window.open(`http://192.168.0.23:8080/login?name=${type}`);
+		window.open(`http://192.168.0.200:8080/login?name=${type}`);
 	}
 	handleDialogClose = () => {		// Dialog 닫기시 호출 이벤트
 		this.setState({ dialogOpen: false,

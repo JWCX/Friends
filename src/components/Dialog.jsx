@@ -25,15 +25,17 @@ const styles = {
 
 class Dialog extends React.Component {
 	shouldComponentUpdate(nextProps) {
-		if(this.props.open !== nextProps.oepn)
+		if(this.props.open !== nextProps.open ||
+			this.props.title !== nextProps.title ||
+			this.props.content !== nextProps.content ||
+			this.props.icon !== nextProps.icon)
 			return true;
 		else return false;
 	}
 	handleClose = () => {
 		if(this.props.redirect)
 			setTimeout(() => this.props.history.push(this.props.redirect), 0);
-		else
-			this.props.onClose();
+		this.props.onClose();
 	}
 	render() {	// Dialog icon은 각각 0:none, 1:success(v), 2:failed(x)
 		const { classes, onClose, title, content, disableBackdrop, icon, open } = this.props;

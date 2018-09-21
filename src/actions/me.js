@@ -4,6 +4,10 @@ export const openMePage = data => ({
 	meFriends: data.friends,
 	meGroups: data.groups
 });
+export const updateMePage = me => ({
+	type: "UPDATE_ME_PAGE",
+	me: me,
+});
 export const closeMePage = () => ({
 	type: "CLOSE_ME_PAGE",
 	me: null,

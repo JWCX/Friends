@@ -6,6 +6,7 @@ export default props => {
 	return (
 		<IconButton
 			onClick={props.onClick}
+			disabled={props.disabled}
 			style={{
 				verticalAlign: "top",
 				top: "50%",
