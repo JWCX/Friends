@@ -12,11 +12,11 @@ import UserContact from './UserContact';
 
 import AppBar from './AppBar';
 import Filter from './Filter';
-import Group from './Group';
 import UserTiny from './UserTiny';
 import UserMini from './UserMini';
 import UserLarge from './UserLarge';
 import GroupMini from './GroupMini';
+import GroupLarge from './GroupLarge';
 
 import MeInfo from './MeInfo';
 import MeMore from './MeMore';
@@ -39,11 +39,11 @@ export {
 
 	AppBar,
 	Filter,
-	Group,
 	UserTiny,
 	UserMini,
 	UserLarge,
 	GroupMini,
+	GroupLarge,
 
 	MeInfo,
 	MeMore,

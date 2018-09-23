@@ -11,7 +11,7 @@ import { NanoMarsIcon,
 	NanoMapIcon,
 } from 'components/AppBarIcons';
 import { InterestChip } from 'components/Chips';
-import { LargeUserAvatar } from 'components/Avatars';
+import { LargeGroupAvatar } from 'components/Avatars';
 import { LabelMini } from 'components';
 
 const StyledCard = styled(Card)`
@@ -19,17 +19,16 @@ const StyledCard = styled(Card)`
 	/* min-width: 400px;
 	width: 100%; */
 	padding: 5px 0;
-	margin: 5px;
-	transition: all .2s ease-in-out;
+	/* margin: 5px; */
+	transition: all .1s ease-in-out;
 	cursor: pointer;
 	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
 	&:hover {
 		box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.3), 0px 2px 5px 0px rgba(0, 0, 0, 0.2), 0px 3px 4px -2px rgba(0, 0, 0, 0.15);
-		background: rgb(200,230,255);
 	}
 `
 
-export class UserLarge extends Component {
+export class GroupLarge extends Component {
 	shouldComponentUpdate(nextProps) {
 		if(this.props.nickName !== nextProps.nickName)
 			return true;
@@ -45,49 +44,38 @@ export class UserLarge extends Component {
 		const gu = dataGu[this.props.si] ? dataGu[this.props.si][this.props.gu] ? dataGu[this.props.si][this.props.gu].name : "" : "";
 		const interests =  this.props.interests && this.props.interests.length ? this.props.interests.map(interest => dataInterest[interest].name) : [];
 		return (
-			<StyledCard
-				style={{borderRadius: "10px"}}
-				onClick={this.handleClick}>
+			<StyledCard onClick={this.handleClick}>
 				<Grid container
 					direction="row"
-					justify="space-around"
+					justify="flex-start"
 					alignItems="center"
 					wrap="nowrap"
 					spacing={8}>
 					<Grid item>
-						<LargeUserAvatar
+						<LargeGroupAvatar
 							src={image}/>
 					</Grid>
-					<Grid item container
-						direction="column"
-						justify="center"
-						alignItems="flex-start"
-						wrap="nowrap"
-						spacing={0}>
-						<Grid item style={{padding: "3px 15px 3px 0"}}>
+					<Grid item>
+						{/* <Grid item>
 							<LabelMini
-								icon={
-									!gender || gender=="0" ? <NanoMysteryIcon padding="0 0 6px 0"/> :
-									gender=="1" ? <NanoMarsIcon padding="0 0 1px 0"/> :
-									<NanoVenusIcon padding="0 0 1px 0"/>}
 								label={<React.Fragment>
 											{nickName}
 											<span style={{color:"rgb(120,120,120)", fontSize:"0.8em"}}>
 												&nbsp;( {!age ? <NanoMysteryIcon padding="0 0 3px 0"/> : age} )
 											</span>
-										</React.Fragment>}
 								/>
 						</Grid>
-						<Grid item style={{padding: "3px 15px 3px 0"}}>
+						<Grid item>
 							<LabelMini
-								icon={ <NanoStarIcon fill="#ffdab3"/> }
+								icon={ <NanoStarIcon fill="#ffdb4d"/> }
+								width="270px"
 								label={ interests.map((interest,i) => <InterestChip key={i} label={interest}/>) }/>
 						</Grid>
-						<Grid item style={{padding: "3px 15px 3px 0"}}>
+						<Grid item>
 							<LabelMini
-								icon={ <NanoMapIcon fill="#bbff99"/> }
+								icon={ <NanoMapIcon fill="#47d147"/> }
 								label={ `${si} ${gu}` }/>
-						</Grid>
+						</Grid> */}
 					</Grid>
 				</Grid>
 			</StyledCard>
@@ -105,4 +93,4 @@ const mapDispatchToProps = {
 
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserLarge));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupLarge));

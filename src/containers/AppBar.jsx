@@ -15,7 +15,11 @@ import { withStyles } from '@material-ui/core/styles';
 import { getMainUsers,
 	clearMainUsers,
 	getMainGroups,
-	clearMainGroups } from 'actions';
+	clearMainGroups,
+	clearFilter,
+	setFiltering,
+	setNextPageNum,
+	setHasMorePages } from 'actions';
 import { Dialog, DialogFriendRequests } from 'components';
 import { NumberBadge } from 'components/Badges';
 import { LogoIcon,
@@ -69,6 +73,11 @@ class MyAppBar extends Component {
 	getSuggested = path => {
 		this.props.clearMainGroups();
 		this.props.clearMainUsers();
+		this.props.clearFilter();
+		this.props.setFiltering(false);
+		this.props.setNextPageNum(1);
+		this.props.setHasMorePages(true);
+
 
 		if(path === "groups")	// TODO: REMOVE THIS AFTER GROUPS IS DONE
 			return;
@@ -213,6 +222,10 @@ const mapDispatchToProps = {
 	getMainUsers,
 	clearMainUsers,
 	getMainGroups,
-	clearMainGroups
+	clearMainGroups,
+	clearFilter,
+	setFiltering,
+	setNextPageNum,
+	setHasMorePages
 }
 export default  withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(MyAppBar)));

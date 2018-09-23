@@ -31,6 +31,11 @@ import Slider from './Slider';
 import ZoomSlider from './ZoomSlider';
 import ExpansionFriendRequest from './ExpansionFriendRequest';
 import ExpansionPanel from './ExpansionPanel';
+
+import ExpansionPost from './ExpansionPost';
+import PostHeader from './PostHeader';
+import PostContent from './PostContent';
+
 import DateTimePicker from './DateTimePicker';
 import Label from './Label';
 import LabelMini from './LabelMini';
@@ -76,6 +81,11 @@ export {
 	ZoomSlider,
 	ExpansionFriendRequest,
 	ExpansionPanel,
+
+	ExpansionPost,
+	PostHeader,
+	PostContent,
+
 	DateTimePicker,
 	Label,
 	LabelMini,

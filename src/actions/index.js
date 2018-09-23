@@ -10,6 +10,8 @@ import {
 	clearMeGroups
 } from './me';
 import {
+	setNextPageNum,
+	setHasMorePages,
 	getMainUsers,
 	updateMainUsers,
 	clearMainUsers,
@@ -28,6 +30,11 @@ import {
 import {
 	updateMyFriends
 } from './myFriends';
+import {
+	updateFilter,
+	clearFilter,
+	setFiltering
+} from './filter';
 
 export {
 	userLoggedIn,
@@ -41,6 +48,8 @@ export {
 	clearMeFriends,
 	clearMeGroups,
 
+	setNextPageNum,
+	setHasMorePages,
 	getMainUsers,
 	updateMainUsers,
 	clearMainUsers,
@@ -54,5 +63,9 @@ export {
 	receivedNotification,
 	removeNotification,
 
-	updateMyFriends
+	updateMyFriends,
+
+	updateFilter,
+	clearFilter,
+	setFiltering
 }

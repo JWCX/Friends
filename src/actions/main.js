@@ -1,3 +1,12 @@
+export const setNextPageNum = nextPageNum => ({
+	type: "SET_NEXT_PAGE_NUM",
+	nextPageNum
+})
+export const setHasMorePages = hasMorePages => ({
+	type: "SET_HAS_MORE_PAGES",
+	hasMorePages
+})
+
 export const getMainUsers = users => ({
 	type: "GET_MAIN_USERS",
 	mainUsers: users

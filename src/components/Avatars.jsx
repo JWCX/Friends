@@ -40,7 +40,8 @@ export const LargeUserAvatar = ({alt, src}) => {
 			src={src || defaultImage}
 			width="100px"
 			height="100px"
-			margin="10px 0 10px 20px"/>
+			margin="10px 0 10px 15px"
+			/>
 	)
 }
 export const SmallGroupAvatar = ({alt, src}) => {
@@ -50,5 +51,14 @@ export const SmallGroupAvatar = ({alt, src}) => {
 			src={src}
 			width="50px"
 			height="50px"/>
+	)
+}
+export const LargeGroupAvatar = ({alt, src}) => {
+	return (
+		<GroupAvatar
+			// alt={alt}
+			src={src}
+			width="200px"
+			height="200px"/>
 	)
 }

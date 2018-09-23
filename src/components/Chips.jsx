@@ -19,7 +19,7 @@ const styles = {
 
 	interestChip: {
 		margin: "2px 4px",
-		background: "linear-gradient(#ffff99 5%, #ffb380 300%)",
+		background: "linear-gradient(#fff2e6 5%, #ffff1a 300%)",
 		boxShadow: "0 2px 7px -2px rgba(80,80,80,0.3)",
 		borderRadius: "10px",
 		height:"25px",

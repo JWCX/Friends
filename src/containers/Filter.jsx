@@ -7,7 +7,10 @@ import { MenuItem, Grid, Paper, Fade } from '@material-ui/core';
 import { getMainUsers,
 		clearMainUsers,
 		getMainGroups,
-		clearMainGroups
+		clearMainGroups,
+		updateFilter,
+		clearFilter,
+		setFiltering
 	} from 'actions';
 import { Select,
 		RadioGroup,
@@ -29,18 +32,18 @@ import { BlueChip } from 'components/Chips';
 
 class Filter extends Component {
 	state = {
-		filter: {
-			interest: "",
-			si: "",
-			gu: "",
-			gender: "0",
-			minAge: 0,
-			maxAge: 100,
-			keyword: "",
-		},
+		// filter: {
+		// 	interest: "",
+		// 	si: "",
+		// 	gu: "",
+		// 	gender: "0",
+		// 	minAge: 0,
+		// 	maxAge: 100,
+		// 	keyword: "",
+		// },
 		keywordError: false,
 		searchDisabled: false,
-		filtering: false,		// 현재 필터검색이 적용중이면 true
+		// filtering: false,		// 현재 필터검색이 적용중이면 true
 		optionFader: false, 	/// 필터 목록창의 fade 효과를 주기 위한 변수
 		filterExpanded: false,
 		dialogOpen: false,
@@ -52,7 +55,6 @@ class Filter extends Component {
 	t_cancelFilter = null;
 
 	componentDidMount() {
-		// TODO: 추천 유저, 그룹 데이터를 읽어오도록 함
 	}
 	expandFilter = () => {
 		this.setState(state => ({filterExpanded: !state.filterExpanded, optionFader: false}));
@@ -61,43 +63,46 @@ class Filter extends Component {
 		const {id, name, value} = target;
 		if(id === "search") {
 			clearTimeout(this.t_checkKeyword);
-			this.setState(state => ({filter: {...state.filter, keyword: value}, keywordError: false, searchDisabled: false}));
+			this.props.updateFilter({keyword: value}, this.props.filter);
+			this.setState({keywordError: false, searchDisabled: false});
 			if(/[^0-9가-힣a-zA-Z\s]/.test(value)) {		// 특수문자 검색불가
 				this.setState({searchDisabled: true});
 				this.t_checkKeyword = setTimeout(() => {
-					return this.setState(state => ({filter: {...state.filter, keyword: value}, keywordError: true}));
+					this.props.updateFilter({keyword: value}, this.props.filter);
+					this.setState({keywordError: true});
 				}, 500);
 			}
 		} else {
 			switch(name){
 				case "si":
-				return this.setState(state => ({filter: {...state.filter, si: value, gu: ""}}));
+				return this.props.updateFilter({si: value, gu: ""}, this.props.filter);
 				default:
-				return this.setState(state => ({filter: {...state.filter, [name]: value}}));
+				return this.props.updateFilter({[name]: value}, this.props.filter);
 			}
 		}
 	}
 	handleSlider = (values, e) => {
-		this.setState(state => ({filter: {...state.filter, minAge: parseInt(values[0], 10), maxAge: parseInt(values[1], 10)}}));
+		this.props.updateFilter({minAge: parseInt(values[0], 10), maxAge: parseInt(values[1], 10)}, this.props.filter);
 	}
 	handleFilter = () => {
 		this.setState({filterExpanded: false});
 
 		this.props.clearMainGroups();
 		this.props.clearMainUsers();
-		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
+		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.props.filter;
 		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
 			params: { token: this.props.token, filter: true, page: 1,
 					interest, si, gu, gender, minAge, maxAge, keyword }
 		})
 		.then(resp => {
 			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
-			this.setState({optionFader: true, filtering: true});
+			this.setState({optionFader: true});
+			this.props.setFiltering(true);
 			switch(this.props.path) {
 				case "users":
-				this.props.getMainUsers(resp.data.users)
+					this.props.getMainUsers(resp.data.users)
 					break;
-					case "groups":
+				case "groups":
 					this.props.getMainGroups(resp.data.groups)
 					break;
 				default:
@@ -121,52 +126,54 @@ class Filter extends Component {
 		})
 	}
 	handleDelete = target => {
-		let filter = {...this.state.filter};
+		let filter = {...this.props.filter};
 		switch(target){
 			case "interest":
-				this.setState(state => ({filter: {...state.filter, interest: ""}}));
+				// this.setState(state => ({filter: {...state.filter, interest: ""}}));
 				filter = {...filter, interest: ""};
 				break;
 			case "sigu":
-				this.setState(state => ({filter: {...state.filter, si: "", gu: ""}}));
+				// this.setState(state => ({filter: {...state.filter, si: "", gu: ""}}));
 				filter = {...filter, si: "", gu: ""};
 				break;
 			case "gender":
-				this.setState(state => ({filter: {...state.filter, gender: "0"}}));
+				// this.setState(state => ({filter: {...state.filter, gender: "0"}}));
 				filter = {...filter, gender: "0"};
 				break;
 			case "age":
-				this.setState(state => ({filter: {...state.filter, minAge: 0, maxAge: 100}}));
+				// this.setState(state => ({filter: {...state.filter, minAge: 0, maxAge: 100}}));
 				filter = {...filter, minAge: 0, maxAge: 100};
 				break;
 			case "keyword":
-				this.setState(state => ({filter: {...state.filter, keyword: ""}}));
+				// this.setState(state => ({filter: {...state.filter, keyword: ""}}));
 				filter = {...filter, keyword: ""};
 				break;
 			default:
 		}
 
+		this.props.updateFilter(filter);
 		this.props.clearMainGroups();
 		this.props.clearMainUsers();
 
 		const { interest, si, gu, gender, minAge, maxAge, keyword } = filter;
-		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
-			params: { token: this.props.token, filter: true, page: 1,
-					interest, si, gu, gender, minAge, maxAge, keyword }
-		})
+		const params = interest==="" && si==="" && gender==="0" && minAge===0 && maxAge===100 && keyword==="" ?
+			{ token: this.props.token, filter: false, page: 1}
+			: { token: this.props.token, filter: true, page: 1,	interest, si, gu, gender, minAge, maxAge, keyword };
+
+		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, { params })
 		.then(resp => {
 			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
-			this.setState({optionFader: true, filtering: true});
+			this.setState({optionFader: true});
+			this.props.setFiltering(true);
 			switch(this.props.path) {
 				case "users":
-				this.props.getMainUsers(resp.data.users)
+					this.props.getMainUsers(resp.data.users)
 					break;
-					case "groups":
+				case "groups":
 					this.props.getMainGroups(resp.data.groups)
 					break;
 				default:
 			}
-			console.log(`${this.props.path} 검색결과 . .. .`, resp.data);
 		}).catch(err => {
 			console.log(err);
 			let errorTitle, errorMessage;
@@ -186,7 +193,7 @@ class Filter extends Component {
 		})
 
 		setTimeout(() => {
-			const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
+			const { interest, si, gu, gender, minAge, maxAge, keyword } = this.props.filter;
 			if(!interest && !si && !gu && gender==="0" && !minAge && maxAge===100 && !keyword)
 				this.setState({optionFader: false});
 		}, 100);
@@ -195,24 +202,12 @@ class Filter extends Component {
 		this.setState({optionFader: false});
 		clearTimeout(this.t_cancelFilter);
 		this.t_cancelFilter = setTimeout(() => {
-			this.setState({filtering: false,
-				filter: {
-					interest: "",
-					si: "",
-					gu: "",
-					gender: "0",
-					minAge: 0,
-					maxAge: 100,
-					keyword: ""
-			}});
-
+			this.props.setFiltering(false);
+			this.props.clearFilter();
 			this.props.clearMainGroups();
 			this.props.clearMainUsers();
 
-
-			console.log("REQEQEQRQRRQRQRQRQ", `http://192.168.0.200:8080/${this.props.path}`, this.props.token )
-
-			Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
+			Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {		// 필터를 취소했으므로 기본 추천 유저들 재호출
 				params: { token: this.props.token, page: 1 }
 			})
 			.then(resp => {
@@ -225,7 +220,6 @@ class Filter extends Component {
 						break;
 					default:
 				}
-				console.log(`${this.props.path} 검색결과 . .. .`, resp.data);
 			}).catch(err => {
 				console.log(err);
 				let errorTitle, errorMessage;
@@ -244,7 +238,6 @@ class Filter extends Component {
 				});
 			})
 		}, 100);
-		// TODO: 필터를 취소했으므로 기본 추천 유저들 재호출
 	}
 	handleDialogClose = () => {
 		this.setState({ dialogOpen: false,
@@ -253,9 +246,9 @@ class Filter extends Component {
 			dialogContent:"" });
 	};
 	render() {
-		const { dataInterest, dataSi, dataGu, token, children } = this.props;
-		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.state.filter;
-		const { keywordError, searchDisabled, filterExpanded, filtering, optionFader,
+		const { filtering, dataInterest, dataSi, dataGu, children } = this.props;
+		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.props.filter;
+		const { keywordError, searchDisabled, filterExpanded, optionFader,
 				dialogOpen, dialogIcon, dialogTitle, dialogContent } = this.state;
 		return (
 			<div style={{position:"absolute", top:"10px"}}>
@@ -423,6 +416,8 @@ class Filter extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	filter: state.filter,
+	filtering: state.filtering,
 	dataInterest: state.dataInterest,
 	dataSi: state.dataSi,
 	dataGu: state.dataGu,
@@ -432,7 +427,10 @@ const mapDispatchToProps = {
 	getMainUsers,
 	clearMainUsers,
 	getMainGroups,
-	clearMainGroups
+	clearMainGroups,
+	updateFilter,
+	clearFilter,
+	setFiltering
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

@@ -20,6 +20,12 @@ import messages from './messagesReducer';
 
 import notifications from './notificationsReducer';
 
+import filter from './filterReducer';
+import filtering from './filteringReducer';
+
+import nextPageNum from './nextPageNumReducer';
+import hasMorePages from './hasMorePagesReducer';
+
 export default combineReducers({
 	dataInterest, 	// 관심사 데이터
 	dataSi, 	// 시 데이터
@@ -36,8 +42,14 @@ export default combineReducers({
 	mainUsers,	// 메인페이지 유저 추천/검색목록 리스트
 	mainGroups, // 메인페이지 그룹 추천/검색목록 리스트
 
+	nextPageNum, 	// 다음 AJAX요청시 받아와야 할 메인페이지 컨텐츠의 페이지 번호
+	hasMorePages,	// 메인페이지 컨텐츠 관련 DB에 더 읽어올 정보가 있는지 여부
+
 	contacts, // 메신저 리스트
 	messages, // 메세지 리스트
 
-	notifications,
+	notifications,	// 알림 리스트
+
+	filter,	// 필터 옵션
+	filtering, // 현재 출력값에 필터링을 적용 한 것인지 여부(true=필터링, false=추천친구||그룹)
 });

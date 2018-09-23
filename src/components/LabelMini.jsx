@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const StyledLabel = styled.div`
-		background: ${props => props.lock ? " rgb(235,235,235)" : "linear-gradient(180deg, #FFFFFF 30%, #FFFFFF 300%)"};
 		padding: 0 5px;
-		overflow-wrap: break-word;
+		/* overflow-wrap: break-word; */
+
+		text-overflow: clip;
+		display: flex;
+		flex-wrap: nowrap;
 		overflow: hidden;
 `
 
@@ -16,7 +19,8 @@ export class LabelMini extends Component {
 				<div style={{display:"inline-block", verticalAlign: "middle", width:"25px"}}>
 					{icon}
 				</div>
-				<div style={{display:"inline-block", fontSize:"0.9em", verticalAlign: "middle", width: width ? width : "185px"}}>
+				{/* <div style={{display:"inline-block", fontSize:"0.9em", verticalAlign: "middle", width: width ? width : "185px"}}> */}
+				<div style={{display:"inline-block", fontSize:"0.9em", verticalAlign: "middle"}}>
 					{label}
 				</div>
 			</StyledLabel>

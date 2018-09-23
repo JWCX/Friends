@@ -44,7 +44,6 @@ class ImageUploader extends Component {
 		this.setState({process: true});
 		if (this.editor) {
 			this.editor.getImage().toBlob( blob =>{
-				console.log("BLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL", blob);
 				const reader = new FileReader();
 				reader.readAsDataURL(blob);
 				reader.addEventListener('load', () => {
@@ -79,9 +78,8 @@ class ImageUploader extends Component {
 	setEditorRef = (editor) => this.editor = editor
 
 	render() {
-		console.log("state..", this.state);
 		const { classes, open, closeImageUploader } = this.props;
-		 const { showImage, editing, process, imageCompressingProcess,
+		const { showImage, editing, process, imageCompressingProcess,
 			src, rejected, zoomLevel } = this.state;
 		return (
 			<MuiDialog

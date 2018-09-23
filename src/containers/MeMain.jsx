@@ -247,6 +247,7 @@ class MeMain extends Component {
 		const gu = me && dataGu[me.si] ? dataGu[me.si][me.gu] ? dataGu[me.si][me.gu].name : "" : "";
 		const interests = me && me.interests.length ? me.interests.map(interest => dataInterest[interest].name) : [];
 		const images = me && me.images.length ? me.images : [];
+
 		return (
 			<Fade in={me} timeout={{enter: 500, exit: 500}}>
 				<Grid container
@@ -277,13 +278,13 @@ class MeMain extends Component {
 						</Grid>
 						<Grid item>		{/* 관심사 리스트 */}
 							<Label
-								icon={<NanoStarIcon fill="#ffdb4d"/>}
+								icon={<NanoStarIcon fill="#ffe699"/>}
 								label={ interests.map( (interest,i) => <InterestChip key={i} label={interest}/>) }/>
 						</Grid>
 						<Grid item>		{/* 지역(시, 구) */}
 							<Label
 								lock={areayn}
-								icon={<NanoMapIcon fill="#47d147"/>}
+								icon={<NanoMapIcon fill="#bbff99"/>}
 								label={`${si} ${gu}`}
 								/>
 						</Grid>

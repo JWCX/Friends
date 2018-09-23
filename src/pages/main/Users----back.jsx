@@ -130,7 +130,19 @@ export class Users extends Component {
 		const users = [];
 		_.filter(this.users, (user, i) => 20*(this.props.nextPageNum-1) < i && i <=20*this.props.nextPageNum)
 			.map( user =>
-				users.push(user)
+				users.push(
+					<Grid item style={{width: "50%", minWidth: "390px"}}>
+						<UserLarge key={user.id}
+							id={user.id}
+							nickName={user.nickName}
+							image={user.image}
+							age={user.age}
+							si={user.si}
+							gu={user.gu}
+							interests={user.interests}
+							gender={user.gender}/>
+					</Grid>
+				)
 			)
 		this.setState({users});
 		this.props.setNextPageNum(this.props.nextPageNum+1);
@@ -187,7 +199,19 @@ export class Users extends Component {
 										const users = [...this.state.users];
 										_.filter(this.users, (user, i) => 20*(this.props.nextPageNum-1) < i && i <=20*this.props.nextPageNum)
 											.map( user =>
-												users.push(user)
+												users.push(
+													<Grid item style={{width: "50%", minWidth: "390px"}}>
+														<UserLarge key={user.id}
+															id={user.id}
+															nickName={user.nickName}
+															image={user.image}
+															age={user.age}
+															si={user.si}
+															gu={user.gu}
+															interests={user.interests}
+															gender={user.gender}/>
+													</Grid>
+												)
 											)
 										this.setState({users, loadingContents: false});
 										this.props.setNextPageNum(this.props.nextPageNum+1);
@@ -230,21 +254,7 @@ export class Users extends Component {
 						alignItems="center"
 						spacing={0}>
 						{
-							// _.map(users, (user =>
-								users.map(user =>
-									<Grid item style={{width: "50%", minWidth: "390px"}}>
-										<UserLarge key={user.id}
-											id={user.id}
-											nickName={user.nickName}
-											image={user.image}
-											age={user.age}
-											si={user.si}
-											gu={user.gu}
-											interests={user.interests}
-											gender={user.gender}/>
-									</Grid>
-								)
-							// )
+							users
 						}
 						{
 							hasMorePages &&
