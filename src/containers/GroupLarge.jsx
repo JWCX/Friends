@@ -4,11 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { NanoMarsIcon,
-	NanoVenusIcon,
-	NanoMysteryIcon,
+import { NanoCakeIcon,
 	NanoStarIcon,
 	NanoMapIcon,
+	NanoCrownIcon,
+	NanoGroupNameIcon,
+	NanoMegaphoneIcon
 } from 'components/AppBarIcons';
 import { InterestChip } from 'components/Chips';
 import { LargeGroupAvatar } from 'components/Avatars';
@@ -19,12 +20,13 @@ const StyledCard = styled(Card)`
 	/* min-width: 400px;
 	width: 100%; */
 	padding: 5px 0;
-	/* margin: 5px; */
-	transition: all .1s ease-in-out;
+	margin: 5px;
+	transition: all .2s ease-in-out;
 	cursor: pointer;
 	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
 	&:hover {
 		box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.3), 0px 2px 5px 0px rgba(0, 0, 0, 0.2), 0px 3px 4px -2px rgba(0, 0, 0, 0.15);
+		background: rgb(200,230,255);
 	}
 `
 
@@ -35,19 +37,34 @@ export class GroupLarge extends Component {
 		return false;
 	}
 	handleClick = () => {
-		this.props.history.push(`${this.props.match.path}/me/${this.props.id}`);
+		this.props.history.push(`${this.props.match.path}/group/${this.props.id}`);
 	}
 	render() {
-		const { dataSi, dataGu, dataInterest,
-			 gender, nickName, age, image } = this.props;
-		const si = dataSi[this.props.si] ? dataSi[this.props.si].name : "";
-		const gu = dataGu[this.props.si] ? dataGu[this.props.si][this.props.gu] ? dataGu[this.props.si][this.props.gu].name : "" : "";
+		const {
+			// dataSi,
+			// dataGu,
+			// master,
+			// age,
+			// estDate,
+			// gender,
+			dataInterest,
+			groupName,
+			image,
+			memberCnt,
+			maxMember,
+			intro,
+		} = this.props;
+
+		// const si = dataSi[this.props.si] ? dataSi[this.props.si].name : "";
+		// const gu = dataGu[this.props.si] ? dataGu[this.props.si][this.props.gu] ? dataGu[this.props.si][this.props.gu].name : "" : "";
 		const interests =  this.props.interests && this.props.interests.length ? this.props.interests.map(interest => dataInterest[interest].name) : [];
 		return (
-			<StyledCard onClick={this.handleClick}>
+			<StyledCard
+				style={{borderRadius: "10px"}}
+				onClick={this.handleClick}>
 				<Grid container
 					direction="row"
-					justify="flex-start"
+					justify="space-around"
 					alignItems="center"
 					wrap="nowrap"
 					spacing={8}>
@@ -55,27 +72,46 @@ export class GroupLarge extends Component {
 						<LargeGroupAvatar
 							src={image}/>
 					</Grid>
-					<Grid item>
-						{/* <Grid item>
+					<Grid item container
+						direction="column"
+						justify="center"
+						alignItems="flex-start"
+						wrap="nowrap"
+						spacing={0}>
+						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								label={<React.Fragment>
-											{nickName}
-											<span style={{color:"rgb(120,120,120)", fontSize:"0.8em"}}>
-												&nbsp;( {!age ? <NanoMysteryIcon padding="0 0 3px 0"/> : age} )
-											</span>
+								icon={ <NanoGroupNameIcon fill="#9966ff"/> }
+								label={
+									<React.Fragment>
+										{groupName}
+										<span style={{color:"rgb(120,120,120)", fontSize:"0.8em"}}>
+											&nbsp;({memberCnt}/{maxMember})
+										</span>
+									</React.Fragment>
+								}/>
+						</Grid>
+						{/* <Grid item style={{padding: "3px 15px 3px 0"}}>
+							<LabelMini
+								icon={ <NanoCrownIcon fill="#ffa64d"/> }
+								label={master}/>
+						</Grid> */}
+						<Grid item style={{padding: "3px 15px 3px 0"}}>
+							<LabelMini
+								icon={ <NanoStarIcon fill="#ffd633"/> }
+								// width="270px"
+								label={ interests.map((interest,i) => <InterestChip key={i} label={interest} height="21px"/>) }
 								/>
 						</Grid>
-						<Grid item>
+						{/* <Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								icon={ <NanoStarIcon fill="#ffdb4d"/> }
-								width="270px"
-								label={ interests.map((interest,i) => <InterestChip key={i} label={interest}/>) }/>
-						</Grid>
-						<Grid item>
-							<LabelMini
-								icon={ <NanoMapIcon fill="#47d147"/> }
+								icon={ <NanoMapIcon fill="#a6ff4d"/> }
 								label={ `${si} ${gu}` }/>
 						</Grid> */}
+						<Grid item style={{padding: "3px 15px 3px 0"}}>
+							<LabelMini
+								icon={ <NanoMegaphoneIcon fill="#33adff"/> }
+								label={intro}/>
+						</Grid>
 					</Grid>
 				</Grid>
 			</StyledCard>

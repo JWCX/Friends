@@ -29,7 +29,7 @@ const NanoIconWrapper = styled.div`
 	display: inline-block;
 `
 const StyledSvg = styled.svg`
-	position: relative;
+	position: ${props => props.position ? props.position : "relative"};
 	top: 50%;
 	transform: ${props => props.selected ? "translateY(-50%) scale(1.2)" : "translateY(-50%)"};
 	fill: ${props => props.selected && "white"};
@@ -821,10 +821,105 @@ export const CancelIcon = props => {
 		</MiniIconWrapper>
 	)
 }
-
-
+export const WritePostIcon = props => {
+	return (
+		<MiniIconWrapper>
+			<StyledSvg
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="30px"
+				height="30px"
+				fill={props.fill || "rgba(0,0,0,0.5)"}>
+				<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+				<path d="M0 0h24v24H0z" fill="none"/>
+			</StyledSvg>
+		</MiniIconWrapper>
+	)
+}
+export const CreateGroupIcon = props => {
+	return (
+		<MiniIconWrapper>
+			<StyledSvg
+				style={{marginLeft: "-15px"}}
+				selected={props.selected}
+				viewBox="0 0 47 47"
+				width="30px"
+				height="30px"
+				position="absolute"
+				fill={props.fill || "rgba(0,0,0,0.5)"}>
+				<path d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+					c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+					C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+				<path d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+					c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+					C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+				<path d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+					c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+					C47,22.85,45.104,20.952,42.762,20.952z"/>
+				<path d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+					c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+				<path d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+					c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+					C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+				{/* <circle cx="23.83" cy="23.323" r="7.271"/> */}
+			</StyledSvg>
+			<StyledSvg
+				style={{marginLeft: "-9px"}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="18px"
+				height="18px"
+				position="absolute"
+				fill={props.fill || "rgba(0,0,0,0.5)"}>
+				<path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M16,13h-3v3c0,0.55-0.45,1-1,1h0c-0.55,0-1-0.45-1-1
+					v-3H8c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h3V8c0-0.55,0.45-1,1-1h0c0.55,0,1,0.45,1,1v3h3c0.55,0,1,0.45,1,1v0
+					C17,12.55,16.55,13,16,13z"/>
+			</StyledSvg>
+		</MiniIconWrapper>
+	)
+}
 
 // NANO ICONS
+export const NanoGroupNameIcon = props => {
+	return (
+		<NanoIconWrapper padding={props.padding}>
+			<NanoStyledSvg
+				selected={props.selected}
+				viewBox="0 0 47 47"
+				width="15px"
+				height="15px">
+				<path fill={props.fill || "white"} d="M17.567,15.938l-2.859-2.702c0.333-0.605,0.539-1.29,0.539-2.029c0-2.342-1.897-4.239-4.24-4.239
+					c-2.343,0-4.243,1.896-4.243,4.239c0,2.343,1.9,4.241,4.243,4.241c0.826,0,1.59-0.246,2.242-0.654l2.855,2.699
+					C16.536,16.922,17.023,16.399,17.567,15.938z"/>
+				<path fill={props.fill || "white"} d="M29.66,15.6l3.799-6.393c0.374,0.107,0.762,0.184,1.169,0.184c2.347,0,4.244-1.898,4.244-4.241
+					c0-2.342-1.897-4.239-4.244-4.239c-2.343,0-4.239,1.896-4.239,4.239c0,1.163,0.469,2.214,1.227,2.981l-3.787,6.375
+					C28.48,14.801,29.094,15.169,29.66,15.6z"/>
+				<path fill={props.fill || "white"} d="M42.762,20.952c-1.824,0-3.369,1.159-3.968,2.775l-5.278-0.521c0,0.04,0.006,0.078,0.006,0.117
+					c0,0.688-0.076,1.36-0.213,2.009l5.276,0.521c0.319,2.024,2.062,3.576,4.177,3.576c2.342,0,4.238-1.896,4.238-4.238
+					C47,22.85,45.104,20.952,42.762,20.952z"/>
+				<path fill={props.fill || "white"} d="M28.197,37.624l-1.18-5.156c-0.666,0.232-1.359,0.398-2.082,0.481l1.182,5.157c-1.355,0.709-2.29,2.11-2.29,3.746
+					c0,2.342,1.896,4.237,4.243,4.237c2.342,0,4.238-1.896,4.238-4.237C32.311,39.553,30.479,37.692,28.197,37.624z"/>
+				<path fill={props.fill || "white"} d="M14.357,25.37l-6.57,2.201c-0.758-1.158-2.063-1.926-3.548-1.926C1.896,25.645,0,27.542,0,29.884
+					c0,2.345,1.896,4.242,4.239,4.242c2.341,0,4.242-1.897,4.242-4.242c0-0.098-0.021-0.188-0.029-0.284l6.591-2.207
+					C14.746,26.752,14.51,26.077,14.357,25.37z"/>
+				<circle fill={props.fill || "white"} cx="23.83" cy="23.323" r="7.271"/>
+			</NanoStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoCrownIcon = props => {
+	return (
+		<NanoIconWrapper padding={props.padding}>
+			<NanoStyledSvg
+				selected={props.selected}
+				viewBox="0 0 26 26"
+				width="15px"
+				height="15px">
+				<path fill={props.fill || "white"} d="M 13 2 C 11.894531 2 11 2.894531 11 4 C 11 4.777344 11.445313 5.449219 12.09375 5.78125 L 8 14 L 3.53125 10.28125 C 3.820313 9.933594 4 9.488281 4 9 C 4 7.894531 3.105469 7 2 7 C 0.894531 7 0 7.894531 0 9 C 0 10.105469 0.894531 11 2 11 C 2.136719 11 2.277344 10.996094 2.40625 10.96875 L 4.09375 19 L 21.90625 19 L 23.59375 10.96875 C 23.722656 10.996094 23.863281 11 24 11 C 25.105469 11 26 10.105469 26 9 C 26 7.894531 25.105469 7 24 7 C 22.894531 7 22 7.894531 22 9 C 22 9.488281 22.179688 9.933594 22.46875 10.28125 L 18 14 L 13.90625 5.78125 C 14.554688 5.449219 15 4.777344 15 4 C 15 2.894531 14.105469 2 13 2 Z M 4 21 L 4 22.5 C 4 23.328125 4.671875 24 5.5 24 L 20.5 24 C 21.328125 24 22 23.328125 22 22.5 L 22 21 Z "/>
+			</NanoStyledSvg>
+		</NanoIconWrapper>
+	)
+}
 export const NanoStarIcon = props => {
 	return (
 		<NanoIconWrapper padding={props.padding}>
@@ -1055,9 +1150,6 @@ export const NanoTimeIcon = props => {
 	)
 }
 
-
-
-
 export const NanoExpandIcon = props => {
 	return (
 		<NanoIconWrapper padding="10px">
@@ -1073,8 +1165,6 @@ export const NanoExpandIcon = props => {
 		</NanoIconWrapper>
 	)
 }
-
-
 
 // NANO ICONS Clickable
 export const NanoCancelIcon = props => {
@@ -1117,6 +1207,39 @@ export const NanoAddImageIcon = props => {
 				sfill={props.sfill}>
 				<path d="M19 7v2.99s-1.99.01-2 0V7h-3s.01-1.99 0-2h3V2h2v3h3v2h-3zm-3 4V8h-3V5H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-8h-3zM5 19l3-4 2 3 3-4 4 5H5z"/>
 				<path d="M0 0h24v24H0z" fill="none"/>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoAddVideoIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				fill={props.fill}
+				sfill={props.sfill}>
+				<path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l2.29 2.29c.63.63 1.71.18 1.71-.71V8.91c0-.89-1.08-1.34-1.71-.71L17 10.5zM13 13h-2v2c0 .55-.45 1-1 1s-1-.45-1-1v-2H7c-.55 0-1-.45-1-1s.45-1 1-1h2V9c0-.55.45-1 1-1s1 .45 1 1v2h2c.55 0 1 .45 1 1s-.45 1-1 1z"/>
+			</NanoClickAbleStyledSvg>
+		</NanoIconWrapper>
+	)
+}
+export const NanoAddMapIcon = props => {
+	return (
+		<NanoIconWrapper padding="10px">
+			<NanoClickAbleStyledSvg
+				style={{position:"relative", top:props.top}}
+				selected={props.selected}
+				viewBox="0 0 24 24"
+				width="20px"
+				height="20px"
+				fill={props.fill}
+				sfill={props.sfill}>
+				<path fill="none" d="M0 0h24v24H0V0z"/>
+				<path d="M12 2C8.14 2 5 5.14 5 9c0 4.17 4.42 9.92 6.24 12.11.4.48 1.13.48 1.53 0C14.58 18.92 19 13.17 19 9c0-3.86-3.14-7-7-7zm3 8h-2v2c0 .55-.45 1-1 1s-1-.45-1-1v-2H9c-.55 0-1-.45-1-1s.45-1 1-1h2V6c0-.55.45-1 1-1s1 .45 1 1v2h2c.55 0 1 .45 1 1s-.45 1-1 1z"/>
 			</NanoClickAbleStyledSvg>
 		</NanoIconWrapper>
 	)

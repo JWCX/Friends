@@ -18,11 +18,16 @@ import UserLarge from './UserLarge';
 import GroupMini from './GroupMini';
 import GroupLarge from './GroupLarge';
 
+import GroupInfo from './GroupInfo';
+
 import MeInfo from './MeInfo';
 import MeMore from './MeMore';
 import MeMain from './MeMain';
 import MeFriends from './MeFriends';
 import MeGroups from './MeGroups';
+
+import ExpansionPost from './ExpansionPost';
+import PostForm from './PostForm';
 
 export {
 	JoinForm,
@@ -45,9 +50,15 @@ export {
 	GroupMini,
 	GroupLarge,
 
+	GroupInfo,
+
 	MeInfo,
 	MeMore,
 	MeMain,
 	MeFriends,
 	MeGroups,
+
+	ExpansionPost,
+	PostForm,
+
 }

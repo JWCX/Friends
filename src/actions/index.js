@@ -12,6 +12,9 @@ import {
 import {
 	setNextPageNum,
 	setHasMorePages,
+	getMainPosts,
+	updateMainPosts,
+	clearMainPosts,
 	getMainUsers,
 	updateMainUsers,
 	clearMainUsers,
@@ -50,6 +53,9 @@ export {
 
 	setNextPageNum,
 	setHasMorePages,
+	getMainPosts,
+	updateMainPosts,
+	clearMainPosts,
 	getMainUsers,
 	updateMainUsers,
 	clearMainUsers,

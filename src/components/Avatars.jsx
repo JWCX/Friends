@@ -12,6 +12,7 @@ box-shadow: 0 3px 15px -1px rgba(100,100,100,0.3);
 const GroupAvatar = styled.img`
 width: ${props => props.width};
 height: ${props => props.height};
+margin: ${props => props.margin};
 border-radius: 15px;
 box-shadow: 0 3px 15px -1px rgba(100,100,100,0.3);
 `
@@ -58,7 +59,8 @@ export const LargeGroupAvatar = ({alt, src}) => {
 		<GroupAvatar
 			// alt={alt}
 			src={src}
-			width="200px"
-			height="200px"/>
+			width="150px"
+			height="150px"
+			margin="10px 0 10px 15px"/>
 	)
 }

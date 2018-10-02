@@ -5,6 +5,7 @@ import Users from './main/Users';
 import Groups from './main/Groups';
 import Popular from './main/Popular';
 import Me from './main/Me';
+import Group from './main/Group';
 
 
 export {
@@ -15,4 +16,5 @@ export {
 	Groups,
 	Popular,
 	Me,
+	Group,
 }

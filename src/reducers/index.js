@@ -12,6 +12,7 @@ import me from './meReducer';
 import meFriends from './meFriendsReducer';
 import meGroups from './meGroupsReducer';
 
+import mainPosts from './mainPostsReducer';
 import mainUsers from './mainUsersReducer';
 import mainGroups from './mainGroupsReducer';
 
@@ -39,6 +40,7 @@ export default combineReducers({
 	meFriends, 	// me페이지 접근시 해당 유저(또는 자신)의 친구 리스트
 	meGroups,	// me페이지 접근시 해당 유저(또는 자신)의 그룹 리스트
 
+	mainPosts,	// 메인페이지 게시판 게시글 리스트
 	mainUsers,	// 메인페이지 유저 추천/검색목록 리스트
 	mainGroups, // 메인페이지 그룹 추천/검색목록 리스트
 

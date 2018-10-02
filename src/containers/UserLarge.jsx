@@ -80,12 +80,12 @@ export class UserLarge extends Component {
 						</Grid>
 						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								icon={ <NanoStarIcon fill="#ffdab3"/> }
-								label={ interests.map((interest,i) => <InterestChip key={i} label={interest}/>) }/>
+								icon={ <NanoStarIcon fill="#ffd633"/> }
+								label={ interests.map((interest,i) => <InterestChip key={i} label={interest} height="21px"/>) }/>
 						</Grid>
 						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								icon={ <NanoMapIcon fill="#bbff99"/> }
+								icon={ <NanoMapIcon fill="#a6ff4d"/> }
 								label={ `${si} ${gu}` }/>
 						</Grid>
 					</Grid>

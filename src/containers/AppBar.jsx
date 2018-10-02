@@ -12,7 +12,10 @@ import { AppBar,
 	} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import { getMainUsers,
+import {
+	getMainPosts,
+	clearMainPosts,
+	getMainUsers,
 	clearMainUsers,
 	getMainGroups,
 	clearMainGroups,
@@ -71,13 +74,13 @@ class MyAppBar extends Component {
 	}
 
 	getSuggested = path => {
-		this.props.clearMainGroups();
+		this.props.clearMainPosts();
 		this.props.clearMainUsers();
+		this.props.clearMainGroups();
 		this.props.clearFilter();
 		this.props.setFiltering(false);
 		this.props.setNextPageNum(1);
-		this.props.setHasMorePages(true);
-
+		// this.props.setHasMorePages(true);
 
 		if(path === "groups")	// TODO: REMOVE THIS AFTER GROUPS IS DONE
 			return;
@@ -87,6 +90,9 @@ class MyAppBar extends Component {
 		})
 		.then(resp => {
 			switch(path) {
+				case "board":
+					this.props.getMainPosts(resp.data.posts);
+					break;
 				case "users":
 					this.props.getMainUsers(resp.data.users)
 					break;
@@ -95,6 +101,7 @@ class MyAppBar extends Component {
 					break;
 				default:
 			}
+			this.props.setHasMorePages(resp.data.hasMorePages);
 		}).catch(err => {
 			console.log(err);
 			let errorTitle, errorMessage;
@@ -158,7 +165,7 @@ class MyAppBar extends Component {
 								>
 								<Tab icon={<LogoIcon selected={index===0}/>}
 									classes={{root: classes.root, selected: classes.selected}}/>
-								<Tab icon={<BoardIcon selected={index===1}/>}
+								<Tab onClick={()=>{this.getSuggested("board")}} icon={<BoardIcon selected={index===1}/>}
 									classes={{root: classes.root, selected: classes.selected}}/>
 								<Tab onClick={()=>{this.getSuggested("users")}} icon={<UsersIcon selected={index===2}/>}
 									classes={{root: classes.root, selected: classes.selected}}/>
@@ -219,6 +226,8 @@ const mapStateToProps = state => ({
 	notifications: state.notifications
 })
 const mapDispatchToProps = {
+	getMainPosts,
+	clearMainPosts,
 	getMainUsers,
 	clearMainUsers,
 	getMainGroups,

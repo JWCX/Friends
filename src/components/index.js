@@ -2,6 +2,8 @@ import TextField from './TextField';
 
 import Button from './Buttons/Button';
 import AddImageButton from './Buttons/AddImageButton';
+import AddVideoButton from './Buttons/AddVideoButton';
+import AddMapButton from './Buttons/AddMapButton';
 import AddButton from './Buttons/AddButton';
 import CancelButton from './Buttons/CancelButton';
 import DeleteButton from './Buttons/DeleteButton';
@@ -10,6 +12,8 @@ import FriendButton from './Buttons/FriendButton';
 import FriendAcceptButton from './Buttons/FriendAcceptButton';
 import FriendRejectButton from './Buttons/FriendRejectButton';
 import GroupButton from './Buttons/GroupButton';
+import WritePostButton from './Buttons/WritePostButton';
+import CreateGroupButton from './Buttons/CreateGroupButton';
 
 import MeMainLoader from './ContentLoaders/MeMainLoader';
 import MeFriendsGroupsLoader from './ContentLoaders/MeFriendsGroupsLoader';
@@ -32,9 +36,7 @@ import ZoomSlider from './ZoomSlider';
 import ExpansionFriendRequest from './ExpansionFriendRequest';
 import ExpansionPanel from './ExpansionPanel';
 
-import ExpansionPost from './ExpansionPost';
 import PostHeader from './PostHeader';
-import PostContent from './PostContent';
 
 import DateTimePicker from './DateTimePicker';
 import Label from './Label';
@@ -52,6 +54,8 @@ export {
 
 	Button,
 	AddImageButton,
+	AddVideoButton,
+	AddMapButton,
 	AddButton,
 	CancelButton,
 	DeleteButton,
@@ -60,6 +64,8 @@ export {
 	FriendAcceptButton,
 	FriendRejectButton,
 	GroupButton,
+	WritePostButton,
+	CreateGroupButton,
 
 	MeMainLoader,
 	MeFriendsGroupsLoader,
@@ -82,9 +88,7 @@ export {
 	ExpansionFriendRequest,
 	ExpansionPanel,
 
-	ExpansionPost,
 	PostHeader,
-	PostContent,
 
 	DateTimePicker,
 	Label,

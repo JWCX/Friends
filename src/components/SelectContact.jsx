@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Select from 'react-select';
 import NoSsr from '@material-ui/core/NoSsr';
 import { TextField, Paper, MenuItem, Typography } from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
 import { withStyles } from '@material-ui/core/styles';
 import { UserTiny } from 'containers';
 
@@ -62,7 +61,7 @@ function Control(props) {
         inputProps: {
           className: props.selectProps.classes.input,
           inputRef: props.innerRef,
-          children: props.children,
+		  children: props.children,
           ...props.innerProps,
         },
       }}
@@ -114,7 +113,7 @@ const components = {
   Option,
   ValueContainer,
 };
-class SelectInterest2 extends React.Component {
+class SelectContact extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		if(this.props.myFriends !== nextProps.myFriends ||
 			this.props.disabled !== nextProps.disabled ||
@@ -135,29 +134,29 @@ class SelectInterest2 extends React.Component {
 			<div className={classes.root}>
 				<NoSsr>
 					<Select
-					classes={classes}
-					options={
-						_.reject(myFriends, friend =>
-							contacts[friend.id]
-						).map(friend =>
-							({
-								id:friend.id,
-								nickName:friend.nickName,
-								image: friend.image,
-								label:friend.nickName,
-								value: friend.image
-							})
-						)
-					}
-					value={selectedFriend}
-					components={components}
-					onChange={handleSelectContact}
-					isDisabled={disabled}
-					closeMenuOnSelect={true}
-					captureMenuScroll={false}
-					maxMenuHeight={200}
-					menuPlacement="auto"
-					/>
+						classes={classes}
+						options={
+							_.reject(myFriends, friend =>
+								contacts[friend.id]
+							).map(friend =>
+								({
+									id:friend.id,
+									nickName:friend.nickName,
+									image: friend.image,
+									label:friend.nickName,
+									value: friend.image
+								})
+							)
+						}
+						value={selectedFriend}
+						components={components}
+						onChange={handleSelectContact}
+						isDisabled={disabled}
+						closeMenuOnSelect={true}
+						captureMenuScroll={false}
+						maxMenuHeight={200}
+						menuPlacement="auto"
+						/>
 				</NoSsr>
 			</div>
 		);
@@ -170,4 +169,4 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = {
 }
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(SelectInterest2));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(SelectContact));

@@ -14,6 +14,7 @@ import {
 		Users,
 		Groups,
 		Me,
+		Group,
 	} from 'pages';
 
 const Container = styled.div`
@@ -223,6 +224,11 @@ class Main extends Component {
 					<Me
 					open={true}
 					// open={me}
+					disableBackdrop={true}/>
+				}/>
+				<Route path="(|/board|/users|/groups)/group/:id" render={() =>
+					<Group
+					open={true}
 					disableBackdrop={true}/>
 				}/>
 			</React.Fragment>

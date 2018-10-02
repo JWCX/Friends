@@ -49,12 +49,12 @@ export const BlueChip = withStyles(styles)(({avatar, label, deleteIcon, onDelete
 			/>
 	)
 })
-export const InterestChip = withStyles(styles)(({avatar, label, fontSize, deleteIcon, onDelete, classes}) => {
+export const InterestChip = withStyles(styles)(({avatar, label, fontSize, height, deleteIcon, onDelete, classes}) => {
 	return (
 		<Chip
 			avatar={avatar}
 			label={label}
-			style={{fontSize}}
+			style={{fontSize, height}}
 			deleteIcon={deleteIcon}
 			onDelete={onDelete}
 			classes={{root: classes.interestChip, avatar: classes.avatar, label: classes.interestChipLabel, deleteIcon: classes.deleteIcon}}

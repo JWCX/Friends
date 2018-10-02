@@ -16,7 +16,7 @@ import { openMePage,
 import { MeMain,
 		MeFriends,
 		MeGroups,
-		MeInfo,
+		GroupInfo,
 		MeMore } from 'containers';
 import { CancelButton,
 		MoreButton,
@@ -32,7 +32,7 @@ const styles = {
 	paper: {
 		padding: "20px 20px 20px 20px",
 		minWidth:"650px",
-		width:"700px",
+		width:"1000px",
 		maxWidth: "1000px",
 		// minWidth: "1800px",
 		// minHeight: "850px",
@@ -48,7 +48,7 @@ const styles = {
 	}
 }
 
-class Me extends React.Component {
+class Group extends React.Component {
 	state = {
 		currentView: 0,  // 현재 뷰 0: me의 친구리스트, 1: me의 그룹리스트, 2: 정보수정창
 		openMore: false,  // true시 더보기메뉴 활성
@@ -141,6 +141,7 @@ class Me extends React.Component {
 					dialogContent: errorMessage
 				});
 			}); // FIXME: REMOVE LOG
+
 	}
 	handleGroupsPagination = target => {
 		let currentPage;
@@ -196,6 +197,8 @@ class Me extends React.Component {
 					dialogContent: errorMessage
 				});
 			}); // FIXME: REMOVE LOG
+
+
 	}
 	getUserInfo = id => {
 		this.setState({currentPage: 1});
@@ -342,7 +345,8 @@ class Me extends React.Component {
 	}
 	render() {
 		const { classes, onClose, disableBackdrop, icon, redirect, match, history, token, ...other } = this.props;
-		const { currentView, openMore, dialogOpen, dialogIcon, dialogTitle, dialogContent } = this.state;
+		const { openMore, dialogOpen, dialogIcon, dialogTitle, dialogContent } = this.state;
+		const currentView = 2;
 		return (
 			<MuiDialog
 				classes={{paper: classes.paper, paperWidthXs: classes.paperWidthXs}}
@@ -370,7 +374,7 @@ class Me extends React.Component {
 						</Grid>
 					</Grid>
 					{
-						currentView === 2 ? <MeInfo history={history} match={match} handleSwitchView={this.handleSwitchView}/>
+						currentView === 2 ? <GroupInfo history={history} match={match} handleSwitchView={this.handleSwitchView}/>
 						: <Grid container
 								classes={{container:classes.container}}
 								direction="row"
@@ -446,4 +450,4 @@ const mapDispatchToProps = {
 	clearMeGroups,
 }
 
-export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Me)));
+export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Group)));

@@ -7,6 +7,19 @@ export const setHasMorePages = hasMorePages => ({
 	hasMorePages
 })
 
+export const getMainPosts = posts => ({
+	type: "GET_MAIN_POSTS",
+	mainPosts: posts
+})
+export const updateMainPosts = (currentPosts, posts) => ({
+	type: "UPDATE_MAIN_POSTS",
+	mainPosts: { ...currentPosts, ...posts }
+})
+export const clearMainPosts = () => ({
+	type: "CLEAR_MAIN_POSTS",
+	mainPosts: null
+})
+
 export const getMainUsers = users => ({
 	type: "GET_MAIN_USERS",
 	mainUsers: users

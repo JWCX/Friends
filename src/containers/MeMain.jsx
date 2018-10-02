@@ -241,7 +241,6 @@ class MeMain extends Component {
 			isFriend,
 			isCurious
 		} = me ? me : "";
-		console.log("MEMEMEMEMEMEMMEMEE", me);
 		const birth = me && me.birth ? me.birth._i : "";
 		const si = me && dataSi[me.si] ? dataSi[me.si].name : "";
 		const gu = me && dataGu[me.si] ? dataGu[me.si][me.gu] ? dataGu[me.si][me.gu].name : "" : "";
@@ -278,13 +277,13 @@ class MeMain extends Component {
 						</Grid>
 						<Grid item>		{/* 관심사 리스트 */}
 							<Label
-								icon={<NanoStarIcon fill="#ffe699"/>}
+								icon={<NanoStarIcon fill="#ffd633"/>}
 								label={ interests.map( (interest,i) => <InterestChip key={i} label={interest}/>) }/>
 						</Grid>
 						<Grid item>		{/* 지역(시, 구) */}
 							<Label
 								lock={areayn}
-								icon={<NanoMapIcon fill="#bbff99"/>}
+								icon={<NanoMapIcon fill="#66ff66"/>}
 								label={`${si} ${gu}`}
 								/>
 						</Grid>

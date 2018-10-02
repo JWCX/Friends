@@ -1,0 +1,49 @@
+:local(.editor) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	height: 600px;
+	width: 1000px;
+	overflow: auto;
+	font-size: 0.9em;
+  }
+:local(.reader) {
+	position:relative;
+	left: 50%;
+	transform: translateX(-50%);
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	/* height: 500px; */
+	width: 1000px;
+	overflow: auto;
+	font-size: 0.9em;
+  }
+
+  :local(.title) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 10px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	width: 893px;
+	font-size: 0.9em;
+  }
+
+  :local(.editor) :global(.public-DraftEditor-content) {
+	/* min-height: 140px; */
+  }
+
+  .options {
+	margin-bottom: 20px;
+  }

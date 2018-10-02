@@ -41,6 +41,9 @@ class Carousel2 extends Component {
 									fill="rgba(255,255,255,0.8)"
 									sfill="white"
 									background="rgba(0,0,0,0.2)"
+									verticalAlign="top"
+									top="50%"
+									transform="translateY(-50%)"
 									className="slick-icons"
 									disabled={disabled}/>
 							}

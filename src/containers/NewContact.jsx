@@ -10,10 +10,11 @@ import { Button,
 const styles = {
 	paper: {
 		padding: "30px 20px 30px 20px",
-		height: "350px",
+		height: "230px",
 		width: "400px",
 		borderRadius: "10px",
 		margin: "0",
+		overflow: "visible"
 	},
 	paperWidthXs: {
 		width: "100%",
@@ -65,22 +66,18 @@ class NewContact extends React.Component {
 								disabled={process}/>
 						</Grid>
 						<Grid item>
-							<div style={{height:"90px"}}>
-							</div>
-						</Grid>
-						<Grid item>
 							<Button
 								disabled={process || disabled}
 								process={process}
 								onClick={onSubmit}
-								margin="50px 5px 0 5px">
+								margin="30px 5px 0 5px">
 								확인
 							</Button>
 							<Button
 								autoFocus
 								disabled={process}
 								onClick={onCancel}
-								margin="50px 5px 0 5px">
+								margin="30px 5px 0 5px">
 								취소
 							</Button>
 						</Grid>

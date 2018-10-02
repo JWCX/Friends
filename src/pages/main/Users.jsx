@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, CircularProgress } from '@material-ui/core';
 import _ from 'lodash';
 import Axios from 'axios';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 import { updateMainUsers,
 	setHasMorePages,
@@ -13,8 +13,7 @@ import { Filter, UserLarge } from 'containers';
 export class Users extends Component {
 	state = {
 		loadingContents: false,
-		// hasMorePages: true,
-		// nextPageNum: 1,
+
 		users: [],
 
 		dialogOpen: false,
@@ -173,6 +172,7 @@ export class Users extends Component {
 		// 		// 	errorTitle = err.response.data;
 		// 		// }
 		// 		this.setState({
+					// loadingContents: false,
 		// 			dialogOpen: true,
 		// 			dialogIcon: 2,
 		// 			dialogTitle: errorTitle,
@@ -231,20 +231,19 @@ export class Users extends Component {
 						spacing={0}>
 						{
 							// _.map(users, (user =>
-								users.map(user =>
-									<Grid item style={{width: "50%", minWidth: "390px"}}>
-										<UserLarge key={user.id}
-											id={user.id}
-											nickName={user.nickName}
-											image={user.image}
-											age={user.age}
-											si={user.si}
-											gu={user.gu}
-											interests={user.interests}
-											gender={user.gender}/>
-									</Grid>
-								)
-							// )
+							users.map(user =>
+								<Grid item style={{width: "50%", minWidth: "390px"}}>
+									<UserLarge key={user.id}
+										id={user.id}
+										nickName={user.nickName}
+										image={user.image}
+										age={user.age}
+										si={user.si}
+										gu={user.gu}
+										interests={user.interests}
+										gender={user.gender}/>
+								</Grid>
+							)
 						}
 						{
 							hasMorePages &&
