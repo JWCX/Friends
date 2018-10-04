@@ -32,15 +32,6 @@ import { BlueChip } from 'components/Chips';
 
 class Filter extends Component {
 	state = {
-		// filter: {
-		// 	interest: "",
-		// 	si: "",
-		// 	gu: "",
-		// 	gender: "0",
-		// 	minAge: 0,
-		// 	maxAge: 100,
-		// 	keyword: "",
-		// },
 		keywordError: false,
 		searchDisabled: false,
 		// filtering: false,		// 현재 필터검색이 적용중이면 true
@@ -129,23 +120,18 @@ class Filter extends Component {
 		let filter = {...this.props.filter};
 		switch(target){
 			case "interest":
-				// this.setState(state => ({filter: {...state.filter, interest: ""}}));
 				filter = {...filter, interest: ""};
 				break;
 			case "sigu":
-				// this.setState(state => ({filter: {...state.filter, si: "", gu: ""}}));
 				filter = {...filter, si: "", gu: ""};
 				break;
 			case "gender":
-				// this.setState(state => ({filter: {...state.filter, gender: "0"}}));
 				filter = {...filter, gender: "0"};
 				break;
 			case "age":
-				// this.setState(state => ({filter: {...state.filter, minAge: 0, maxAge: 100}}));
 				filter = {...filter, minAge: 0, maxAge: 100};
 				break;
 			case "keyword":
-				// this.setState(state => ({filter: {...state.filter, keyword: ""}}));
 				filter = {...filter, keyword: ""};
 				break;
 			default:

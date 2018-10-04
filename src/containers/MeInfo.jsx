@@ -70,6 +70,7 @@ export class MeInfo extends Component {
 	handleReset = () => {
 		this.setState({ pw: "", pw2: "",
 			nickNameOk: false, locationOk: false, genderOk: false, birthOk: false, interestOk: false,
+			pwError: false, pw2Error: false, nickNameError: false,
 			...this.props.myInfo,
 			gender: this.props.myInfo.gender.toString(),
 			interests: this.props.myInfo.interests.map( x =>
@@ -83,6 +84,8 @@ export class MeInfo extends Component {
 			case "nickName":
 				clearTimeout(this.t_checkNickName);
 				this.setState({nickNameError: false, nickNameOk: false});
+				if(!value.length)
+					return;
 				this.t_checkNickName = setTimeout(() => {
 					if(value.length < 2 || /[^a-zA-Z가-힣0-9]/.test(value))
 						this.setState({nickNameError: true, nickNameOk: false});
@@ -183,7 +186,7 @@ export class MeInfo extends Component {
 				updateProcess: false,
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "회원정보를 업데이트",
+				dialogTitle: "회원정보 업데이트",
 				dialogContent: "회원정보 업데이트를 성공적으로 마쳤습니다.",
 			});
 		}).catch(err => {
@@ -272,10 +275,10 @@ export class MeInfo extends Component {
 							spacing={0}>
 							<Grid item container
 								direction="column"
-								justify="center"
+								justify="flex-start"
 								alignItems="center"
 								spacing={8}
-								style={{width:"300px", padding:"0px 10px 10px 10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
+								style={{minHeight:"720px", width:"300px", padding:"0px 10px 10px 10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
 								<Grid item>		{/* 프로필사진 */}
 									<Carousel2
 										openImageUploader={this.openImageUploader}
@@ -381,10 +384,10 @@ export class MeInfo extends Component {
 							</Grid>
 							<Grid item container
 								direction="column"
-								justify="center"
+								justify="flex-start"
 								alignItems="center"
 								spacing={8}
-								style={{width:"310px", padding:"10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
+								style={{height:"720px", width:"310px", padding:"10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
 								<Grid item>		{/* 생년월일 */}
 									<DateTimePicker
 										id="birth"

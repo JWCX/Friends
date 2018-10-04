@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Slick from 'react-slick';
-import defaultImage from 'assets/user_default.png';
+import defaultUserImage from 'assets/user_default.png';
+import defaultGroupImage from 'assets/group_default.png';
 
 class Carousel extends Component {
 	shouldComponentUpdate(nextProps) {
@@ -9,8 +10,8 @@ class Carousel extends Component {
 		return false;
 	}
 	render() {
-		const { width, height, borderRadius, autoplay } = this.props;
-		const images = this.props.images && this.props.images.length ?  this.props.images : [String(defaultImage)];
+		const { width, height, borderRadius, autoplay, isGroup } = this.props;
+		const images = this.props.images && this.props.images.length ?  this.props.images : isGroup ? [String(defaultGroupImage)] : [String(defaultUserImage)];
 		return (
 			<div style={{
 				width: width || "300px",

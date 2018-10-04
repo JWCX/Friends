@@ -48,7 +48,6 @@ class MeMain extends Component {
 
 	}
 	handleInputChange = ({target})=> {
-		console.log(target.value, target.id)
 		this.setState({[target.id]: target.value})
 	}
 	handleSendRequestClick = () => {
@@ -78,7 +77,7 @@ class MeMain extends Component {
 				dialogFrMyAvatar: null,
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "설정이 완료되었습니다",
+				dialogTitle: "신청이 완료되었습니다",
 			});
 			this.props.updateMePage({...this.props.me, isFriend: 1});
 		}).catch(err => {
@@ -209,7 +208,6 @@ class MeMain extends Component {
 			dialogFrOpen: false,
 			dialogFrTitle: "",
 			dialogFrContent: "",
-			dialogFrContent2: "",
 			dialogFrMsg: "",
 			dialogFrAvatar: null,
 			dialogFrMyMsg: "",

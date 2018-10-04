@@ -18,6 +18,7 @@ const styles = theme => ({
   input: {
     display: 'flex',
 	padding: "5px 0",
+	// minHeight: "97px",
   },
   valueContainer: {
     display: 'flex',
@@ -117,7 +118,7 @@ function MultiValue(props) {
 }
 function Menu(props) {
   return (
-    <Paper style={{background: props.selectProps.value.length>=5 && "rgb(240,240,240)"}} square className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper style={{zIndex: 1000, background: props.selectProps.value.length>=5 && "rgb(240,240,240)"}} square className={props.selectProps.classes.paper} {...props.innerProps}>
       {props.children}
     </Paper>
   );

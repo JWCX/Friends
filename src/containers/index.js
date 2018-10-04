@@ -19,6 +19,9 @@ import GroupMini from './GroupMini';
 import GroupLarge from './GroupLarge';
 
 import GroupInfo from './GroupInfo';
+import GroupMore from './GroupMore';
+import GroupMain from './GroupMain';
+import GroupMembers from './GroupMembers';
 
 import MeInfo from './MeInfo';
 import MeMore from './MeMore';
@@ -51,6 +54,9 @@ export {
 	GroupLarge,
 
 	GroupInfo,
+	GroupMore,
+	GroupMain,
+	GroupMembers,
 
 	MeInfo,
 	MeMore,

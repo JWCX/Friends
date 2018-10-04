@@ -12,75 +12,98 @@ import { TextField,
 		Select,
 		SelectInterest,
 		RadioGroup,
-		DateTimePicker,
 		Button,
 		Carousel2,
 		ImageUploader,
-		ExpSelectForm,
 		Dialog,
+		Slider,
+		Slider2
 	} from 'components';
 
 export class GroupInfo extends Component {
 	state = {
 		showPage: true,
 
-		nickNameOk: false,		// 특수문자, 공백 제외 2글자 이상 true
-		locationOk: false,		// 시,구 정보를 모두 입력해야 true
-		genderOk: false,		// 성별 선택시 true
-		birthOk: false,			// 생년월일 정보 입력시 true
+		minAge: 0,
+		maxAge: 100,
+		maxMember: 300,
+
+		groupNameOk: false,		// 특수문자, 공백 제외 2글자 이상 true
 		interestOk: false,		// 관심사 정보 최소 1개 입력시 true
 
 		updateProcess: false,
 
-		pwError: false,
-		pw2Error: false,
-		nickNameError: false,
-
-		pwErrorMessage: "",
+		groupNameError: false,
 
 		dialogOpen: false,
 		dialogIcon: 0,
 		dialogTitle: "",
 		dialogContent: "",
 
+		// groupName,
+		// si,
+		// gu,
+		// minAge,
+		// maxAge,
+		// maxMember,
+		// gender,
+		// intro,
+
 		openImageUploader: false,	// true시 이미지 업로더 modal을 띄움
 	}
-	t_checkNickName = null;
+	t_checkGroupName = null;
 
 	componentDidMount() {
-		const myInfo = this.props.myInfo;
-		this.setState({...myInfo,
-			gender: this.props.myInfo.gender.toString(),
-			interests: myInfo.interests.map( x =>
-				({label: this.props.dataInterest[x].name, value: x})),
-			nickNameOk: myInfo.nickName ? true : false,
-			locationOk: myInfo.gu ? true : false,
-			genderOk: myInfo.gender!=="0" ? true : false,
-			birthOk: myInfo.birth ? true : false,
-			interestOk: myInfo.interests.length ? true : false
+		const { group, dataInterest } = this.props;
+		this.setState({
+			groupName: "",
+			intro: "",
+			si: 0,
+			gu: 0,
+			minAge: 0,
+			maxAge: 100,
+			maxMember: 300,
+			images: [],
+			...group,
+			gender: group && group.gender ? group.gender.toString() : "0",
+			interests: group && group.interests ? group.interests.map( x => ({label: dataInterest[x].name, value: x})) : null,
+			groupNameOk: group && group.groupName ? true : false,
+			interestOk: group && group.interests.length ? true : false
 		});
 	}
 	handleReset = () => {
-		this.setState({ pw: "", pw2: "",
-			nickNameOk: false, locationOk: false, genderOk: false, birthOk: false, interestOk: false,
-			...this.props.myInfo,
-			gender: this.props.myInfo.gender.toString(),
-			interests: this.props.myInfo.interests.map( x =>
-				({label: this.props.dataInterest[x].name, value: x}))
+		const { group, dataInterest } = this.props;
+		this.setState({
+			groupName: "",
+			intro: "",
+			si: 0,
+			gu: 0,
+			minAge: 0,
+			maxAge: 100,
+			maxMember: 300,
+			images: [],
+			...group,
+			gender: group && group.gender ? group.gender.toString() : "0",
+			interests: group && group.interests ? group.interests.map( x => ({label: dataInterest[x].name, value: x})) : null,
+			groupNameOk: group && group.groupName ? true : false,
+			interestOk: group && group.interests.length ? true : false,
+			groupNameError: false
 		});
 	}
 	handleChange = ({target}) => {
 		const { id, value } = target;
 		this.setState({[id]: value});
 		switch(id) {
-			case "nickName":
-				clearTimeout(this.t_checkNickName);
-				this.setState({nickNameError: false, nickNameOk: false});
-				this.t_checkNickName = setTimeout(() => {
-					if(value.length < 2 || /[^a-zA-Z가-힣0-9]/.test(value))
-						this.setState({nickNameError: true, nickNameOk: false});
+			case "groupName":
+				clearTimeout(this.t_checkGroupName);
+				this.setState({groupNameError: false, groupNameOk: false});
+				if(!value.length)
+					return;
+				this.t_checkGroupName = setTimeout(() => {
+					if(value.length < 2 || /[^a-zA-Z가-힣0-9\s]/.test(value))
+						this.setState({groupNameError: true, groupNameOk: false});
 					else
-						this.setState({nickNameOk: true});
+						this.setState({groupNameOk: true});
 				}, 700);
 				break;
 			default:
@@ -97,39 +120,36 @@ export class GroupInfo extends Component {
 				return this.setState({[target.name]: target.value, locationOk: true});
 		}
 	}
-	handleExpChange = ({target}) => {
-		this.setState({[target.id]: target.checked});
-	}
-	handleBirthChange = moment => {
-		this.setState({birth: moment, birthOk: true});
-	}
 	handleInterestChange = value => {
 		const interestOk = value.length ? true : false;
 		this.setState({interests: value, interestOk });
 	}
+	handleSlider = (values, e) => {
+		this.setState({minAge: parseInt(values[0], 10), maxAge: parseInt(values[1], 10)});
+	}
+	handleSlider2 = (values, e) => {
+		this.setState({maxMember: parseInt(values[0], 10)});
+	}
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({updateProcess: true});
-		const { id, pw, nickName, si, gu, gender, images,
-			intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn } = this.state;
 		const { token } = this.props;
-		const birth = this.state.birth._d;
+		const { id, groupName, si, gu, minAge, maxAge, maxMember, gender, intro, images } = this.state;
 		const interests = _.map(this.state.interests, interest => interest.value);
 
-		Axios.post('http://192.168.0.200:8080/me/info', {
-			token, id, pw, nickName, si, gu, birth, gender, interests, images,
-			intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn
+		Axios.post('http://192.168.0.200:8080/group/info', {
+			token, id, groupName, si, gu, minAge, maxAge, maxMember, gender, intro, images, interests
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
 
-			this.props.updateMyInfo(resp.data.myInfo);	// TODO: store.myInfo 업데이트 데이터를 받아서 업데이트 할 것.
+			// this.props.updateMyInfo(resp.data.myInfo);	// TODO: store.myInfo 업데이트 데이터를 받아서 업데이트 할 것.
 
 			this.setState({
 				updateProcess: false,
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "회원정보를 업데이트",
-				dialogContent: "회원정보 업데이트를 성공적으로 마쳤습니다.",
+				dialogTitle: "그룹 개설",
+				dialogContent: "그룹을 개설하였습니다.",
 			});
 		}).catch(err => {
 			console.log(err);	// FIXME: REMOVE
@@ -179,121 +199,96 @@ export class GroupInfo extends Component {
 	};
 	render() {
 		const { showPage,
-			nickNameOk, locationOk, genderOk, birthOk, interestOk,
-			pwOk, pw2Ok, pwError, pw2Error, pwErrorMessage,
+			groupNameOk, interestOk,
 			dialogOpen, dialogIcon, dialogTitle, dialogContent,
 			updateProcess,
-			nickNameError,
-			id,
-			pw,
-			pw2,
-			nickName,
+			groupNameError,
+			groupName,
 			si,
 			gu,
-			birth,
+			minAge,
+			maxAge,
+			maxMember,
 			gender,
 			intro,
-			msg,
-			areayn,
-			birthyn,
-			genderyn,
-			friendsyn,
-			groupsyn,
 			openImageUploader } = this.state;
-			const images = this.state.images ? this.state.images : [];
-			const interests = this.state.interests ? this.state.interests : [];
-		const { dataSi, dataGu } = this.props;
+		const images = this.state.images ? this.state.images : [];
+		const interests = this.state.interests ? this.state.interests : [];
+		const { dataSi, dataGu, establish } = this.props;
+		console.log(this.state);
+		console.log(!(groupNameOk && interestOk));
 		return (
 			<Fade in={showPage} timeout={{enter: 500, exit: 500}}>
-				<Grid container
-					direction="row"
-					justify="space-between"
-					alignItems="center"
-					spacing={0}>
-						<Grid container
+					<Grid container
+						direction="row"
+						justify="center"
+						alignItems="flex-start"
+						spacing={0}>
+						<Grid item container
 							direction="row"
 							justify="center"
 							alignItems="flex-start"
-							spacing={0}>
+							spacing={8}
+							style={{width:"650px", padding:"0px 10px 10px 10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
+							<Grid item>		{/* 프로필사진 */}
+								<Carousel2
+									openImageUploader={this.openImageUploader}
+									handleDeleteImage={this.handleDeleteImage}
+									images={images}
+									disabled={updateProcess}
+									width="500px"
+									isGroup={true}
+									/>
+								{
+									openImageUploader && <ImageUploader
+										open={openImageUploader}
+										handleAddImage={this.handleAddImage}
+										closeImageUploader={this.closeImageUploader}
+										isGroup={true}
+										/>
+								}
+							</Grid>
 							<Grid item container
 								direction="column"
-								justify="center"
+								justify="flex-start"
 								alignItems="center"
 								spacing={8}
-								style={{width:"300px", padding:"0px 10px 10px 10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
-								<Grid item>		{/* 프로필사진 */}
-									<Carousel2
-										openImageUploader={this.openImageUploader}
-										handleDeleteImage={this.handleDeleteImage}
-										images={images}
-										disabled={updateProcess}/>
-									{
-										openImageUploader && <ImageUploader
-											open={openImageUploader}
-											handleAddImage={this.handleAddImage}
-											closeImageUploader={this.closeImageUploader}
-											/>
-									}
-								</Grid>
-								<Grid item>		{/* 아이디 */}
+								style={{height: "380px", width:"300px", padding:"15px 10px 15px 10px", margin:"5px 5px 10px 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
+								<Grid item>		{/* 그룹명 */}
 									<TextField
-										id="id"
-										value={id}
-										label="아이디"
-										disabled
-										shrink
-										width="260px"
-										margin="dense"/>
-								</Grid>
-								<Grid item>		{/* 비밀번호 */}
-									<TextField
-										id="pw"
-										value={pw}
-										type="password"
-										onChange={this.handleChange}
-										label="비밀번호"
-										shrink
-										disabled={updateProcess}
-										error={pwError}
-										errorMessage={pwErrorMessage}
-										autoComplete="current-password"
-										margin="dense"
-										width="260px"/>
-								</Grid>
-								<Grid item>		{/* 비밀번호2 */}
-									<TextField
-										id="pw2"
-										value={pw2}
-										type="password"
-										onChange={this.handleChange}
-										label="비밀번호 재입력"
-										shrink
-										disabled={updateProcess}
-										error={pw2Error}
-										errorMessage="비밀번호가 일치하지 않습니다"
-										autoComplete="current-password"
-										margin="dense"
-										width="260px"/>
-								</Grid>
-								<Grid item>		{/* 닉네임 */}
-									<TextField
-										id="nickName"
-										value={nickName}
+										id="groupName"
+										value={groupName}
 										type="text"
 										onChange={this.handleChange}
-										label="닉네임 *"
+										label="그룹명 *"
 										shrink
 										disabled={updateProcess}
-										error={nickNameError}
+										error={groupNameError}
 										errorMessage="사용할 수 없는 형식 입니다"
 										width="260px"
 										margin="dense"/>
 								</Grid>
-								<Grid item>		{/* 지역(시) */}
+								<Grid item>		{/* 그룹소개 */}
+									<TextField
+										id="intro"
+										value={intro}
+										onChange={this.handleChange}
+										label="그룹소개"
+										shrink
+										multiline
+										rows={6}
+										rowsMax={6}
+										disabled={updateProcess}
+										margin="dense"
+										width="260px"/>
+								</Grid>
+								<Grid item>		{/* 주요 활동 지역(시) */}
 									<Select
 										name="si"
 										value={si}
-										label="지역(시) *"
+										label="주요 활동 지역(시)"
+										displayEmpty
+										emptyLabel="전체"
 										width="260px"
 										disabled={updateProcess}
 										shrink
@@ -305,7 +300,9 @@ export class GroupInfo extends Component {
 									<Select
 										name="gu"
 										value={gu}
-										label="지역(구) *"
+										label="주요 활동 지역(구)"
+										displayEmpty
+										emptyLabel="전체"
 										width="260px"
 										disabled={updateProcess}
 										shrink
@@ -313,34 +310,13 @@ export class GroupInfo extends Component {
 										{_.map(dataGu[si], gu => <MenuItem value={gu.gucode} key={`${gu.sicode}${gu.gucode}`}>{gu.name}</MenuItem>)}
 									</Select>
 								</Grid>
-								<Grid item>		{/* 성별 */}
-									<RadioGroup
-										name="gender"
-										value={gender}
-										label="성별 *"
-										disabled={updateProcess}
-										row
-										handleChange={this.handleGenderChange}
-										data={[{label: "남성", value: "1"}, {label: "여성", value: "2"}]}/>
-								</Grid>
 							</Grid>
 							<Grid item container
 								direction="column"
-								justify="center"
+								justify="flex-start"
 								alignItems="center"
 								spacing={8}
-								style={{width:"310px", padding:"10px", margin:"0 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
-								<Grid item>		{/* 생년월일 */}
-									<DateTimePicker
-										id="birth"
-										label="생년월일 *"
-										value={birth}
-										viewMode="years"
-										birth
-										shrink
-										disabled={updateProcess}
-										onChange={this.handleBirthChange}/>
-								</Grid>
+								style={{height: "380px", width:"300px", padding:"15px 10px 15px 10px", margin:"5px 5px 10px 5px", boxShadow:"0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px"}}>
 								{
 									interests ? <Grid item>		{/* 관심사 */}
 										<SelectInterest
@@ -349,43 +325,31 @@ export class GroupInfo extends Component {
 											handleInterestChange={this.handleInterestChange}/>
 									</Grid> : ""
 								}
-								<Grid item>		{/* 자기소개 */}
-									<TextField
-										id="intro"
-										value={intro}
-										onChange={this.handleChange}
-										label="자기소개"
-										shrink
-										multiline
-										rows={6}
-										rowsMax={6}
+								<Grid item>		{/* 성별 제한 */}
+									<RadioGroup
+										name="gender"
+										value={gender}
+										label="성별제한"
 										disabled={updateProcess}
-										margin="dense"
-										width="260px"/>
+										row
+										handleChange={this.handleGenderChange}
+										data={[{label: "전체", value: "0"}, {label: "남성", value: "1"}, {label: "여성", value: "2"}]}/>
 								</Grid>
-								<Grid item>		{/* 요청 응답 메세지 */}
-									<TextField
-										id="msg"
-										value={msg}
-										onChange={this.handleChange}
-										label="친구요청 응답 기본메세지"
-										shrink
-										multiline
-										rows={6}
-										rowsMax={6}
+								<Grid item>
+									<Slider
+										minAge={minAge}
+										maxAge={maxAge}
+										label="연령제한"
 										disabled={updateProcess}
-										margin="dense"
-										width="260px"/>
+										handleSlider={this.handleSlider}
+										/>
 								</Grid>
-								<Grid item>		{/* 공개여부 */}
-									<ExpSelectForm
-										birthyn={birthyn}
-										areayn={areayn}
-										genderyn={genderyn}
-										friendsyn={friendsyn}
-										groupsyn={groupsyn}
+								<Grid item>
+									<Slider2
+										value={maxMember}
+										label="최대 인원"
 										disabled={updateProcess}
-										onChange={this.handleExpChange}
+										handleSlider={this.handleSlider2}
 										/>
 								</Grid>
 							</Grid>
@@ -399,9 +363,9 @@ export class GroupInfo extends Component {
 								type="button"
 								onClick={this.handleSubmit}
 								process={updateProcess}
-								disabled={!(nickNameOk && pwOk && pw2Ok && locationOk && genderOk && birthOk && interestOk) || updateProcess}
+								disabled={!(groupNameOk && interestOk) || updateProcess}
 								margin="30px 5px 5px 5px">
-								확인
+								{establish ? "그룹개설" : "확인"}
 							</Button>
 							<Button
 								type="button"
@@ -429,7 +393,7 @@ const mapStateToProps = state => ({
 	dataInterest: state.dataInterest,
 	dataSi: state.dataSi,
 	dataGu: state.dataGu,
-	myInfo: state.myInfo,
+	group: state.group,
 	token: state.token,
 })
 const mapDispatchToProps = {

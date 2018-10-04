@@ -21,6 +21,7 @@ import MeFriendsGroupsLoader from './ContentLoaders/MeFriendsGroupsLoader';
 import Dialog from './Dialog';
 import DialogYN from './DialogYN';
 import DialogFriendRequestForm from './DialogFriendRequestForm';
+import DialogGroupJoinForm from './DialogGroupJoinForm';
 import DialogFriendRequests from './DialogFriendRequests';
 
 import ChatBubble from './ChatBubble';
@@ -32,6 +33,7 @@ import SelectContact from './SelectContact';
 import SelectInterest from './SelectInterest';
 import RadioGroup from './RadioGroup';
 import Slider from './Slider';
+import Slider2 from './Slider2';
 import ZoomSlider from './ZoomSlider';
 import ExpansionFriendRequest from './ExpansionFriendRequest';
 import ExpansionPanel from './ExpansionPanel';
@@ -40,6 +42,7 @@ import PostHeader from './PostHeader';
 
 import DateTimePicker from './DateTimePicker';
 import Label from './Label';
+import LabelGroup from './LabelGroup';
 import LabelMini from './LabelMini';
 import LabelTiny from './LabelTiny';
 import GroupLabelMini from './GroupLabelMini';
@@ -73,6 +76,7 @@ export {
 	Dialog,
 	DialogYN,
 	DialogFriendRequestForm,
+	DialogGroupJoinForm,
 	DialogFriendRequests,
 
 	ChatBubble,
@@ -84,6 +88,7 @@ export {
 	SelectInterest,
 	RadioGroup,
 	Slider,
+	Slider2,
 	ZoomSlider,
 	ExpansionFriendRequest,
 	ExpansionPanel,
@@ -92,6 +97,7 @@ export {
 
 	DateTimePicker,
 	Label,
+	LabelGroup,
 	LabelMini,
 	LabelTiny,
 	GroupLabelMini,

@@ -20,6 +20,15 @@ const styles = {
 		borderRadius: "10px",
 		margin: "0",
 	},
+	groupPaper: {
+		padding: "30px 20px 30px 20px",
+		width: "816px",
+		maxWidth: "816px",
+		height: "610px",
+		maxHeight: "100vh",
+		borderRadius: "10px",
+		margin: "0",
+	},
 	paperWidthXs: {
 		width: "100%",
 		background: "red",
@@ -60,7 +69,7 @@ class ImageUploader extends Component {
 		if (files && files.length > 0) {
 			this.setState({imageCompressingProcess: true});
 			new ImageCompressor(files[0], {
-				maxWidth: 2000,
+				maxWidth: this.props.isGroup ? 3333 : 2000,
 				maxHeight: 2000,
 				success: (compressedFile) => {
 					const reader = new FileReader()
@@ -78,25 +87,26 @@ class ImageUploader extends Component {
 	setEditorRef = (editor) => this.editor = editor
 
 	render() {
-		const { classes, open, closeImageUploader } = this.props;
+		const { classes, open, closeImageUploader, isGroup } = this.props;
 		const { showImage, editing, process, imageCompressingProcess,
 			src, rejected, zoomLevel } = this.state;
 		return (
 			<MuiDialog
-				classes={{paper: classes.paper, paperWidthXs: classes.paperWidthXs}}
+				classes={{paper: isGroup ? classes.groupPaper : classes.paper, paperWidthXs: classes.paperWidthXs}}
 				disableBackdropClick
 				aria-labelledby="simple-dialog-title"
 				open={open}>
 					<Grid
 					container
-					direction="row"
+					direction="column"
 					justify="center"
 					alignItems="center"
-					spacing={0}>
+					spacing={0}
+					wrap="nowrap">
 						<Grid item>
 								<div className="dropzone">
 									<Dropzone
-										style={{cursor:"pointer", width:"450px", height:"450px", textAlign:"center"}}
+										style={{cursor:"pointer", width: isGroup ? "716" : "450px", height:"450px", textAlign:"center"}}
 										rejectStyle={{cursor:"no-drop"}}
 										accept="image/jpeg, image/png"
 										disableClick={editing}
@@ -108,7 +118,7 @@ class ImageUploader extends Component {
 											<AvatarEditor
 												ref={this.setEditorRef}
 												image={src}
-												width={400}
+												width={isGroup ? 666 : 400}
 												height={400}
 												color={[240,240,240,0.8]}
 												scale={zoomLevel}

@@ -1,5 +1,14 @@
 import userLoggedIn from './userLoggedIn';
 import {
+	openGroupPage,
+	updateGroupPage,
+	closeGroupPage,
+	updateGroupMembers,
+	clearGroupMembers,
+	updateGroupPosts,
+	clearGroupPosts,
+} from './group';
+import {
 	openMePage,
 	updateMePage,
 	closeMePage,
@@ -41,6 +50,14 @@ import {
 
 export {
 	userLoggedIn,
+
+	openGroupPage,
+	updateGroupPage,
+	closeGroupPage,
+	updateGroupMembers,
+	clearGroupMembers,
+	updateGroupPosts,
+	clearGroupPosts,
 
 	updateMePage,
 	openMePage,

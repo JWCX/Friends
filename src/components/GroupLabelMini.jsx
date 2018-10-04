@@ -11,7 +11,7 @@ export class GroupLabelMini extends Component {
 		const { label, lock } = this.props;
 		return (
 			<StyledLabel lock={lock}>
-				<div style={{display:"inline-block", fontSize:"0.9em", verticalAlign: "middle", width:"210px"}}>
+				<div style={{display:"inline-block", fontSize:"0.9em", verticalAlign: "middle"}}>
 					{label}
 				</div>
 			</StyledLabel>

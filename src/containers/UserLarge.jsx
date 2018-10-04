@@ -85,7 +85,7 @@ export class UserLarge extends Component {
 						</Grid>
 						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								icon={ <NanoMapIcon fill="#a6ff4d"/> }
+								icon={ <NanoMapIcon fill="#66ff66"/> }
 								label={ `${si} ${gu}` }/>
 						</Grid>
 					</Grid>

@@ -75,7 +75,7 @@ export class Groups extends Component {
 			this.loadMore();
 	}
 	handleCreateGroup = () => {
-
+		this.props.history.push(`groups/group/new`);
 	}
 	handleDialogClose = () => {
 		this.setState({ dialogOpen: false,
@@ -109,20 +109,17 @@ export class Groups extends Component {
 						spacing={0}>
 						{
 							groups && _.map(groups, group =>
-								<Grid item style={{width: "50%", minWidth: "390px"}}>
+								<Grid item style={{width: "100%", minWidth: "390px"}}>
 									<GroupLarge key={group.id}
 										id={group.id}
 										groupName={group.groupName}
 										master={group.master}
 										image={group.image}
-										age={group.age}
 										si={group.si}
 										gu={group.gu}
 										interests={group.interests}
-										estDate={group.estDate}
 										memberCnt={group.memberCnt}
 										maxMember={group.maxMember}
-										gender={group.gender}
 										intro={group.intro}/>
 								</Grid>
 							)

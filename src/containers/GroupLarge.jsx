@@ -4,12 +4,10 @@ import { withRouter } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { NanoCakeIcon,
-	NanoStarIcon,
-	NanoMapIcon,
-	NanoCrownIcon,
+import { NanoStarIcon,
 	NanoGroupNameIcon,
-	NanoMegaphoneIcon
+	NanoMegaphoneIcon,
+	NanoMapIcon
 } from 'components/AppBarIcons';
 import { InterestChip } from 'components/Chips';
 import { LargeGroupAvatar } from 'components/Avatars';
@@ -41,23 +39,19 @@ export class GroupLarge extends Component {
 	}
 	render() {
 		const {
-			// dataSi,
-			// dataGu,
-			// master,
-			// age,
-			// estDate,
-			// gender,
 			dataInterest,
+			dataSi,
+			dataGu,
 			groupName,
 			image,
 			memberCnt,
 			maxMember,
 			intro,
 		} = this.props;
-
-		// const si = dataSi[this.props.si] ? dataSi[this.props.si].name : "";
-		// const gu = dataGu[this.props.si] ? dataGu[this.props.si][this.props.gu] ? dataGu[this.props.si][this.props.gu].name : "" : "";
 		const interests =  this.props.interests && this.props.interests.length ? this.props.interests.map(interest => dataInterest[interest].name) : [];
+		const si = dataSi[this.props.si] ? dataSi[this.props.si].name : "전국";
+		const gu = dataGu[this.props.si] ? dataGu[this.props.si][this.props.gu] ? dataGu[this.props.si][this.props.gu].name : "" : "";
+
 		return (
 			<StyledCard
 				style={{borderRadius: "10px"}}
@@ -90,11 +84,6 @@ export class GroupLarge extends Component {
 									</React.Fragment>
 								}/>
 						</Grid>
-						{/* <Grid item style={{padding: "3px 15px 3px 0"}}>
-							<LabelMini
-								icon={ <NanoCrownIcon fill="#ffa64d"/> }
-								label={master}/>
-						</Grid> */}
 						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
 								icon={ <NanoStarIcon fill="#ffd633"/> }
@@ -102,11 +91,13 @@ export class GroupLarge extends Component {
 								label={ interests.map((interest,i) => <InterestChip key={i} label={interest} height="21px"/>) }
 								/>
 						</Grid>
-						{/* <Grid item style={{padding: "3px 15px 3px 0"}}>
+						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
-								icon={ <NanoMapIcon fill="#a6ff4d"/> }
-								label={ `${si} ${gu}` }/>
-						</Grid> */}
+								icon={ <NanoMapIcon fill="#66ff66"/> }
+								// width="270px"
+								label={ `${si} ${gu}` }
+								/>
+						</Grid>
 						<Grid item style={{padding: "3px 15px 3px 0"}}>
 							<LabelMini
 								icon={ <NanoMegaphoneIcon fill="#33adff"/> }
@@ -120,13 +111,11 @@ export class GroupLarge extends Component {
 }
 
 const mapStateToProps = state => ({
+  dataInterest: state.dataInterest,
   dataSi: state.dataSi,
-  dataGu: state.dataGu,
-  dataInterest: state.dataInterest
+  dataGu: state.dataGu
 })
-
 const mapDispatchToProps = {
-
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupLarge));

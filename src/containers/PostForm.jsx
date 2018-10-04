@@ -190,7 +190,6 @@ const inlineToolBarPlugin = createInlineToolbarPlugin({
 		OrderedListButton,
 		BlockquoteButton,
 		anchorPlugin.LinkButton,
-		VideoAdd
 	]
 });
 

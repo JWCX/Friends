@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Slick from 'react-slick';
-import defaultImage from 'assets/user_default.png';
+import defaultGroupImage from 'assets/group_default.png';
+import defaultUserImage from 'assets/user_default.png';
 import { DeleteButton, AddImageButton } from 'components';
 
 class Carousel2 extends Component {
@@ -11,8 +12,8 @@ class Carousel2 extends Component {
 		return false;
 	}
 	render() {
-		const { width, height, borderRadius, openImageUploader, handleDeleteImage, disabled } = this.props;
-		const images = this.props.images && this.props.images.length ?  this.props.images : [String(defaultImage)];
+		const { width, height, borderRadius, openImageUploader, handleDeleteImage, disabled, isGroup } = this.props;
+		const images = this.props.images && this.props.images.length ?  this.props.images : isGroup ? [String(defaultGroupImage)] : [String(defaultUserImage)];
 		return (
 			<div style={{
 				transform: "scale(0.9)",

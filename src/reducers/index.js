@@ -8,6 +8,10 @@ import token from './tokenReducer';
 import myInfo from './myInfoReducer';
 import myFriends from './myFriendsReducer';
 
+import group from './groupReducer';
+import groupMembers from './groupMembersReducer';
+import groupPosts from './groupPostsReducer';
+
 import me from './meReducer';
 import meFriends from './meFriendsReducer';
 import meGroups from './meGroupsReducer';
@@ -35,6 +39,10 @@ export default combineReducers({
 	token,		// 로그인한 유저의 seq
 	myInfo, 	// 로그인한 유저의 정보
 	myFriends,	// 내친구 정보(simple, 채팅추가시 셀렉메뉴에 들어갈 데이터)
+
+	group,			// group페이지 접근시 해당 그룹의 정보
+	groupMembers,	// group페이지 접근시 해당 그룹의 멤버 리스트
+	groupPosts,		// group페이지 접근시 해당 그룹의 게시글 리스트
 
 	me,			// me페이지 접근시 해당 유저의 정보
 	meFriends, 	// me페이지 접근시 해당 유저(또는 자신)의 친구 리스트

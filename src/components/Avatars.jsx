@@ -13,7 +13,7 @@ const GroupAvatar = styled.img`
 width: ${props => props.width};
 height: ${props => props.height};
 margin: ${props => props.margin};
-border-radius: 15px;
+border-radius: 10px;
 box-shadow: 0 3px 15px -1px rgba(100,100,100,0.3);
 `
 export const MiniUserAvatar = ({alt, src}) => {
@@ -41,8 +41,7 @@ export const LargeUserAvatar = ({alt, src}) => {
 			src={src || defaultImage}
 			width="100px"
 			height="100px"
-			margin="10px 0 10px 15px"
-			/>
+			margin="10px 0 10px 15px"/>
 	)
 }
 export const SmallGroupAvatar = ({alt, src}) => {
@@ -50,7 +49,8 @@ export const SmallGroupAvatar = ({alt, src}) => {
 		<GroupAvatar
 			// alt={alt}
 			src={src}
-			width="50px"
+			width="83px"
+			// width="50px"
 			height="50px"/>
 	)
 }
@@ -59,7 +59,7 @@ export const LargeGroupAvatar = ({alt, src}) => {
 		<GroupAvatar
 			// alt={alt}
 			src={src}
-			width="150px"
+			width="250px"
 			height="150px"
 			margin="10px 0 10px 15px"/>
 	)

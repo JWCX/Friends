@@ -9,7 +9,7 @@ import { GroupLabelMini } from 'components';
 
 const StyledCard = styled(Card)`
 	width: 300px;
-	padding: 5px 0;
+	padding: 5px 10px;
 	transition: all .1s ease-in-out;
 	cursor: pointer;
 	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
@@ -30,7 +30,7 @@ export class GroupMini extends Component {
 			<StyledCard onClick={this.handleClick}>
 				<Grid container
 					direction="row"
-					justify="center"
+					justify="flex-start"
 					alignItems="center"
 					spacing={8}>
 					<Grid item>
