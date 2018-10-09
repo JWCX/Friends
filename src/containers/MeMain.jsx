@@ -62,7 +62,7 @@ class MeMain extends Component {
 	}
 	handleSendRequestSubmit = () => {
 		this.setState({dialogFrProcess: true});
-		Axios.post('http://192.168.0.200:8080/friend/request', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/friend/request`, {
 			token: this.props.token,
 			id: this.props.me.id,
 			message: this.state.dialogFrMyMsg
@@ -114,7 +114,7 @@ class MeMain extends Component {
 	}
 	handleStalkSubmit = () => {
 		this.setState({dialogYnProcess: true});
-		Axios.post('http://192.168.0.200:8080/curious', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/curious`, {
 			token: this.props.token,
 			id: this.props.me.id
 		}).then(resp => {
@@ -159,7 +159,7 @@ class MeMain extends Component {
 	}
 	handleRemoveSubmit = () => {
 		this.setState({dialogYnProcess: true});
-		Axios.delete('http://192.168.0.200:8080/friend', {
+		Axios.delete(`${process.env.REACT_APP_DEV_API_URL}/friend`, {
 			token: this.props.token,
 			id: this.props.me.id
 		}).then(resp => {

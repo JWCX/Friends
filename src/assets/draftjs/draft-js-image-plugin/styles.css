@@ -4,7 +4,8 @@
   }
 
   :local(.addImagePopover) {
-    /* margin-top: 10px; */
+	margin-top: 5px;
+	margin-left: -175px;
     background: #FFF;
     position: absolute;
     height: 44px;

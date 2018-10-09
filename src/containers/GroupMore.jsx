@@ -25,12 +25,11 @@ class GroupMore extends React.Component {
 							<ClickAwayListener onClickAway={this.handleClose}>
 							<MenuList>
 							{
-								parseInt(masterId) === token ?
-								<MenuItem style={{fontSize: "0.8em", height: "15px"}} id="setInfo" onClick={handleMoreSelect}>그룹설정</MenuItem>
-								: <React.Fragment>
-									<MenuItem style={{fontSize: "0.8em", height: "15px"}} id="block" onClick={handleMoreSelect}>차단하기</MenuItem>
-									<MenuItem style={{fontSize: "0.8em", height: "15px"}} id="report" onClick={handleMoreSelect}>신고하기</MenuItem>
-								 </React.Fragment>
+								parseInt(masterId) === token ? <MenuItem style={{fontSize: "0.8em", height: "15px"}} id="setInfo" onClick={handleMoreSelect}>그룹설정</MenuItem>
+									: <React.Fragment>
+										<MenuItem style={{fontSize: "0.8em", height: "15px"}} id="block" onClick={handleMoreSelect}>차단하기</MenuItem>
+										<MenuItem style={{fontSize: "0.8em", height: "15px"}} id="report" onClick={handleMoreSelect}>신고하기</MenuItem>
+									</React.Fragment>
 							}
 							</MenuList>
 							</ClickAwayListener>

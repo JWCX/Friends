@@ -1,3 +1,12 @@
+export const setGroupNextPageNum = nextPageNum => ({
+	type: "SET_GROUP_NEXT_PAGE_NUM",
+	nextPageNum
+})
+export const setGroupHasMorePages = hasMorePages => ({
+	type: "SET_GROUP_HAS_MORE_PAGES",
+	hasMorePages
+})
+
 export const openGroupPage = data => ({
 	type: "OPEN_GROUP_PAGE",
 	group: data.group,
@@ -24,9 +33,15 @@ export const clearGroupMembers = () => ({
 	groupMembers: null
 })
 
-export const updateGroupPosts = posts => ({
-	type: "UPDATE_GROUP_POSTS",
+
+
+export const getGroupPosts = posts => ({
+	type: "GET_GROUP_POSTS",
 	groupPosts: posts
+})
+export const updateGroupPosts = (currentPosts, posts) => ({
+	type: "UPDATE_GROUP_POSTS",
+	groupPosts: { ...currentPosts, ...posts }
 })
 export const clearGroupPosts = () => ({
 	type: "CLEAR_GROUP_POSTS",

@@ -103,7 +103,7 @@ class Messenger extends React.Component {
 	handleAddContact = () => {
 		this.setState({dialogProcess: true});
 
-		Axios.post('http://192.168.0.200:8080/contact', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/contact`, {
 			token: this.props.token,
 			id: this.state.selectedFriend.id
 		}).then(resp => {

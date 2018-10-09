@@ -8,7 +8,7 @@ import { Dialog as MuiDialog,
 	Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import { updateMyFriends, removeNotification } from 'actions';
+import { removeNotification } from 'actions';
 import { Button,
 		ChatBubble,
 		ExpansionFriendRequest,
@@ -33,7 +33,7 @@ const styles = {
 	}
 }
 
-class DialogFriendRequests extends React.Component {
+class DialogGroupApplicants extends React.Component {
 	state = {
 		// notifications의 개수에 맞게 `expand${id}`의 state가 생성됨
 
@@ -46,19 +46,19 @@ class DialogFriendRequests extends React.Component {
 		console.log(this.state);
 	}
 	accpetRequest = id => {
-		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/friend/accept`, {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/accept`, {
 			token: this.props.token,
 			id: this.props.notifications[id].id,
+			groupId: this.props.notifications[id].groupId,
 			notification: this.props.notifications[id].notification
 		})
 		.then(resp => {
 			console.log(resp);
-			this.props.updateMyFriends(resp.data);
 			this.props.removeNotification(this.props.notifications, this.props.notifications[id].notification);
 			this.setState({
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "친구요청을 수락했습니다!",
+				dialogTitle: "가입신청을 수락했습니다!",
 			});
 		}).catch(err => {
 			console.log(err);
@@ -79,9 +79,10 @@ class DialogFriendRequests extends React.Component {
 		})
 	}
 	rejectRequest = id => {
-		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/friend/reject`, {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/reject`, {
 			token: this.props.token,
 			id: this.props.notifications[id].id,
+			groupId: this.props.notifications[id].groupId,
 			notification: this.props.notifications[id].notification
 		})
 		.then(resp => {
@@ -90,7 +91,7 @@ class DialogFriendRequests extends React.Component {
 			this.setState({
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "요청을 거절했습니다.",
+				dialogTitle: "가입신청을 거절했습니다.",
 			});
 		}).catch(err => {
 			console.log(err);
@@ -125,7 +126,7 @@ class DialogFriendRequests extends React.Component {
 			dialogIcon
 		} = this.state;
 		const { notifications,
-			classes, closeFriendRequests, open, process } = this.props;
+			classes, closeGroupApplicants, open, process } = this.props;
 		return (
 			<MuiDialog
 				classes={{paper: classes.paper, paperWidthXs: classes.paperWidthXs}}
@@ -141,14 +142,14 @@ class DialogFriendRequests extends React.Component {
 						<Grid item>
 							<DialogTitle
 								id="simple-dialog-title">
-								친구요청 목록
+								가입신청자 목록
 							</DialogTitle>
 						</Grid>
 						{
-							_.filter(notifications, notification => notification.gubun === 0).length ?
+							_.filter(notifications, notification => notification.gubun === 1).length ?
 								<Grid item>
 								{
-									_.filter(notifications, notification => notification.gubun === 0)
+									_.filter(notifications, notification => notification.gubun === 1)
 									 .map(notification => {
 										if(!notification) return;
 										return <ExpansionFriendRequest
@@ -160,7 +161,7 @@ class DialogFriendRequests extends React.Component {
 											summary={
 												<LabelTiny
 													width="350px"
-													label={`[ ${notification.nickName} ] 님의 친구요청을 확인하세요!`}
+													label={`[ ${notification.nickName} ] 님이 그룹 가입을 신청하였습니다.`}
 													/>
 											}>
 											<Grid contianer
@@ -190,7 +191,7 @@ class DialogFriendRequests extends React.Component {
 								:	<Grid item>
 										<DialogContent
 											style={{padding: "5px"}}>
-											친구요청이 없습니다.
+											가입신청자가 없습니다.
 										</DialogContent>
 									</Grid>
 						}
@@ -198,7 +199,7 @@ class DialogFriendRequests extends React.Component {
 							<Button
 								autoFocus
 								disabled={process}
-								onClick={closeFriendRequests}
+								onClick={closeGroupApplicants}
 								margin="50px 5px 0 5px">
 								닫기
 							</Button>
@@ -220,9 +221,7 @@ const mapStateToProps = state => ({
 	notifications: state.notifications,
 	token: state.token
 })
-
 const mapDispatchToProps = {
-	updateMyFriends,
 	removeNotification
 }
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DialogFriendRequests));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DialogGroupApplicants));

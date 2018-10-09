@@ -7,9 +7,23 @@
 	box-shadow: inset 0px 1px 8px -3px #ABABAB;
 	background: #fefefe;
 	height: 600px;
-	width: 1000px;
+	width: 975px;
 	overflow: auto;
 	font-size: 0.9em;
+  }
+:local(.editorComment) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	height: 100px;
+	width: 975px;
+	overflow: auto;
+	font-size: 0.9em;
+	text-align: left;
   }
 :local(.reader) {
 	position:relative;
@@ -23,12 +37,12 @@
 	box-shadow: inset 0px 1px 8px -3px #ABABAB;
 	background: #fefefe;
 	/* height: 500px; */
-	width: 1000px;
+	width: 975px;
 	overflow: auto;
 	font-size: 0.9em;
   }
 
-  :local(.title) {
+:local(.title) {
 	box-sizing: border-box;
 	border: 1px solid #ddd;
 	cursor: text;
@@ -36,7 +50,64 @@
 	border-radius: 5px;
 	box-shadow: inset 0px 1px 8px -3px #ABABAB;
 	background: #fefefe;
-	width: 893px;
+	width: 868px;
+	font-size: 0.9em;
+  }
+
+
+:local(.editorGroup) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	height: 600px;
+	width: 780px;
+	overflow: auto;
+	font-size: 0.9em;
+  }
+:local(.editorCommentGroup) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	height: 100px;
+	width: 780px;
+	overflow: auto;
+	font-size: 0.9em;
+	text-align: left;
+}
+:local(.readerGroup) {
+	position:relative;
+	left: 50%;
+	transform: translateX(-50%);
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 5px 10px 5px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	/* height: 500px; */
+	width: 780px;
+	overflow: auto;
+	font-size: 0.9em;
+  }
+
+:local(.titleGroup) {
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	cursor: text;
+	padding: 10px 10px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 8px -3px #ABABAB;
+	background: #fefefe;
+	width: 673px;
 	font-size: 0.9em;
   }
 

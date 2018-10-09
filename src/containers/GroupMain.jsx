@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Fade } from '@material-ui/core';
 import Axios from 'axios';
+import _ from 'lodash';
 
 import { updateGroupPage } from 'actions';
 import { LabelGroup,
@@ -11,6 +12,7 @@ import { LabelGroup,
 		DialogYN,
 		DialogGroupJoinForm } from 'components';
 import { InterestChip } from 'components/Chips';
+import { NumberBadge } from 'components/Badges';
 import { NanoMapIcon,
 		NanoCakeIcon,
 		NanoStarIcon,
@@ -19,10 +21,9 @@ import { NanoMapIcon,
 		NanoGroupNameIcon,
 		NanoMembersIcon,
 		NanoTargetIcon,
-		NanoGenderIcon,
 		NanoMarsIcon,
 		NanoVenusIcon } from 'components/AppBarIcons';
-class MeMain extends Component {
+class GroupMain extends Component {
 	state = {
 		dialogOpen: false,
 		dialogIcon: 0,
@@ -56,13 +57,13 @@ class MeMain extends Component {
 		this.setState({
 			dialogJoinOpen: true,
 			dialogJoinTitle: "그룹 가입 신청",
-			dialogJoinContent: `[ ${this.props.group.groupName} ] 그룹에 가입을 신청합니다. 가입 신청 메세지를 입력해보세요.`,
+			dialogJoinContent: `[ ${this.props.group.groupName} ] 그룹에 가입을 신청합니다.`,
 			dialogJoinAvatar: this.props.myInfo.images[0],
 		})
 	}
 	handleJoinSubmit = () => {
 		this.setState({dialogJoinProcess: true});
-		Axios.post('http://192.168.0.200:8080/group/request', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/request`, {
 			token: this.props.token,
 			id: this.props.group.id,
 			message: this.state.dialogJoinMsg
@@ -110,7 +111,7 @@ class MeMain extends Component {
 	}
 	handleDropOutSubmit = () => {
 		this.setState({dialogYnProcess: true});
-		Axios.delete('http://192.168.0.200:8080/group/request', {
+		Axios.delete(`${process.env.REACT_APP_DEV_API_URL}/group/request`, {
 			token: this.props.token,
 			id: this.props.group.id
 		}).then(resp => {
@@ -176,7 +177,7 @@ class MeMain extends Component {
 			dialogOpen, dialogIcon, dialogTitle, dialogContent, dialogRedirect,
 			dialogJoinOpen, dialogJoinTitle, dialogJoinContent, dialogJoinProcess, dialogJoinMsg, dialogJoinAvatar
 		 } = this.state;
-		const { dataInterest, dataSi, dataGu, group, myInfo } = this.props;
+		const { dataInterest, dataSi, dataGu, group, myInfo, token, notifications, openGroupApplicants } = this.props;
 		const {
 			groupName,
 			master,
@@ -287,15 +288,29 @@ class MeMain extends Component {
 						alignItems="center"
 						spacing={8}>
 						<Grid item>		{/* 가입신청 버튼 */}
-							<Button
-								type="button"
-								onClick={isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }
-								disabled={isMyGroup===1 || restrict}
-								margin="15px 5px 5px 5px">
-								{isMyGroup===0 && "가입 신청"}
-								{isMyGroup===1 && "가입 대기중"}
-								{isMyGroup===2 && "그룹 탈퇴"}
-							</Button>
+						{
+							_.filter(notifications, notification => notification.gubun === 1).length ?
+								<NumberBadge button content={_.filter(notifications, notification => notification.gubun === 1).length}>
+									<Button
+										type="button"
+										onClick={token === master.id ? openGroupApplicants : isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }
+										disabled={isMyGroup===1 || restrict}
+										margin="15px 5px 5px 5px">
+										{isMyGroup===0 && "가입 신청"}
+										{isMyGroup===1 && "가입 대기중"}
+										{isMyGroup===2 ? token === master.id ? "가입신청목록" : "그룹 탈퇴" : ""}
+									</Button>
+								</NumberBadge>
+								: <Button
+									type="button"
+									onClick={token === master.id ? openGroupApplicants : isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }
+									disabled={isMyGroup===1 || restrict}
+									margin="15px 5px 5px 5px">
+									{isMyGroup===0 && "가입 신청"}
+									{isMyGroup===1 && "가입 대기중"}
+									{isMyGroup===2 ? token === master.id ? "가입신청목록" : "그룹 탈퇴" : ""}
+								</Button>
+						}
 						</Grid>
 					</Grid>
 					<DialogGroupJoinForm open={dialogJoinOpen}
@@ -335,9 +350,10 @@ const mapStateToProps = state => ({
 	dataGu: state.dataGu,
 	group: state.group,
 	token: state.token,
-	myInfo: state.myInfo
+	myInfo: state.myInfo,
+	notifications: state.notifications,
 })
 const mapDispatchToProps = {
 	updateGroupPage
 }
-export default connect(mapStateToProps, mapDispatchToProps)(MeMain);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupMain);

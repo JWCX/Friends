@@ -119,7 +119,7 @@ class Me extends React.Component {
 			params.id = id;
 
 
-		Axios.get('http://192.168.0.200:8080/me', {
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/me`, {
 				params
 			}).then(resp => {
 				console.log(resp);	// FIXME: 지워주세용
@@ -174,7 +174,7 @@ class Me extends React.Component {
 			params.id = id;
 
 
-		Axios.get('http://192.168.0.200:8080/me', {
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/me`, {
 				params
 			}).then(resp => {
 				console.log(resp);	// FIXME: 지워주세용
@@ -200,7 +200,7 @@ class Me extends React.Component {
 	getUserInfo = id => {
 		this.setState({currentPage: 1});
 		if(parseInt(id)===this.props.token) {
-			Axios.get('http://192.168.0.200:8080/me', {
+			Axios.get(`${process.env.REACT_APP_DEV_API_URL}/me`, {
 				params: { token: this.props.token }
 			}).then(resp => {
 				console.log("REEEEEEEEEESPPPPOOONNGESEESEE", resp);	// FIXME: 지워주세용
@@ -236,7 +236,7 @@ class Me extends React.Component {
 		}
 		else {
 
-			Axios.get('http://192.168.0.200:8080/me', {
+			Axios.get(`${process.env.REACT_APP_DEV_API_URL}/me`, {
 				params: { token: this.props.token, id: id }
 			}).then(resp => {
 				console.log("REEEEEEEEEESPPPPOOONNGESEESEE", resp);	// FIXME: 지워주세용

@@ -80,7 +80,7 @@ class Main extends Component {
 				sameElse : 'L'
 			},
 			relativeTime : {
-				future : 'dans %s',
+				future : '%s',
 				past : '%s 전',
 				s : '방금',
 				m : '일분',
@@ -182,7 +182,7 @@ class Main extends Component {
 				<Route path="(/|/board|/users|/groups|/me|/group)" render={() =>
 					<React.Fragment>
 						<SockJsClient
-							url="http://192.168.0.200:8080/chat"
+							url={`${process.env.REACT_APP_DEV_API_URL}/chat`}
 							topics={[`/topic/${token}`]}
 							onMessage={this.onMessageReceive}
 							onConnect={ () => console.log("CONNECTTTA") }
@@ -210,7 +210,7 @@ class Main extends Component {
 								<Groups contentStyles={contentStyles}/>
 							}/>
 							<Route path="/" render={() =>
-								<Popular/>
+								<Popular contentStyles={contentStyles}/>
 							}/>
 						</Switch>
 					</OuterContentContainer>

@@ -21,8 +21,8 @@ export const MiniUserAvatar = ({alt, src}) => {
 		<UserAvatar
 			// alt={alt}
 			src={src || defaultImage}
-			width="30px"
-			height="30px"/>
+			width="25px"
+			height="25px"/>
 	)
 }
 export const SmallUserAvatar = ({alt, src}) => {
@@ -34,14 +34,14 @@ export const SmallUserAvatar = ({alt, src}) => {
 			height="50px"/>
 	)
 }
-export const LargeUserAvatar = ({alt, src}) => {
+export const LargeUserAvatar = ({alt, src, center}) => {
 	return (
 		<UserAvatar
 			// alt={alt}
 			src={src || defaultImage}
 			width="100px"
 			height="100px"
-			margin="10px 0 10px 15px"/>
+			margin={center ? "10px 0 10px 0" : "10px 0 10px 15px"}/>
 	)
 }
 export const SmallGroupAvatar = ({alt, src}) => {
@@ -62,5 +62,15 @@ export const LargeGroupAvatar = ({alt, src}) => {
 			width="250px"
 			height="150px"
 			margin="10px 0 10px 15px"/>
+	)
+}
+export const PopularGroupAvatar = ({alt, src}) => {
+	return (
+		<GroupAvatar
+			// alt={alt}
+			src={src}
+			width="167px"
+			height="100px"
+			margin="10px 0 10px 0"/>
 	)
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
 import { MiniUserAvatar } from 'components/Avatars';
 import { NanoLikeIcon,
@@ -23,6 +24,10 @@ const TitleContainer = styled(Common)`
 const UserContainer = styled(Common)`
 	width: 20%;
 	font-size: 0.8em;
+	&:hover{
+		color: rgb(100,100,255);
+		/* transform: scale(1.1); */
+	}
 `
 const WriteDateContainer = styled(Common)`
 	width: 15%;
@@ -50,7 +55,7 @@ export class PostHeader extends Component {
 				<TitleContainer>
 					{title}
 				</TitleContainer>
-				<UserContainer>
+				<UserContainer onClick={this.props.handleLink}>
 					<Grid container
 						direction="row"
 						wrap="nowrap"
@@ -69,11 +74,11 @@ export class PostHeader extends Component {
 				</WriteDateContainer>
 				<CountsContainer>
 					<NanoViewIcon fill={ expanded ? "rgb(80,80,80)" : "rgb(180,180,180)"}/>
-					<span style={{verticalAlign:"top"}}>{likes}</span>
+					<span style={{verticalAlign:"top"}}>{views}</span>
 				</CountsContainer>
 				<CountsContainer>
 					<NanoLikeIcon fill={ expanded ? "rgb(255,100,100)" : "rgb(180,180,180)"}/>
-					<span style={{verticalAlign:"top"}}>{views}</span>
+					<span style={{verticalAlign:"top"}}>{likes}</span>
 				</CountsContainer>
 				<CountsContainer>
 					<NanoCommentIcon fill={ expanded ? "rgb(100,100,255)" : "rgb(180,180,180)"}/>
@@ -86,4 +91,4 @@ export class PostHeader extends Component {
 	}
 }
 
-export default PostHeader;
+export default withRouter(PostHeader);

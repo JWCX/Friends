@@ -4,17 +4,24 @@ import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import Axios from 'axios';
 import moment from 'moment';
-import { Grid, CircularProgress } from '@material-ui/core';
+import { Grid,
+	Divider,
+	CircularProgress } from '@material-ui/core';
 import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 import { EditorState,
 	convertFromRaw } from 'draft-js';
 
-import { updateMainPosts,
+import { getMainPosts,
+	updateMainPosts,
 	setHasMorePages,
 	setNextPageNum } from 'actions';
 import { Dialog,
 	PostHeader,
-	WritePostButton } from 'components';
+	WritePostButton,
+	LikeButton,
+	ReplyButton,
+	Comments,
+	CommentForm } from 'components';
 import { ExpansionPost,
 	PostForm } from 'containers';
 import { NanoExpandIcon } from 'components/AppBarIcons';
@@ -57,6 +64,9 @@ export class Board extends Component {
 
 		postFormOpen: false,
 
+		openReply: false,
+		postIdToReply: null,
+
 		dialogOpen: false,
 		dialogIcon: null,
 		dialogTitle: "",
@@ -76,15 +86,45 @@ export class Board extends Component {
 		this.props.setNextPageNum(this.props.nextPageNum+1);
 	}
 	expandPost = id => {
+		if(!this.state[`expanded${id}`]) {
+			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/board/read`, {
+				token: this.props.token,
+				id: id
+			}).then(resp => {
+				console.log(resp);	// FIXME: 지워주세용
+				if(resp.data.increment) {
+					const readPost = this.props.posts[id];
+					readPost.views = readPost.views+1;
+					this.props.getMainPosts({...this.props.posts, [id]: readPost});
+				}
+			}).catch(err => {
+				console.log(err.response);
+			}); // FIXME: REMOVE LOG
+		}
+
 		this.setState(state => ({[`expanded${id}`]: !state[`expanded${id}`]}));
 		this.setState({[`editorState${id}`]: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.posts[id].content)))})
-		console.log(this.state);
+	}
+	handleLike = id => {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/board/like`, {
+				token: this.props.token,
+				id: id,
+				liked: !this.props.posts[id].liked
+			}).then(resp => {
+				console.log(resp);	// FIXME: 지워주세용
+				const likedPost = this.props.posts[id];
+				likedPost.likes = likedPost.liked ? likedPost.likes-1 : likedPost.likes+1;
+				likedPost.liked = !likedPost.liked;
+				this.props.getMainPosts({...this.props.posts, [id]: likedPost});
+			}).catch(err => {
+				console.log(err.response);
+			}); // FIXME: REMOVE LOG
 	}
 	loadMore = () => {
 		this.setState({loadingContents: true});
 		console.log("loadMore");
 
-		Axios.get("http://192.168.0.200:8080/board", { params: {token: this.props.token, page: this.props.nextPageNum} })
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/board`, { params: {token: this.props.token, page: this.props.nextPageNum} })
 			.then(resp => {
 				this.props.updateMainPosts(this.props.posts, resp.data.posts);
 				this.props.setNextPageNum(this.props.nextPageNum+1);
@@ -127,6 +167,12 @@ export class Board extends Component {
 	handleCloseWritePost = () => {
 		this.setState({postFormOpen: false});
 	}
+	openReplyForm = id => {
+		this.setState({openReply: true, postIdToReply: id});
+	}
+	handleCloseCommentForm = () => {
+		this.setState({openReply: false, postIdToReply: null});
+	}
 	render() {
 		const { posts, hasMorePages, contentStyles, token } = this.props;
 		const { loadingContents,
@@ -135,6 +181,8 @@ export class Board extends Component {
 			dialogIcon,
 			dialogTitle,
 			dialogContent,
+			openReply,
+			postIdToReply
 		} = this.state;
 		return (
 			<React.Fragment>
@@ -155,6 +203,7 @@ export class Board extends Component {
 						{
 							_.map(posts, post =>
 								<Grid item
+									key={post.id}
 									style={{width: "100%", minWidth: "390px"}}>
 									<ExpansionPost
 										id={post.id}
@@ -164,6 +213,7 @@ export class Board extends Component {
 										summary={
 											<PostHeader
 												expanded={this.state[`expanded${post.id}`]}
+												handleLink={()=>{this.props.history.push(`${this.props.match.path}/me/${post.user.id}`)}}
 												title={post.title}
 												writedate={moment(post.writedate).fromNow()}
 												user={post.user}
@@ -171,32 +221,54 @@ export class Board extends Component {
 												comments={_.values(post.comments).length}
 												likes={post.likes}/>
 										}>
-										{
-											this.state[`expanded${post.id}`] &&
-												<div className={editorStyles.reader} onClick={this.focus}>
-													<Editor editorState={this.state[`editorState${post.id}`]}
-													 	onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-														plugins={[
-															emojiPlugin,
-															linkifyPlugin,
-															videoPlugin,
-															imagePlugin,
-															resizeablePlugin,
-															alignmentPlugin,
-															anchorPlugin,
-															this.mentionPlugin,
-														]}
-														readOnly={true}/>
-												</div>
-										}
-										{
-											// TODO: 댓글 및 따봉은 이곳에 ..
-											// TODO: 댓글 및 따봉은 이곳에 ..
-											// TODO: 댓글 및 따봉은 이곳에 ..
-										}
+										<div>
+											{
+												this.state[`expanded${post.id}`] &&
+													<div className={editorStyles.reader}>
+														<Editor editorState={this.state[`editorState${post.id}`]}
+															onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
+															plugins={[
+																emojiPlugin,
+																linkifyPlugin,
+																videoPlugin,
+																imagePlugin,
+																resizeablePlugin,
+																alignmentPlugin,
+																anchorPlugin,
+																this.mentionPlugin,
+															]}
+															readOnly={true}/>
+													</div>
+											}
+											<div style={{paddingTop: "15px"}}>
+												{
+													_.map(post.comments, comment => <React.Fragment>
+															<Comments comment={comment}/>
+															<Divider style={{margin: "15px 1px 5px 2px"}}/>
+														</React.Fragment>
+													)
+												}
+											</div>
+											<div style={{position: "relative", height: "80px", width: "975px", textAlign: "center"}}>
+												<LikeButton
+													onClick={()=>{this.handleLike(post.id)}}
+													selected={post.liked}/>
+												&nbsp;&nbsp;&nbsp;&nbsp;
+												<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
+											</div>
+										</div>
 									</ExpansionPost>
 								</Grid>
 							)
+						}
+						{
+							openReply &&
+							<CommentForm
+								type="board"
+								token={token}
+								postId={postIdToReply}
+								open={openReply}
+								handleClose={this.handleCloseCommentForm}/>
 						}
 						{
 							postFormOpen &&
@@ -247,6 +319,7 @@ const mapStateToProps = state => ({
 	myFriends: state.myFriends
 })
 const mapDispatchToProps = {
+	getMainPosts,
 	updateMainPosts,
 	setHasMorePages,
 	setNextPageNum

@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Axios from 'axios';
+import _ from 'lodash';
 import { Dialog as MuiDialog,
 	Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import { getMainPosts,
-	setNextPageNum,
-	setHasMorePages } from 'actions';
+import { getGroupPosts,
+	setGroupNextPageNum,
+	setGroupHasMorePages } from 'actions';
 import { Button,
 	AddMapButton,
 	Dialog } from 'components';
 
 import { EditorState,
-	convertFromRaw,
 	convertToRaw } from 'draft-js';
 import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 
@@ -47,7 +47,6 @@ import createBlockDndPlugin from 'draft-js-drag-n-drop-plugin';
 import createDragNDropUploadPlugin from 'assets/draftjs/draft-js-drag-n-drop-upload-plugin';
 import mockUpload from 'assets/draftjs/draft-js-drag-n-drop-upload-plugin/utils/mockUpload';
 
-// import 'draft-js-emoji-plugin/lib/plugin.css';
 import 'assets/draftjs/draft-js-emoji-plugin/styles.css';
 import 'draft-js-linkify-plugin/lib/plugin.css';
 import 'draft-js-image-plugin/lib/plugin.css';
@@ -55,7 +54,6 @@ import 'draft-js-focus-plugin/lib/plugin.css';
 import 'draft-js-alignment-plugin/lib/plugin.css';
 import 'draft-js-anchor-plugin/lib/plugin.css';
 import 'draft-js-inline-toolbar-plugin/lib/plugin.css';
-// import 'draft-js-mention-plugin/lib/plugin.css';
 import 'assets/draftjs/draft-js-mention-plugin/styles.css';
 import editorStyles from 'assets/draftjs/editorStyles.css';
 
@@ -64,11 +62,11 @@ const styles = {
 		position: "relative",
 		padding: "20px 20px 20px 20px",
 		minWidth:"650px",
-		width:"1000px",
+		width:"830px",
 		maxWidth: "1050px",
 		// minWidth: "1800px",
 		// minHeight: "850px",
-		height: "660px",
+		height: "760px",
 		maxHeight: "100vh",
 		overflow: "visible",
 		borderRadius: "10px",
@@ -81,95 +79,6 @@ const styles = {
 	container: {
 	}
 }
-
-const friends = [
-	{
-	  id: 0,
-	  name: "PotatoFist0",
-	  avatar: "https://picsum.photos/100/100"
-	},
-	{
-	  id: 1,
-	  name: "PotatoFist1",
-	  avatar: "https://picsum.photos/100/101"
-	},
-	{
-	  id: 2,
-	  name: "PotatoFist2",
-	  avatar: "https://picsum.photos/100/102"
-	},
-	{
-	  id: 3,
-	  name: "PotatoFist3",
-	  avatar: "https://picsum.photos/100/103"
-	},
-	{
-	  id: 4,
-	  name: "PotatoFist4",
-	  avatar: "https://picsum.photos/100/104"
-	},
-	{
-	  id: 5,
-	  name: "PotatoFist5",
-	  avatar: "https://picsum.photos/100/105"
-	},
-	{
-	  id: 6,
-	  name: "PotatoFist6",
-	  avatar: "https://picsum.photos/100/106"
-	},
-	{
-	  id: 7,
-	  name: "PotatoFist7",
-	  avatar: "https://picsum.photos/100/107"
-	},
-	{
-	  id: 8,
-	  name: "PotatoFist8",
-	  avatar: "https://picsum.photos/100/108"
-	},
-	{
-	  id: 9,
-	  name: "PotatoFist9",
-	  avatar: "https://picsum.photos/100/109"
-	},
-	{
-	  id: 10,
-	  name: "PotatoFist10",
-	  avatar: "https://picsum.photos/100/110"
-	},
-	{
-	  id: 11,
-	  name: "PotatoFist11",
-	  avatar: "https://picsum.photos/100/111"
-	},
-	{
-	  id: 12,
-	  name: "PotatoFist12",
-	  avatar: "https://picsum.photos/100/112"
-	},
-	{
-	  id: 13,
-	  name: "PotatoFist13",
-	  avatar: "https://picsum.photos/100/113"
-	},
-	{
-	  id: 14,
-	  name: "PotatoFist14",
-	  avatar: "https://picsum.photos/100/114"
-	},
-	{
-	  id: 15,
-	  name: "PotatoFist15",
-	  avatar: "https://picsum.photos/100/115"
-	},
-	{
-	  id: 16,
-	  name: "PotatoFist16",
-	  avatar: "https://picsum.photos/100/116"
-	},
-  ];
-
 
 const emojiPlugin = createEmojiPlugin();
 const linkifyPlugin = createLinkifyPlugin();
@@ -189,7 +98,6 @@ const inlineToolBarPlugin = createInlineToolbarPlugin({
 		OrderedListButton,
 		BlockquoteButton,
 		anchorPlugin.LinkButton,
-		VideoAdd
 	]
 });
 
@@ -215,7 +123,9 @@ export class PostForm extends Component {
 		open: true,
 		title: "",
 		editorState: EditorState.createEmpty(),
-		suggestions: friends,
+
+		friends: null,
+		suggestions: null,
 
 		process: false,
 
@@ -225,9 +135,12 @@ export class PostForm extends Component {
 		dialogContent: ""
 	};
 
+	componentDidMount() {
+		this.setState({friends: _.map(this.props.myFriends, friend => ({name: friend.nickName, avatar: friend.image, id: friend.id}))});
+		this.setState({suggestions: _.map(this.props.myFriends, friend => ({name: friend.nickName, avatar: friend.image, id: friend.id}))});
+	}
 	mentionPlugin = (() => {
 		const suggestions = this.state.suggestions;
-		console.log("SG", suggestions);
 		return createMentionPlugin({
 			suggestions,
 			mentionComponent: (mentionProps) =>
@@ -239,30 +152,34 @@ export class PostForm extends Component {
 		});
 	})();
 	handleSubmit = () => {
-		console.log("TITLE : ", this.state.title);
-		console.log("content : ", convertToRaw(this.state.editorState.getCurrentContent()));
 		console.log("token : ", this.props.token);
+		console.log("groupID : ", this.props.group.id);
+		console.log("TITLE : ", this.state.title);
+		console.log("content : ", JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
+
 		this.setState({process: true});
 
-		Axios.post('http://192.168.0.200:8080/join', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/board`, {
 			token: this.props.token,
+			id: this.props.group.id,
 			title: this.state.title,
-			content: convertToRaw(this.state.editorState.getCurrentContent())
+			content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
-			this.props.getMainPosts(resp.data.posts);
-			this.props.setHasMorePages(resp.data.hasMorePages);
-			this.props.setNextPageNum(1);
-			this.setState({process: false,
+			this.props.getGroupPosts(resp.data.posts);
+			this.props.setGroupHasMorePages(resp.data.hasMorePages);
+			this.props.setGroupNextPageNum(2);
+			this.setState({
+				process: false,
 				dialogOpen: true,
 				dialogIcon: 1,
 				dialogTitle: "글이 등록되었습니다",
-				// dialogContent: "",
 				complete: true
 			});
 		}).catch(err => {
 			console.log(err.response);
-			this.setState({process: false,
+			this.setState({
+				process: false,
 				dialogOpen: true,
 				dialogIcon: 2,
 				dialogTitle: "서버와 연결할 수 없습니다",
@@ -274,10 +191,11 @@ export class PostForm extends Component {
 		this.setState({title: target.value});
 	}
 	onChange = editorState => {
+		console.log("onChange:", editorState);
 		this.setState({editorState});
 	}
 	onSearchChange = ({value}) => {
-		this.setState({suggestions: defaultSuggestionsFilter(value, friends)});
+		this.setState({suggestions: defaultSuggestionsFilter(value, this.state.friends)});
 	};
 	focus = () => {
 		this.editor.focus();
@@ -309,7 +227,7 @@ export class PostForm extends Component {
 				onClose={null}
 				aria-labelledby="simple-dialog-title"
 				open={open}
-				// disableEscapeKeyDown={}
+				disableEscapeKeyDown={true}
 				>
 				<Grid container
 					direction="column"
@@ -324,7 +242,7 @@ export class PostForm extends Component {
 						spacing={8}>
 						<Grid item>
 							<input
-								className={editorStyles.title}
+								className={editorStyles.titleGroup}
 								id="title"
 								placeholder="제목을 입력하세요.."
 								value={title}
@@ -353,7 +271,7 @@ export class PostForm extends Component {
 						</Grid>
 					</Grid>
 					<Grid item>
-						<div className={editorStyles.editor} onClick={this.focus}>
+						<div className={editorStyles.editorGroup} onClick={this.focus}>
 							<Editor editorState={editorState}
 								onChange={this.onChange}
 								plugins={[
@@ -378,7 +296,6 @@ export class PostForm extends Component {
 							<AlignmentTool/>
 							<MentionSuggestions
 								onSearchChange={this.onSearchChange}
-								// onAddMention={this.onAddMention}
 								suggestions={suggestions}/>
 						</div>
 					</Grid>
@@ -415,12 +332,12 @@ export class PostForm extends Component {
 
 const mapStateToProps = state => ({
 	myFriends: state.myFriends,
-
+	group: state.group,
 })
 const mapDispatchToProps = {
-	getMainPosts,
-	setNextPageNum,
-	setHasMorePages
+	getGroupPosts,
+	setGroupNextPageNum,
+	setGroupHasMorePages
 }
 
 export default withRouter(withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(PostForm)));

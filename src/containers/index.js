@@ -17,11 +17,16 @@ import UserMini from './UserMini';
 import UserLarge from './UserLarge';
 import GroupMini from './GroupMini';
 import GroupLarge from './GroupLarge';
+import Notifications from './Notifications';
+
+import PopularUser from './PopularUser';
+import PopularGroup from './PopularGroup';
 
 import GroupInfo from './GroupInfo';
 import GroupMore from './GroupMore';
 import GroupMain from './GroupMain';
 import GroupMembers from './GroupMembers';
+import GroupPostForm from './GroupPostForm';
 
 import MeInfo from './MeInfo';
 import MeMore from './MeMore';
@@ -52,11 +57,16 @@ export {
 	UserLarge,
 	GroupMini,
 	GroupLarge,
+	Notifications,
+
+	PopularUser,
+	PopularGroup,
 
 	GroupInfo,
 	GroupMore,
 	GroupMain,
 	GroupMembers,
+	GroupPostForm,
 
 	MeInfo,
 	MeMore,

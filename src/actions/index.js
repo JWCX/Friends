@@ -1,10 +1,14 @@
-import userLoggedIn from './userLoggedIn';
+import { userLoggedIn, userLoggedOut } from './login';
+import { getPopularPosts } from './popular';
 import {
+	setGroupNextPageNum,
+	setGroupHasMorePages,
 	openGroupPage,
 	updateGroupPage,
 	closeGroupPage,
 	updateGroupMembers,
 	clearGroupMembers,
+	getGroupPosts,
 	updateGroupPosts,
 	clearGroupPosts,
 } from './group';
@@ -50,12 +54,18 @@ import {
 
 export {
 	userLoggedIn,
+	userLoggedOut,
 
+	getPopularPosts,
+
+	setGroupNextPageNum,
+	setGroupHasMorePages,
 	openGroupPage,
 	updateGroupPage,
 	closeGroupPage,
 	updateGroupMembers,
 	clearGroupMembers,
+	getGroupPosts,
 	updateGroupPosts,
 	clearGroupPosts,
 

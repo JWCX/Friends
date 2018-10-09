@@ -137,7 +137,7 @@ export class GroupInfo extends Component {
 		const { id, groupName, si, gu, minAge, maxAge, maxMember, gender, intro, images } = this.state;
 		const interests = _.map(this.state.interests, interest => interest.value);
 
-		Axios.post('http://192.168.0.200:8080/group/info', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/info`, {
 			token, id, groupName, si, gu, minAge, maxAge, maxMember, gender, intro, images, interests
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용

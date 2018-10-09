@@ -67,7 +67,7 @@ class DialogGroupJoinForm extends React.Component {
 								msg={dialogJoinMsg}
 								inputId="dialogJoinMsg"
 								avatar={dialogJoinAvatar}
-								label="친구신청 메세지"
+								label="가입신청 메세지"
 								disabled={process}
 								onChange={handleInputChange}/>
 						</Grid>

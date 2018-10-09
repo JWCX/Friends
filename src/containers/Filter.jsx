@@ -10,7 +10,9 @@ import { getMainUsers,
 		clearMainGroups,
 		updateFilter,
 		clearFilter,
-		setFiltering
+		setFiltering,
+		setHasMorePages,
+		setNextPageNum
 	} from 'actions';
 import { Select,
 		RadioGroup,
@@ -81,7 +83,7 @@ class Filter extends Component {
 		this.props.clearMainGroups();
 		this.props.clearMainUsers();
 		const { interest, si, gu, gender, minAge, maxAge, keyword } = this.props.filter;
-		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/${this.props.path}`, {
 			params: { token: this.props.token, filter: true, page: 1,
 					interest, si, gu, gender, minAge, maxAge, keyword }
 		})
@@ -91,13 +93,15 @@ class Filter extends Component {
 			this.props.setFiltering(true);
 			switch(this.props.path) {
 				case "users":
-					this.props.getMainUsers(resp.data.users)
+					this.props.getMainUsers(resp.data.users);
 					break;
 				case "groups":
-					this.props.getMainGroups(resp.data.groups)
+					this.props.getMainGroups(resp.data.groups);
 					break;
 				default:
 			}
+			this.props.setHasMorePages(resp.data.hasMorePages);
+			this.props.setNextPageNum(2);
 		}).catch(err => {
 			console.log(err);
 			let errorTitle, errorMessage;
@@ -146,20 +150,22 @@ class Filter extends Component {
 			{ token: this.props.token, filter: false, page: 1}
 			: { token: this.props.token, filter: true, page: 1,	interest, si, gu, gender, minAge, maxAge, keyword };
 
-		Axios.get(`http://192.168.0.200:8080/${this.props.path}`, { params })
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/${this.props.path}`, { params })
 		.then(resp => {
 			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
-			this.setState({optionFader: true});
+				this.setState({optionFader: true});
 			this.props.setFiltering(true);
 			switch(this.props.path) {
 				case "users":
-					this.props.getMainUsers(resp.data.users)
+					this.props.getMainUsers(resp.data.users);
 					break;
 				case "groups":
-					this.props.getMainGroups(resp.data.groups)
+					this.props.getMainGroups(resp.data.groups);
 					break;
 				default:
 			}
+			this.props.setHasMorePages(resp.data.hasMorePages);
+			this.props.setNextPageNum(2);
 		}).catch(err => {
 			console.log(err);
 			let errorTitle, errorMessage;
@@ -193,19 +199,21 @@ class Filter extends Component {
 			this.props.clearMainGroups();
 			this.props.clearMainUsers();
 
-			Axios.get(`http://192.168.0.200:8080/${this.props.path}`, {		// 필터를 취소했으므로 기본 추천 유저들 재호출
+			Axios.get(`${process.env.REACT_APP_DEV_API_URL}/${this.props.path}`, {		// 필터를 취소했으므로 기본 추천 유저들 재호출
 				params: { token: this.props.token, page: 1 }
 			})
 			.then(resp => {
 				switch(this.props.path) {
 					case "users":
-						this.props.getMainUsers(resp.data.users)
+						this.props.getMainUsers(resp.data.users);
 						break;
 					case "groups":
-						this.props.getMainGroups(resp.data.groups)
+						this.props.getMainGroups(resp.data.groups);
 						break;
 					default:
 				}
+				this.props.setHasMorePages(resp.data.hasMorePages);
+				this.props.setNextPageNum(2);
 			}).catch(err => {
 				console.log(err);
 				let errorTitle, errorMessage;
@@ -416,7 +424,9 @@ const mapDispatchToProps = {
 	clearMainGroups,
 	updateFilter,
 	clearFilter,
-	setFiltering
+	setFiltering,
+	setHasMorePages,
+	setNextPageNum
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filter);

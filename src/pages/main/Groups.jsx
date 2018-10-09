@@ -43,7 +43,7 @@ export class Groups extends Component {
 				filter: false,
 				page: this.props.nextPageNum
 			}
-		Axios.get("http://192.168.0.200:8080/groups", { params })
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/groups`, { params })
 			.then(resp => {
 				this.props.updateMainGroups(this.props.groups, resp.data.groups);
 				this.props.setNextPageNum(this.props.nextPageNum+1);
@@ -84,7 +84,7 @@ export class Groups extends Component {
 			dialogContent:"" });
 	}
 	render() {
-		const { hasMorePages, contentStyles, groups } = this.props; //TODO: 테스트후 주석풀것
+		const { hasMorePages, contentStyles, groups } = this.props;
 		const {	loadingContents,
 			dialogOpen,
 			dialogIcon,
@@ -109,8 +109,10 @@ export class Groups extends Component {
 						spacing={0}>
 						{
 							groups && _.map(groups, group =>
-								<Grid item style={{width: "100%", minWidth: "390px"}}>
-									<GroupLarge key={group.id}
+								<Grid item
+									key={group.id}
+									style={{width: "100%", minWidth: "390px"}}>
+									<GroupLarge
 										id={group.id}
 										groupName={group.groupName}
 										master={group.master}

@@ -76,7 +76,7 @@ const Text = styled.div`
 export class ChatBubbleMe extends Component {
 	shouldComponentUpdate(nextProps) {
 		if(this.props.msg !== nextProps.msg ||
-			this.props.disabled !== nextProps.disabled)
+			this.props.time !== nextProps.time)
 			return true;
 		return false;
 	}

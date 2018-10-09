@@ -97,7 +97,7 @@ class JoinForm extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		this.setState({loginProcess: true});
-		Axios.post('http://192.168.0.200:8080/login', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/login`, {
 			email: this.state.id,
 			pw: this.state.pw
 		}).then(resp => {
@@ -112,6 +112,9 @@ class JoinForm extends React.Component {
 				contacts: resp.data.contacts || null,
 				messages: resp.data.messages || null,
 				notifications: resp.data.notifications || null,
+				popularUsers: resp.data.popularUsers || null,
+				popularGroups: resp.data.popularGroups || null,
+				popularPosts: resp.data.popularPosts || null,
 			});
 			this.handleRedirect("/");
 		}).catch(err => {

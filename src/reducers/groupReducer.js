@@ -17,7 +17,9 @@ export default (group = {
 	memberCnt : 10,
 	maxMember : 250,
 	avgAge : 25,
-	isMyGroup: 0,
+	isMyGroup: 2,
+	memberPages: 8,
+	hasMorePages: true
 }, action) => {  // 현재 팝업된 group page의 유저정보
 	switch (action.type) {
 		case "OPEN_GROUP_PAGE":

@@ -174,7 +174,7 @@ export class MeInfo extends Component {
 		const birth = this.state.birth._d;
 		const interests = _.map(this.state.interests, interest => interest.value);
 
-		Axios.post('http://192.168.0.200:8080/me/info', {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/me/info`, {
 			token, id, pw, nickName, si, gu, birth, gender, interests, images,
 			intro, msg, areayn, birthyn, genderyn, friendsyn, groupsyn
 		}).then(resp => {
