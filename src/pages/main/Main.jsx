@@ -18,10 +18,13 @@ import {
 	} from 'pages';
 
 const Container = styled.div`
+	position: relative;
 	display: flex;
 	flex-flow: row;
-	width: 90vw;
-	margin-left: 5vw;
+	width: 1560px;
+	left: 50%;
+	transform: translateX(-50%);
+	/* margin-left: 10vw; */
 `
 const OuterContentContainer = styled.div`
 	/* background: rgba(255,0,0,0.1); */

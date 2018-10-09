@@ -9,9 +9,10 @@ import { ChatBubble, ChatBubbleMe } from 'components';
 const StyledChatBox = styled.div`
 	position: absolute;
 	/* background: rgba(100,100,100,0.1); */
-	height: 92%;
+	height: 93.8%;
 	width: 100%;
 	overflow: auto;
+	overflow-x: hidden;
 `
 
 class Chatbox extends Component {

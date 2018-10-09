@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 
 import { SendMessageIcon } from 'components/AppBarIcons';
 
@@ -8,10 +9,10 @@ const ChatInputContainer = styled.div`
 	/* bottom: 13px; */
 	/* height: 40px; */
 	bottom: 0px;
-	height: 8%;
+	height: 50px;
 `
 const MyInput = styled.input`
-	width: 260px;
+	width: 263px;
 	height: 40px;
 	padding: 5px 10px;
 	margin: 5px;
@@ -57,17 +58,28 @@ class ChatInput extends Component {
 		return (
 			<ChatInputContainer>
 				<form style={{margin:"0"}} onSubmit={handleSubmit}>
-					<MyInput
-						className="hide-scroll"
-						type="text"
-						id={id}
-						value={value || ""}
-						onChange={onChange}
-						onKeyPress={handleKeyPress}
-						autoComplete="off"/>
-					<SendButton>
-						<SendMessageIcon/>
-					</SendButton>
+					<Grid container
+						direction="row"
+						justify="center"
+						alignItems="center"
+						spacing={0}
+						wrap="nowrap">
+						<Grid item>
+							<MyInput
+								className="hide-scroll"
+								type="text"
+								id={id}
+								value={value || ""}
+								onChange={onChange}
+								onKeyPress={handleKeyPress}
+								autoComplete="off"/>
+						</Grid>
+						<Grid item>
+							<SendButton>
+								<SendMessageIcon/>
+							</SendButton>
+						</Grid>
+					</Grid>
 				</form>
 			</ChatInputContainer>
 		)

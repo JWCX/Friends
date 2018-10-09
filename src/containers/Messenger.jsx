@@ -12,9 +12,9 @@ import { SquareAddIcon } from 'components/AppBarIcons';
 
 const MessangerContainer = styled.div`
 	position: absolute;
-	height: 93%;
+	height: 94%;
 	/* width: 420px; */
-	width: 95%;
+	width: 94%;
 	/* width: ${props => props.width}; */
 	box-shadow: 0 1px 10px -1px rgb(150,150,150);
 	border-radius: 5px;
