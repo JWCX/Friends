@@ -1,4 +1,4 @@
-export default (token = 1, action) => {
+export default (token = null, action) => {
 	switch (action.type) {
 		case "USER_LOGGED_IN":
 			return action.token;
