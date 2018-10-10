@@ -86,25 +86,28 @@ class Messenger extends React.Component {
 			}));
 		else {
 			this.setState({id, roomid, openChatbox: true});
-			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/message`, {
-				token: this.props.token,
-				roomid: roomid
-			}).then(resp => {
-				console.log(resp);	// FIXME: 지워주세용
-				const originalMessages = {...this.props.messages};
-				_.filter(originalMessages, message => message.roomid == roomid)
-				.map(message => originalMessages[message.messageid] = {...message, readyn: 1});
-				this.props.readMessage(originalMessages);
-			}).catch(err => {
-				console.log(err.response);
-				this.setState({
-					dialogOpen: true,
-					dialogIcon: 2,
-					dialogTitle: "서버와 연결할 수 없습니다",
-					dialogContent: "잠시후 다시 시도해주세요..",
-				});
-			}); // FIXME: REMOVE LOG
 		}
+		this.handleMessageRead(roomid);
+	}
+	handleMessageRead = roomid => {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/message`, {
+			token: this.props.token,
+			roomid: roomid
+		}).then(resp => {
+			console.log(resp);	// FIXME: 지워주세용
+			const originalMessages = {...this.props.messages};
+			_.filter(originalMessages, message => message.roomid == roomid)
+			.map(message => originalMessages[message.messageid] = {...message, readyn: 1});
+			this.props.readMessage(originalMessages);
+		}).catch(err => {
+			console.log(err.response);
+			this.setState({
+				dialogOpen: true,
+				dialogIcon: 2,
+				dialogTitle: "서버와 연결할 수 없습니다",
+				dialogContent: "잠시후 다시 시도해주세요..",
+			});
+		}); // FIXME: REMOVE LOG
 	}
 	handleSelectContactDialogOpen = () => {
 		this.setState({openNewContactDialog: true});
@@ -180,7 +183,6 @@ class Messenger extends React.Component {
 				openNewContactDialog, selectedFriend, dialogDisabled, dialogProcess,
 				dialogOpen, dialogTitle, dialogContent, dialogIcon } = this.state;
 		const { contacts, sendMessage, onMessageReceive } = this.props;
-		console.log("contacts : ", this.props.contacts);
 		return (
 			<React.Fragment>
 				<MessangerHead>
@@ -202,7 +204,8 @@ class Messenger extends React.Component {
 							id={id}
 							openChatbox={openChatbox}
 							contacts={contacts}
-							handleOpenChatbox={this.handleOpenChatbox}/>
+							handleOpenChatbox={this.handleOpenChatbox}
+							handleMessageRead={this.handleMessageRead}/>
 					</ContactsContainer>
 					<ChatboxContainer
 						className="hide-scroll"

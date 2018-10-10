@@ -9,7 +9,8 @@ export class Contacts extends Component {
 		const { id,
 				contacts,
 				openChatbox,
-				handleOpenChatbox } = this.props;
+				handleOpenChatbox,
+				handleMessageRead } = this.props;
 		return (
 			_.map(contacts, contact => {
 				return (
@@ -23,7 +24,7 @@ export class Contacts extends Component {
 							online={contact.online}
 							openChatbox={openChatbox}
 							handleOpenChatbox={handleOpenChatbox}
-							>
+							handleMessageRead={handleMessageRead}>
 						</UserContact>
 					</div>
 				)

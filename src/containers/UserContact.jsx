@@ -13,7 +13,7 @@ const StyledCard = styled(Card)`
 	position: relative;
 	width: ${props => props.openChatbox ? "60px" : "415px" };
 	padding: ${props => props.openChatbox ? "5px 5px" : "5px 20px" };
-	opacity: ${props => props.openChatbox && props.id !== props.currentid ? "0.3" : "1" };
+	opacity: ${props => props.openChatbox && props.id !== props.currentid ? "0.5" : "1" };
 	margin: 5px;
 	transition: all .1s ease-in-out;
 	cursor: pointer;
@@ -37,8 +37,14 @@ export class UserMini extends Component {
 		return false;
 	}
 	render() {
-		const { id, currentid, roomid, nickName, image, online, openChatbox, handleOpenChatbox, messages } = this.props;
+		const { id, currentid, roomid, nickName, image, online,
+			openChatbox,
+			handleOpenChatbox,
+			handleMessageRead,
+			messages } = this.props;
 		const unreadCount = _.filter(messages, message => message.roomid == roomid && message.readyn === 0).length;
+		if(unreadCount !== 0 && currentid === id)
+			handleMessageRead(roomid);
 		return (
 			<StyledCard
 				openChatbox={openChatbox}
@@ -53,14 +59,14 @@ export class UserMini extends Component {
 					spacing={0}>
 					<Grid item>
 					{
-						online ? <UnreadChatBadge content={currentid === 0 ? 0 : unreadCount}>
+						online ? <UnreadChatBadge content={currentid === 0 || currentid === id ? 0 : unreadCount}>
 									<LoggedInBadge>
 										<SmallUserAvatar
 											// alt={nickName}
 											src={image}/>
 									</LoggedInBadge>
 								</UnreadChatBadge>
-								: <UnreadChatBadge content={currentid === 0 ? 0 : unreadCount}>
+								: <UnreadChatBadge content={currentid === 0 || currentid === id ? 0 : unreadCount}>
 									<SmallUserAvatar
 									// alt={nickName}
 									src={image}/>

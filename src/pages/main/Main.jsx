@@ -137,7 +137,6 @@ class Main extends Component {
 	}
 
 	updateContentStyle = () => {
-		console.log("resized");
 		this.setState({
 			contentStyles: {
 				borderRadius: "10px",
@@ -192,8 +191,7 @@ class Main extends Component {
 							url={`${process.env.REACT_APP_DEV_API_URL}/chat`}
 							topics={[`/topic/${token}`]}
 							onMessage={this.onMessageReceive}
-							onConnect={ () => console.log("CONNECTTTA") }
-							// subscribeHeaders
+							onConnect={ () => console.log("CONNECTED") }
 							ref={client => this.clientRef = client}/>
 						<AppBar
 							position="sticky"
