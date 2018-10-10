@@ -84,14 +84,33 @@ class Messenger extends React.Component {
 				id: 0, roomid: 0,
 				openChatbox: !state.openChatbox
 			}));
-		else
+		else {
 			this.setState({id, roomid, openChatbox: true});
-		const updatedMessages = _.filter(this.props.messages, message => message.roomid == roomid)
-			.map(message => ({...message, readyn: 1 }));
-		console.log("updated", _.keyBy(updatedMessages, 'messageid'));
-		console.log("prosp", this.props.messages);
-		console.log("hap", {...this.props.messages, ...updatedMessages});
-		this.props.readMessage(this.props.messages, updatedMessages);
+			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/message`, {
+				token: this.props.token,
+				roomid: roomid
+			}).then(resp => {
+				console.log(resp);	// FIXME: 지워주세용
+				const originalMessages = {...this.props.messages};
+				_.filter(originalMessages, message => message.roomid == roomid)
+				.map(message => originalMessages[message.messageid] = {...message, readyn: 1});
+				this.props.readMessage(originalMessages);
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 1,
+					dialogTitle: "가입이 완료되었습니다",
+					dialogContent: "가입하신 이메일로 전송된 인증 메일을 확인해주세요!",
+				});
+			}).catch(err => {
+				console.log(err.response);
+				this.setState({
+					dialogOpen: true,
+					dialogIcon: 2,
+					dialogTitle: "서버와 연결할 수 없습니다",
+					dialogContent: "잠시후 다시 시도해주세요..",
+				});
+			}); // FIXME: REMOVE LOG
+		}
 	}
 	handleSelectContactDialogOpen = () => {
 		this.setState({openNewContactDialog: true});

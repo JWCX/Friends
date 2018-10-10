@@ -163,8 +163,6 @@ class Main extends Component {
 		}
 	}
 	onMessageReceive = (msg, topic) => {
-		console.log("MSG RECEIVED!!", msg);
-		console.log("MSG RECEIVED!!", topic);
 		switch(msg.type) {
 			case "message":
 				this.props.receivedMessage(this.props.messages, {[msg.message.messageid]: msg.message});
