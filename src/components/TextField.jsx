@@ -79,11 +79,13 @@ class TextField extends Component {
 					</InputAdornment> : null
 				}
 				/>
-					<Collapse in={error} timeout={{enter: 200, exit: 200}}>
+				{
+					errorMessage && <Collapse in={error} timeout={{enter: 200, exit: 200}}>
 						<FormHelperText id={`${id}-text`}>
 							{errorMessage}
 						</FormHelperText>
 					</Collapse>
+				}
 			</FormControl>
 		)
 	}

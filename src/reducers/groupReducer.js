@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default (group = {}, action) => {  // 현재 팝업된 group page의 유저정보
+export default (group = null, action) => {  // 현재 팝업된 group page의 유저정보
 	switch (action.type) {
 		case "OPEN_GROUP_PAGE":
 			const estDate = moment(action.group.estDate, "YYYY. M. D");

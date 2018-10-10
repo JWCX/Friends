@@ -55,7 +55,6 @@ class Landing extends Component {
 					background:"url(https://picsum.photos/1000/562/?image=695&blur=true)",
 					backgroundSize: "cover",
 					backgroundRepeat: "no-repeat",
-
 				}}>
 				<Paper elevation={10}
 					classes={{root: this.props.classes.root}}

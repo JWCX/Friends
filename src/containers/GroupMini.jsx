@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 
-import { openMePage } from 'actions';
 import { SmallGroupAvatar } from 'components/Avatars';
 import { GroupLabelMini } from 'components';
 
@@ -21,7 +20,7 @@ const StyledCard = styled(Card)`
 export class GroupMini extends Component {
 
 	handleClick = () => {
-		this.props.openMePage(this.props.id);
+		this.props.history.push(`${this.props.match.params[0]}/group/${this.props.id}`);
 	}
 
 	render() {
@@ -49,11 +48,4 @@ export class GroupMini extends Component {
 	}
 }
 
-const mapStateToProps = state => ({
-
-})
-const mapDispatchToProps = {
-	openMePage
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(GroupMini);
+export default withRouter(GroupMini);

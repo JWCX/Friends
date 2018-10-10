@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
+import _ from 'lodash';
 import styled from 'styled-components';
 
-import { LoggedInBadge } from 'components/Badges';
+import { LoggedInBadge, UnreadChatBadge } from 'components/Badges';
 import { SmallUserAvatar } from 'components/Avatars';
 import { LabelTiny } from 'components';
 
@@ -29,13 +31,14 @@ export class UserMini extends Component {
 			this.props.image !== nextProps.image ||
 			this.props.openChatbox !== nextProps.openChatbox ||
 			this.props.id !== nextProps.id ||
+			this.props.messages !== nextProps.messages ||
 			this.props.currentid !== nextProps.currentid )
 			return true;
 		return false;
 	}
 	render() {
-		const { id, currentid, roomid, nickName, image, online, openChatbox, handleOpenChatbox } = this.props;
-		console.log("tt",openChatbox);
+		const { id, currentid, roomid, nickName, image, online, openChatbox, handleOpenChatbox, messages } = this.props;
+		const unreadCount = _.filter(messages, message => message.roomid == roomid && message.readyn === 0).length;
 		return (
 			<StyledCard
 				openChatbox={openChatbox}
@@ -50,29 +53,56 @@ export class UserMini extends Component {
 					spacing={0}>
 					<Grid item>
 					{
-						online ? <LoggedInBadge>
-									<SmallUserAvatar
-										// alt={nickName}
-										src={image}/>
+						online ? <UnreadChatBadge content={currentid === 0 ? 0 : unreadCount}>
+									<LoggedInBadge>
+										<SmallUserAvatar
+											// alt={nickName}
+											src={image}/>
 									</LoggedInBadge>
-								: <SmallUserAvatar
+								</UnreadChatBadge>
+								: <UnreadChatBadge content={currentid === 0 ? 0 : unreadCount}>
+									<SmallUserAvatar
 									// alt={nickName}
 									src={image}/>
+								</UnreadChatBadge>
 					}
 					</Grid>
 					<Grid item>
 						<LabelTiny
 							hidden={openChatbox}
-							width="230px"
+							width="295px"
 							label={nickName}/>
-						{/* <LabelTiny
-							width="230px"
-							label={nickName}/> */}
 					</Grid>
+					{
+						!openChatbox && unreadCount!==0 && <Grid item>
+							<div style={{
+								display: "inline-block",
+								position: "relative",
+								right: "5px",
+								width: "22px",
+								height: "22px",
+								border: "1px solid rgba(255,255,255,0.5)",
+								borderRadius: "100%",
+								boxShadow: "0 0 10px -2px rgba(255,100,100)",
+								background: "linear-gradient(45deg, #ff4f4f 5%, #fff74f 200%)",
+								color: "white",
+								textAlign: "center",
+								fontSize: "0.8em"
+							}}>
+								{unreadCount}
+							</div>
+						</Grid>
+					}
 				</Grid>
 			</StyledCard>
 		)
 	}
 }
 
-export default withRouter(UserMini);
+const mapStateToProps = state => ({
+	messages: state.messages
+})
+const mapDispatchToProps = {
+
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserMini));

@@ -5,8 +5,11 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { IconButton } from '@material-ui/core';
 
-import { updateContacts } from 'actions';
-import { Contacts, ChatRoom, NewContact } from 'containers';
+import { updateContacts,
+	readMessage } from 'actions';
+import { Contacts,
+	ChatRoom,
+	NewContact } from 'containers';
 import { Dialog } from 'components';
 import { SquareAddIcon } from 'components/AppBarIcons';
 
@@ -83,6 +86,10 @@ class Messenger extends React.Component {
 			}));
 		else
 			this.setState({id, roomid, openChatbox: true});
+		const updatedMessages = _.filter(this.props.messages, message => message.roomid == roomid)
+			.map(message => ({...message, readyn: 1 }));
+		console.log(updatedMessages);
+		this.props.readMessage(this.props.messages, updatedMessages);
 	}
 	handleSelectContactDialogOpen = () => {
 		this.setState({openNewContactDialog: true});
@@ -215,9 +222,11 @@ class Messenger extends React.Component {
 
 const mapStateToProps = state => ({
 	token: state.token,
-	contacts: state.contacts
+	contacts: state.contacts,
+	messages: state.messages,
 })
 const mapDispatchToProps = {
-	updateContacts
+	updateContacts,
+	readMessage
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Messenger);

@@ -5,9 +5,12 @@ import SockJsClient from 'react-stomp';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { receivedMessage, receivedNotification } from 'actions';
+import { receivedMessage,
+	receivedNotification,
+	updateMyFriends } from 'actions';
 import { AppBar,
-		Messenger } from 'containers'; // FIXME: pages MUST IMPORT containers ONLY!! THIS IS FOR TESTING
+		Messenger,
+		Map } from 'containers';
 import {
 		Popular,
 		Board,
@@ -169,6 +172,7 @@ class Main extends Component {
 				console.log("CURRENT NOTIFI : ", this.props.notifications)
 				console.log("NEXT NOTIFI : ", {[msg.notification.notification]: msg.notification})
 				this.props.receivedNotification(this.props.notifications, {[msg.notification.notification]: msg.notification});
+				msg.notification.gubun === 2 && this.props.updateMyFriends(msg.myFriends);
 				break;
 			default: console.log("RECIEVED UNKNOWN MESSAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
@@ -189,7 +193,7 @@ class Main extends Component {
 							topics={[`/topic/${token}`]}
 							onMessage={this.onMessageReceive}
 							onConnect={ () => console.log("CONNECTTTA") }
-							subscribeHeaders
+							// subscribeHeaders
 							ref={client => this.clientRef = client}/>
 						<AppBar
 							position="sticky"
@@ -234,6 +238,8 @@ class Main extends Component {
 					open={true}
 					disableBackdrop={true}/>
 				}/>
+				{/* <Map open={true}
+					handleClose={()=>{}}/> */}
 			</React.Fragment>
 		);
 	}
@@ -247,7 +253,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = {
 	receivedMessage,
-	receivedNotification
+	receivedNotification,
+	updateMyFriends
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

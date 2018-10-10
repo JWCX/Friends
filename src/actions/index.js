@@ -37,7 +37,8 @@ import {
 } from './main';
 import {
 	updateContacts,
-	receivedMessage
+	receivedMessage,
+	readMessage
 } from './messenger';
 import {
 	receivedNotification,
@@ -92,6 +93,7 @@ export {
 
 	updateContacts,
 	receivedMessage,
+	readMessage,
 
 	receivedNotification,
 	removeNotification,

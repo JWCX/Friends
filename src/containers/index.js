@@ -37,6 +37,8 @@ import MeGroups from './MeGroups';
 import ExpansionPost from './ExpansionPost';
 import PostForm from './PostForm';
 
+import Map from './Map';
+
 export {
 	JoinForm,
 	LoginForm,
@@ -77,4 +79,5 @@ export {
 	ExpansionPost,
 	PostForm,
 
+	Map
 }

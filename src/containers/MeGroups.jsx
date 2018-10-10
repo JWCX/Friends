@@ -13,7 +13,6 @@ class MeGroups extends Component {
 			groupsPages,
 			handleGroupsPagination }  = this.props;
 		const pages = [];
-		console.log("prprprpsrprosropsrprs", this.props);
 		if(groupsPages > 5)
 			pages.push({text: "<", onClick: ()=>{handleGroupsPagination("<")}})
 		for(let i=st; i<=ed; i++){

@@ -1,6 +1,7 @@
 import TextField from './TextField';
 
 import Button from './Buttons/Button';
+import SearchButton from './Buttons/SearchButton';
 import AddImageButton from './Buttons/AddImageButton';
 import AddVideoButton from './Buttons/AddVideoButton';
 import AddMapButton from './Buttons/AddMapButton';
@@ -65,6 +66,7 @@ export {
 	TextField,
 
 	Button,
+	SearchButton,
 	AddImageButton,
 	AddVideoButton,
 	AddMapButton,

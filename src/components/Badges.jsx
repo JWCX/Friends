@@ -24,6 +24,17 @@ const styles = {
 		background: "linear-gradient(45deg, #ff4f4f 5%, #fff74f 200%)",
 		color: "white",
 	},
+	unreadChat: {
+		top: "30px",
+		right: "30px",
+		width: "22px",
+		height: "22px",
+		fontSize: "0.7em",
+		border: "1px solid rgba(255,255,255,0.5)",
+		boxShadow: "0 0 10px -2px rgba(255,100,100)",
+		background: "linear-gradient(45deg, #ff4f4f 5%, #fff74f 200%)",
+		color: "white",
+	},
 	loggedIn: {
 		top: "0px",
 		right: "0px",
@@ -53,6 +64,14 @@ const styles = {
 export const NumberBadge = withStyles(styles)( ({content, button, children, classes}) => {
 	return (
 		<Badge badgeContent={content} classes={{badge: button ? classes.buttonNumber : classes.number}}>
+			{children}
+		</Badge>
+	)
+})
+export const UnreadChatBadge = withStyles(styles)( ({content, button, children, classes}) => {
+	return (
+		content === 0 ? children
+		: <Badge badgeContent={content} classes={{badge: classes.unreadChat}}>
 			{children}
 		</Badge>
 	)

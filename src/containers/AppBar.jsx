@@ -93,7 +93,7 @@ class MyAppBar extends Component {
 		this.props.setFiltering(false);
 		this.props.setNextPageNum(1);
 
-		Axios.get(`http://192.168.0.200:8080/${path}`, {
+		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/${path}`, {
 			params: { token: this.props.token, page: 1 }
 		})
 		.then(resp => {
