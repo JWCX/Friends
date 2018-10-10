@@ -95,12 +95,6 @@ class Messenger extends React.Component {
 				_.filter(originalMessages, message => message.roomid == roomid)
 				.map(message => originalMessages[message.messageid] = {...message, readyn: 1});
 				this.props.readMessage(originalMessages);
-				this.setState({
-					dialogOpen: true,
-					dialogIcon: 1,
-					dialogTitle: "가입이 완료되었습니다",
-					dialogContent: "가입하신 이메일로 전송된 인증 메일을 확인해주세요!",
-				});
 			}).catch(err => {
 				console.log(err.response);
 				this.setState({
