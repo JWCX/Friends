@@ -5,7 +5,8 @@ import SockJsClient from 'react-stomp';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { receivedMessage,
+import { updateContacts,
+	receivedMessage,
 	receivedNotification,
 	updateMyFriends } from 'actions';
 import { AppBar,
@@ -169,10 +170,11 @@ class Main extends Component {
 				this.props.receivedMessage(this.props.messages, {[msg.message.messageid]: msg.message});
 				break;
 			case "notification":
-				console.log("CURRENT NOTIFI : ", this.props.notifications)
-				console.log("NEXT NOTIFI : ", {[msg.notification.notification]: msg.notification})
 				this.props.receivedNotification(this.props.notifications, {[msg.notification.notification]: msg.notification});
 				msg.notification.gubun === 2 && this.props.updateMyFriends(msg.myFriends);
+				break;
+			case "contact":
+				this.props.updateContacts(this.props.contacts, {[msg.contact.id]: msg.contact});
 				break;
 			default: console.log("RECIEVED UNKNOWN MESSAGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		}
@@ -247,11 +249,13 @@ class Main extends Component {
 
 const mapStateToProps = state => ({
 	me: state.me,
+	contacts: state.contacts,
 	messages: state.messages,
 	notifications: state.notifications,
 	token: state.token
 })
 const mapDispatchToProps = {
+	updateContacts,
 	receivedMessage,
 	receivedNotification,
 	updateMyFriends

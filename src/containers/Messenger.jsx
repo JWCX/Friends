@@ -88,7 +88,9 @@ class Messenger extends React.Component {
 			this.setState({id, roomid, openChatbox: true});
 		const updatedMessages = _.filter(this.props.messages, message => message.roomid == roomid)
 			.map(message => ({...message, readyn: 1 }));
-		console.log(updatedMessages);
+		console.log("updated", _.keyBy(updatedMessages, 'messageid'));
+		console.log("prosp", this.props.messages);
+		console.log("hap", {...this.props.messages, ...updatedMessages});
 		this.props.readMessage(this.props.messages, updatedMessages);
 	}
 	handleSelectContactDialogOpen = () => {
