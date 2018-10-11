@@ -37,7 +37,7 @@ import MeGroups from './MeGroups';
 import ExpansionPost from './ExpansionPost';
 import PostForm from './PostForm';
 
-import Map from './Map';
+import MapEditor from './MapEditor';
 
 export {
 	JoinForm,
@@ -79,5 +79,5 @@ export {
 	ExpansionPost,
 	PostForm,
 
-	Map
+	MapEditor
 }

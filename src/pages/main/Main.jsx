@@ -10,8 +10,7 @@ import { updateContacts,
 	receivedNotification,
 	updateMyFriends } from 'actions';
 import { AppBar,
-		Messenger,
-		Map } from 'containers';
+		Messenger } from 'containers';
 import {
 		Popular,
 		Board,
@@ -236,8 +235,6 @@ class Main extends Component {
 					open={true}
 					disableBackdrop={true}/>
 				}/>
-				{/* <Map open={true}
-					handleClose={()=>{}}/> */}
 			</React.Fragment>
 		);
 	}

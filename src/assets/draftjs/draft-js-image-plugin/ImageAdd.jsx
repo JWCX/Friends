@@ -4,98 +4,85 @@ import styles from './styles.css';
 import { AddButton, AddImageButton } from 'components';
 
 export default class ImageAdd extends Component {
-  // Start the popover closed
-  state = {
-    url: '',
-    open: false,
-  };
+	// Start the popover closed
+	state = {
+		url: '',
+		open: false,
+	};
 
-  // When the popover is open and users click anywhere on the page,
-  // the popover should close
-  componentDidMount() {
-    document.addEventListener('click', this.closePopover);
-  }
+	// When the popover is open and users click anywhere on the page,
+	// the popover should close
+  	componentDidMount() {
+		document.addEventListener('click', this.closePopover);
+  	}
 
-  componentWillUnmount() {
-    document.removeEventListener('click', this.closePopover);
-  }
+	componentWillUnmount() {
+		document.removeEventListener('click', this.closePopover);
+  	}
 
-  // Note: make sure whenever a click happens within the popover it is not closed
-  onPopoverClick = () => {
-    this.preventNextClose = true;
-  }
+  	// Note: make sure whenever a click happens within the popover it is not closed
+	onPopoverClick = () => {
+		this.preventNextClose = true;
+	}
 
-  openPopover = () => {
-    if (!this.state.open) {
-      this.preventNextClose = true;
-      this.setState({
-        open: true,
-      });
-    }
-  };
+	openPopover = () => {
+		if (!this.state.open) {
+			this.preventNextClose = true;
+			this.setState({
+			open: true,
+			});
+		}
+	};
 
-  closePopover = () => {
-    if (!this.preventNextClose && this.state.open) {
-      this.setState({
-        open: false,
-      });
-    }
+	closePopover = () => {
+		if (!this.preventNextClose && this.state.open) {
+			this.setState({
+			open: false,
+			});
+		}
+		this.preventNextClose = false;
+	};
 
-    this.preventNextClose = false;
-  };
+	addImage = e => {
+		e.preventDefault();
+		const { editorState, onChange } = this.props;
+		onChange(this.props.modifier(editorState, this.state.url));
+		this.closePopover();
+	};
 
-  addImage = () => {
-    const { editorState, onChange } = this.props;
-    onChange(this.props.modifier(editorState, this.state.url));
-  };
+	changeUrl = e => {
+		this.setState({ url: e.target.value });
+	}
 
-  changeUrl = (evt) => {
-    this.setState({ url: evt.target.value });
-  }
-
-  render() {
-    const popoverClassName = this.state.open ?
-      styles.addImagePopover :
-      styles.addImageClosedPopover;
-    // const buttonClassName = this.state.open ?
-    //   styles.addImagePressedButton :
-    //   styles.addImageButton;
-
-    return (
-      <div className={styles.addImage}>
-        {/* <button
-          className={buttonClassName}
-          onMouseUp={this.openPopover}
-          type="button"
-        >
-		</button> */}
-		<AddImageButton
-			selected={this.state.open}
-			disabled={this.props.disabled}
-			onMouseUp={this.openPopover}/>
-        <div
-          className={popoverClassName}
-          onClick={this.onPopoverClick}
-        >
-          <input
-            type="text"
-            placeholder="이미지 주소를 입력하세요.."
-            className={styles.addImageInput}
-            onChange={this.changeUrl}
-            value={this.state.url}
-          />
-          {/* <button
-            className={styles.addImageConfirmButton}
-            type="button"
-            onClick={this.addImage}
-          >
-		  </button> */}
-		  <AddButton
-			  fill="rgb(130,130,130)"
-			  sfill="rgb(90,110,255)"
-			  onClick={this.addImage}/>
-        </div>
-      </div>
-    );
-  }
+	render() {
+		const popoverClassName = this.state.open ? styles.addImagePopover : styles.addImageClosedPopover;
+		return (
+			<div className={styles.addImage}>
+			<AddImageButton
+				selected={this.state.open}
+				disabled={this.props.disabled}
+				onClick={this.openPopover}
+				onMouseUp={this.openPopover}/>
+			<div
+				className={popoverClassName}
+				onClick={this.onPopoverClick}>
+				<form onSubmit={this.addImage}>
+					<input
+						type="text"
+						placeholder="이미지 주소를 입력하세요.."
+						className={styles.addImageInput}
+						onChange={this.changeUrl}
+						value={this.state.url}/>
+					<div style={{display:"inline-block"}}>
+						<AddButton
+							type="submit"
+							fill="rgb(130,130,130)"
+							sfill="rgb(90,110,255)"
+							center/>
+					</div>
+				</form>
+			</div>
+			</div>
+		);
+	}
 }

@@ -42,7 +42,7 @@ class Button extends Component {
 		else return false;
 	}
 	render() {
-		const { classes, type, children, margin, width, height,
+		const { classes, type, children, margin, width, height, zIndex,
 				disabled, process, onClick, autoFocus } = this.props;
 		return (
 			<StyledButton type={type}
@@ -50,7 +50,7 @@ class Button extends Component {
 				disabled: classes.disabled }}
 			disabled={disabled}
 			onClick={onClick}
-			style={{margin, width, height}}
+			style={{margin, width, height, zIndex}}
 			focusRipple={true}
 			autoFocus={autoFocus}
 			>

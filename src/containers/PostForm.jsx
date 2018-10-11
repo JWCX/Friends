@@ -13,6 +13,7 @@ import { getMainPosts,
 import { Button,
 	AddMapButton,
 	Dialog } from 'components';
+import { MapEditor } from 'containers';
 
 import { EditorState,
 	convertToRaw } from 'draft-js';
@@ -132,7 +133,9 @@ export class PostForm extends Component {
 		dialogOpen: false,
 		dialogIcon: null,
 		dialogTitle: "",
-		dialogContent: ""
+		dialogContent: "",
+
+		openMapEditor: false,
 	};
 
 	componentDidMount() {
@@ -203,6 +206,12 @@ export class PostForm extends Component {
 		if(this.state.complete)
 			this.props.handleClose();
 	}
+	handleOpenMapEditor = () => {
+		this.setState({openMapEditor: true});
+	}
+	handleCloseMapEditor = () => {
+		this.setState({openMapEditor: false});
+	}
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const { classes, disableBackdrop, open, handleClose } = this.props;
@@ -213,7 +222,8 @@ export class PostForm extends Component {
 			title,
 			editorState,
 			suggestions,
-			process
+			process,
+			openMapEditor
 		} = this.state;
 		return (
 			<MuiDialog
@@ -260,9 +270,8 @@ export class PostForm extends Component {
 						</Grid>
 						<Grid item>
 							<AddMapButton
-								onChange={this.onChange}
-								disabled={process}
-								modifier={imagePlugin.addImage}/>
+								onClick={this.handleOpenMapEditor}
+								disabled={process}/>
 						</Grid>
 					</Grid>
 					<Grid item>
@@ -310,6 +319,11 @@ export class PostForm extends Component {
 						</Button>
 					</Grid>
 				</Grid>
+				{
+					openMapEditor &&
+					<MapEditor open={openMapEditor}
+						handleClose={this.handleCloseMapEditor}/>
+				}
 				<Dialog
 					open={dialogOpen}
 					onClose={this.handleDialogClose}

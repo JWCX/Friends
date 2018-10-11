@@ -10,7 +10,7 @@ export default props => {
 			style={{
 				verticalAlign: "top",
 				top: "50%",
-				transform: "translateY(-50%)",
+				transform: props.center ? "" : "translateY(-50%)",
 				width: "28px",
 				height: "28px",
 				background: props.background,
