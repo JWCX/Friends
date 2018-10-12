@@ -1,7 +1,17 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+/node_modules/*
+!/node_modules/draft-js-alignment-plugin
+!/node_modules/draft-js-anchor-plugin
+!/node_modules/draft-js-drag-n-drop-plugin
+!/node_modules/draft-js-emoji-plugin
+!/node_modules/draft-js-focus-plugin
+!/node_modules/draft-js-image-plugin
+!/node_modules/draft-js-linkify-plugin
+!/node_modules/draft-js-mention-plugin
+!/node_modules/draft-js-resizeable-plugin
+!/node_modules/draft-js-video-plugin
 
 # testing
 /coverage
