@@ -47,6 +47,7 @@ import { CancelButton,
 		CommentForm } from 'components';
 import { NanoExpandIcon } from 'components/AppBarIcons';
 
+import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createAnchorPlugin from 'draft-js-anchor-plugin';
@@ -76,6 +77,7 @@ const decorator = composeDecorators(
 	resizeablePlugin.decorator,
 	alignmentPlugin.decorator,
 )
+const myMapPlugin = createMyMapPlugin({decorator});
 const imagePlugin = createImagePlugin({decorator});
 const videoPlugin = createVideoPlugin({decorator});
 
@@ -191,35 +193,6 @@ class Group extends React.Component {
 		}));
 
 		this.props.clearGroupMembers();
-
-
-		if(currentPage%2)	//TODO:DELETE
-			this.props.updateGroupMembers({
-				1: { id: 1, nickName: "멤버1", gender: 1, image: "http://picsum.photos/100/100", online: true },//TODO:DELETE
-				2: { id: 2, nickName: "멤버2", gender: 2, image: "http://picsum.photos/101/101", online: true },//TODO:DELETE
-				3: { id: 3, nickName: "멤버3", gender: 2, image: "http://picsum.photos/102/102", online: true },//TODO:DELETE
-				4: { id: 4, nickName: "멤버4", gender: 2, image: "http://picsum.photos/103/103", online: true },//TODO:DELETE
-				5: { id: 5, nickName: "멤버5", gender: 2, image: "http://picsum.photos/104/104", online: true },//TODO:DELETE
-				6: { id: 6, nickName: "멤버6", gender: 2, image: "http://picsum.photos/105/105", online: true },//TODO:DELETE
-				7: { id: 7, nickName: "멤버7", gender: 2, image: "http://picsum.photos/106/106", online: true },//TODO:DELETE
-				8: { id: 8, nickName: "멤버8", gender: 2, image: "http://picsum.photos/107/107", online: true },//TODO:DELETE
-				9: { id: 9, nickName: "멤버9", gender: 2, image: "http://picsum.photos/108/108", online: true },//TODO:DELETE
-				10: { id: 10, nickName: "멤버10", gender: 2, image: "http://picsum.photos/109/109", online: true },//TODO:DELETE
-			})//TODO:DELETE
-		// else//TODO:DELETE
-		// 	this.props.updateGroupMembers({//TODO:DELETE
-		// 		1: { id: 1, nickName: "멤버1", gender: 1, image: "http://picsum.photos/200/200", online: true },//TODO:DELETE
-		// 		2: { id: 2, nickName: "aa2", gender: 2, image: "http://picsum.photos/201/201", online: true },//TODO:DELETE
-		// 		3: { id: 3, nickName: "ab3", gender: 2, image: "http://picsum.photos/202/202", online: true },//TODO:DELETE
-		// 		4: { id: 4, nickName: "ac4", gender: 2, image: "http://picsum.photos/203/203", online: true },//TODO:DELETE
-		// 		5: { id: 5, nickName: "ad5", gender: 2, image: "http://picsum.photos/204/204", online: true },//TODO:DELETE
-		// 		6: { id: 6, nickName: "ae6", gender: 2, image: "http://picsum.photos/205/205", online: true },//TODO:DELETE
-		// 		7: { id: 7, nickName: "af7", gender: 2, image: "http://picsum.photos/206/206", online: true },//TODO:DELETE
-		// 		8: { id: 8, nickName: "ag8", gender: 2, image: "http://picsum.photos/207/207", online: true },//TODO:DELETE
-		// 		9: { id: 9, nickName: "ah9", gender: 2, image: "http://picsum.photos/208/208", online: true },//TODO:DELETE
-		// 		10: { id: 10, nickName: "ai10", gender: 2, image: "http://picsum.photos/209/209", online: true },//TODO:DELETE
-		// 	})//TODO:DELETE
-
 
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/group/member`, {
 				token: this.props.token,
@@ -512,6 +485,7 @@ class Group extends React.Component {
 													<Grid item
 														style={{width: "100%", minWidth: "390px"}}>
 														<ExpansionPost
+															group
 															id={post.id}
 															onClick={this.expandPost}
 															expanded={this.state[`expanded${post.id}`]}
@@ -534,6 +508,7 @@ class Group extends React.Component {
 																			<Editor editorState={this.state[`editorState${post.id}`]}
 																				onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
 																				plugins={[
+																					myMapPlugin,
 																					emojiPlugin,
 																					linkifyPlugin,
 																					videoPlugin,

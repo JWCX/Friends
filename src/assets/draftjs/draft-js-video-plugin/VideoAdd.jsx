@@ -77,6 +77,7 @@ export default class VideoAdd extends Component {
 							type="submit"
 							fill="rgb(130,130,130)"
 							sfill="rgb(90,110,255)"
+							onClick={this.addVideo}
 							center/>
 					</div>
 				</form>

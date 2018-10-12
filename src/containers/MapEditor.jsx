@@ -31,6 +31,7 @@ export class MapEditor extends Component {
 	state = {
 		keyword: "",
 		marker: null,
+		data: null,
 
 		dialogOpen: false,
 		dialogTitle: "",
@@ -96,6 +97,8 @@ export class MapEditor extends Component {
 		this.state.mapCustomOverlay.setContent(content);
 		this.state.mapCustomOverlay.setMap(this.state.map);
 		this.state.mapCustomOverlay.setVisible(true);
+
+		this.setState({data});
 	}
 	//마커 생성 후 지도 위에 표시
 	addMarker = (position, idx) => {
@@ -232,7 +235,7 @@ export class MapEditor extends Component {
 					return () => {
 						pagination.gotoPage(i);
 						this.state.mapCustomOverlay.setVisible(false);
-						this.setState({marker: null});
+						this.setState({marker: null, data: null});
 					}
 				})(i);
 			}
@@ -278,10 +281,25 @@ export class MapEditor extends Component {
 		}
 		this.state.ps.keywordSearch(keyword, this.placesSearchCB, searchOptions);
 		this.state.mapCustomOverlay.setVisible(false);
-		this.setState({marker: null});
+		this.setState({marker: null, data: null});
 	}
 
-
+	createStaticMap = () => {
+		const staticMap = document.getElementById('staticMap');
+		new window.daum.maps.StaticMap(staticMap, {
+			center: this.state.marker.getPosition(),
+			level: 4,
+			marker: {position: this.state.marker.getPosition()}
+		});
+		const link = staticMap.firstChild.href;
+		const mapSrc = staticMap.firstChild.firstChild.src;
+		return {link, mapSrc};
+	}
+	handleSelect = () => {
+		const {link, mapSrc} = this.createStaticMap();
+		this.props.onChange(this.props.modifier(this.props.editorState, link, mapSrc, this.state.data));
+		this.props.handleClose();
+	}
 	handleChange = ({target}) => {
 		this.setState({keyword: target.value});
 	}
@@ -311,6 +329,9 @@ export class MapEditor extends Component {
 							<CancelButton onClick={handleClose}/>
 						</Grid>
 						<Grid item>
+							<div style={{width:"0px", height:"0px", overflow:"hidden"}}>
+								<div id="staticMap" style={{width: "900px", height: "600px"}}></div>
+							</div>
 							<div className="map_wrap">
 								<div id="map"
 									style={{
@@ -342,7 +363,8 @@ export class MapEditor extends Component {
 											<SearchButton
 												type="submit"
 												width="75px"
-												height="40px">
+												height="40px"
+												margin="0 0 0 10px">
 												검색
 											</SearchButton>
 										</form>
@@ -368,7 +390,8 @@ export class MapEditor extends Component {
 								bottom: "50px",
 								zIndex: "1000"
 							}}>
-							<Button>
+							<Button
+								onClick={this.handleSelect}>
 								선택하기
 							</Button>
 						</div>

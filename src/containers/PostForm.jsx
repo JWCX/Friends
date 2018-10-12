@@ -19,6 +19,7 @@ import { EditorState,
 	convertToRaw } from 'draft-js';
 import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 
+import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createAnchorPlugin from 'draft-js-anchor-plugin';
@@ -112,6 +113,7 @@ const decorator = composeDecorators(
 	focusPlugin.decorator,
 	blockDndPlugin.decorator,
 )
+const myMapPlugin = createMyMapPlugin({decorator});
 const imagePlugin = createImagePlugin({decorator});
 const videoPlugin = createVideoPlugin({decorator});
 const dragNDropUploadPlugin = createDragNDropUploadPlugin({
@@ -279,6 +281,7 @@ export class PostForm extends Component {
 							<Editor editorState={editorState}
 								onChange={this.onChange}
 								plugins={[
+									myMapPlugin,
 									emojiPlugin,
 									linkifyPlugin,
 									videoPlugin,
@@ -322,7 +325,10 @@ export class PostForm extends Component {
 				{
 					openMapEditor &&
 					<MapEditor open={openMapEditor}
-						handleClose={this.handleCloseMapEditor}/>
+						handleClose={this.handleCloseMapEditor}
+						onChange={this.onChange}
+						editorState={editorState}
+						modifier={myMapPlugin.addMap}/>
 				}
 				<Dialog
 					open={dialogOpen}

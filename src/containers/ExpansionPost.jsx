@@ -3,6 +3,7 @@ import { ExpansionPanel,
 		ExpansionPanelSummary,
 		ExpansionPanelDetails,
 	} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 
 const MyExPan = styled(ExpansionPanel)`
@@ -16,8 +17,18 @@ const MyExPan = styled(ExpansionPanel)`
 	}
 `
 
+const styles = {
+	root: {
+		display: "flex",
+		position: "relative",
+		left: "50%",
+		transform: "translateX(-50%)",
+		width: "975px",
+		padding: "0 0 15px",
+	}
+}
 
-export default class ExpansionFriendRequest extends React.Component {
+class ExpansionFriendRequest extends React.Component {
 
 	render() {
 		const {expanded, icon, summary, children, position,
@@ -30,14 +41,18 @@ export default class ExpansionFriendRequest extends React.Component {
 					transition: "all 0.2s ease-in-out",
 				}}
 				expanded={expanded}>
-				<ExpansionPanelSummary onClick={()=>{onClick(id)}} expandIcon={icon}>
+				<ExpansionPanelSummary
+					onClick={()=>{onClick(id)}}
+					expandIcon={icon}>
 					{summary}
 				</ExpansionPanelSummary>
-				<ExpansionPanelDetails>
+				<ExpansionPanelDetails
+					classes={{root: this.props.classes.root}}
+					style={{width: this.props.group && "780px"}}>
 					{children}
 				</ExpansionPanelDetails>
 			</MyExPan>
 		)
 	}
 }
-
+export default withStyles(styles)(ExpansionFriendRequest);

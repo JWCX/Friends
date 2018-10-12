@@ -13,11 +13,13 @@ import { getGroupPosts,
 import { Button,
 	AddMapButton,
 	Dialog } from 'components';
+import { MapEditor } from 'containers';
 
 import { EditorState,
 	convertToRaw } from 'draft-js';
 import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 
+import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createAnchorPlugin from 'draft-js-anchor-plugin';
@@ -111,6 +113,7 @@ const decorator = composeDecorators(
 	focusPlugin.decorator,
 	blockDndPlugin.decorator,
 )
+const myMapPlugin = createMyMapPlugin({decorator});
 const imagePlugin = createImagePlugin({decorator});
 const videoPlugin = createVideoPlugin({decorator});
 const dragNDropUploadPlugin = createDragNDropUploadPlugin({
@@ -191,7 +194,6 @@ export class PostForm extends Component {
 		this.setState({title: target.value});
 	}
 	onChange = editorState => {
-		console.log("onChange:", editorState);
 		this.setState({editorState});
 	}
 	onSearchChange = ({value}) => {
@@ -208,6 +210,12 @@ export class PostForm extends Component {
 		if(this.state.complete)
 			this.props.handleClose();
 	}
+	handleOpenMapEditor = () => {
+		this.setState({openMapEditor: true});
+	}
+	handleCloseMapEditor = () => {
+		this.setState({openMapEditor: false});
+	}
 	render() {
 		const { MentionSuggestions } = this.mentionPlugin;
 		const { classes, disableBackdrop, open, handleClose } = this.props;
@@ -218,7 +226,8 @@ export class PostForm extends Component {
 			title,
 			editorState,
 			suggestions,
-			process
+			process,
+			openMapEditor
 		} = this.state;
 		return (
 			<MuiDialog
@@ -265,9 +274,8 @@ export class PostForm extends Component {
 						</Grid>
 						<Grid item>
 							<AddMapButton
-								onChange={this.onChange}
-								disabled={process}
-								modifier={imagePlugin.addImage}/>
+								onClick={this.handleOpenMapEditor}
+								disabled={process}/>
 						</Grid>
 					</Grid>
 					<Grid item>
@@ -275,6 +283,7 @@ export class PostForm extends Component {
 							<Editor editorState={editorState}
 								onChange={this.onChange}
 								plugins={[
+									myMapPlugin,
 									emojiPlugin,
 									linkifyPlugin,
 									videoPlugin,
@@ -317,6 +326,14 @@ export class PostForm extends Component {
 						</Button>
 					</Grid>
 				</Grid>
+				{
+					openMapEditor &&
+					<MapEditor open={openMapEditor}
+						handleClose={this.handleCloseMapEditor}
+						onChange={this.onChange}
+						editorState={editorState}
+						modifier={myMapPlugin.addMap}/>
+				}
 				<Dialog
 					open={dialogOpen}
 					onClose={this.handleDialogClose}

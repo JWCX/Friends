@@ -26,6 +26,7 @@ import { ExpansionPost,
 	PostForm } from 'containers';
 import { NanoExpandIcon } from 'components/AppBarIcons';
 
+import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createAnchorPlugin from 'draft-js-anchor-plugin';
@@ -55,6 +56,7 @@ const decorator = composeDecorators(
 	resizeablePlugin.decorator,
 	alignmentPlugin.decorator,
 )
+const myMapPlugin = createMyMapPlugin({decorator});
 const imagePlugin = createImagePlugin({decorator});
 const videoPlugin = createVideoPlugin({decorator});
 
@@ -228,6 +230,7 @@ export class Board extends Component {
 														<Editor editorState={this.state[`editorState${post.id}`]}
 															onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
 															plugins={[
+																myMapPlugin,
 																emojiPlugin,
 																linkifyPlugin,
 																videoPlugin,
