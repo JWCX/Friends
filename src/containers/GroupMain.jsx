@@ -116,7 +116,7 @@ class GroupMain extends Component {
 	}
 	handleDropOutSubmit = () => {
 		this.setState({dialogYnProcess: true});
-		Axios.delete(`${process.env.REACT_APP_DEV_API_URL}/group/request`, {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/leave`, {
 			token: this.props.token,
 			id: this.props.group.id
 		}).then(resp => {
