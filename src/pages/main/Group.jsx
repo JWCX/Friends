@@ -482,7 +482,8 @@ class Group extends React.Component {
 											onScroll={ !loadingContents && hasMorePages ? this.handleScroll : null}>
 											<Grid item>
 											{
-												_.map(groupPosts, post =>
+												 _.orderBy(groupPosts, "id", "desc")
+												 .map(post =>
 													<Grid item
 														style={{width: "100%", minWidth: "390px"}}>
 														<ExpansionPost

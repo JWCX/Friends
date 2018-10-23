@@ -117,45 +117,11 @@ export class CommentForm extends Component {
 	handleSubmit = () => {
 		const route = this.props.type === "group" ? `${process.env.REACT_APP_DEV_API_URL}/group/board/comment` : `${process.env.REACT_APP_DEV_API_URL}/board/comment`;
 
-		console.log("type: ", this.props.type);
-		console.log("route: ", route);
-		console.log("token : ", this.props.token);
-		console.log("postid : ", this.props.postId);
-		console.log("content : ", JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
-
-		// let newComments;	//TODO: TESTCODE>>DELETE
-		// let updatedPost;	//TODO: TESTCODE>>DELETE
-		// switch(this.props.type) {		//TODO: TESTCODE>>DELETE
-		// 	case "board":
-		// 		newComments = {
-		// 			...this.props.mainPosts[this.props.postId].comments,//TODO: TESTCODE>>DELETE
-		// 			1000: {id:1000, user:{id: 1, nickName:"새댓글맨", image:"https://picsum.photos/200/201"}, content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())), writedate: new Date()}
-		// 		};
-		// 		updatedPost = {...this.props.mainPosts[this.props.postId]};//TODO: TESTCODE>>DELETE
-		// 		updatedPost.comments = newComments;
-		// 		this.props.getMainPosts({...this.props.mainPosts, [this.props.postId]: updatedPost});
-		// 		break;
-		// 	case "popular"://TODO: TESTCODE>>DELETE
-		// 		newComments = {
-		// 			...this.props.popularPosts[this.props.postId].comments,//TODO: TESTCODE>>DELETE
-		// 			1000: {id:1000, user:{id: 1, nickName:"새댓글맨", image:"https://picsum.photos/200/201"}, content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())), writedate: new Date()}
-		// 		};
-		// 		updatedPost = {...this.props.popularPosts[this.props.postId]};//TODO: TESTCODE>>DELETE
-		// 		updatedPost.comments = newComments;//TODO: TESTCODE>>DELETE
-		// 		this.props.getPopularPosts({...this.props.popularPosts, [this.props.postId]: updatedPost});
-		// 		break;
-		// 	case "group":
-		// 		newComments = {//TODO: TESTCODE>>DELETE
-		// 			...this.props.groupPosts[this.props.postId].comments,//TODO: TESTCODE>>DELETE
-		// 			1000: {id:1000, user:{id: 1, nickName:"새댓글맨", image:"https://picsum.photos/200/201"}, content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())), writedate: new Date()}
-		// 		};
-		// 		updatedPost = {...this.props.groupPosts[this.props.postId]};
-		// 		updatedPost.comments = newComments;//TODO: TESTCODE>>DELETE
-		// 		this.props.getGroupPosts({...this.props.groupPosts, [this.props.postId]: updatedPost});
-		// 		break;	//TODO: TESTCODE>>DELETE
-		// 	default:	//TODO: TESTCODE>>DELETE
-		// }				//TODO: TESTCODE>>DELETE
-		// this.props.handleClose();	//TODO: TESTCODE>>DELETE
+		// console.log("type: ", this.props.type);
+		// console.log("route: ", route);
+		// console.log("token : ", this.props.token);
+		// console.log("postid : ", this.props.postId);
+		// console.log("content : ", JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent())));
 
 		this.setState({process: true});
 		Axios.post(route, {

@@ -301,7 +301,7 @@ class GroupMain extends Component {
 									<Button
 										type="button"
 										onClick={token === master.id ? openGroupApplicants : isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }
-										disabled={isMyGroup===1 || restrict}
+										disabled={isMyGroup===1 || (isMyGroup===0 && restrict)}
 										margin="15px 5px 5px 5px">
 										{isMyGroup===0 && "가입 신청"}
 										{isMyGroup===1 && "가입 대기중"}
@@ -311,7 +311,7 @@ class GroupMain extends Component {
 								: <Button
 									type="button"
 									onClick={token === master.id ? openGroupApplicants : isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }
-									disabled={isMyGroup===1 || restrict}
+									disabled={isMyGroup===1 || (isMyGroup===0 && restrict)}
 									margin="15px 5px 5px 5px">
 									{isMyGroup===0 && "가입 신청"}
 									{isMyGroup===1 && "가입 대기중"}
