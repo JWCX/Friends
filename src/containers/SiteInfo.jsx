@@ -1,7 +1,7 @@
 import React from 'react';
-import Axios from 'axios';
 import { Fade, Typography, Grid } from '@material-ui/core';
 
+import { LargeUserAvatar } from 'components/Avatars';
 import { Button } from 'components';
 
 class SiteInfo extends React.Component {
@@ -34,7 +34,6 @@ class SiteInfo extends React.Component {
 			<Fade in={showPage} timeout={{enter: 300, exit: 300}}>
 			{
 				mount ?
-				<div className="hide-scroll" style={{maxHeight:"560px", overflow:"scroll"}}>
 					<Grid
 						container
 						direction="column"
@@ -42,50 +41,51 @@ class SiteInfo extends React.Component {
 						alignItems="center"
 						spacing={24}>
 						<Grid item>
-							<Typography variant="headline">FRIENDS</Typography>
+							<Typography variant="headline">개발자들</Typography>
 						</Grid>
 						<Grid item>
-							<Typography variant="subheading">내용은</Typography>
-							<Typography variant="body2">Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-								mollit anim id est laborum.
-							</Typography>
-						</Grid>
-						<Grid item>
-							<Typography variant="subheading">이곳에</Typography>
-							<Typography variant="body2">Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-								Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-								nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-								mollit anim id est laborum.
-							</Typography>
-						</Grid>
-						<Grid item>
-							<Typography variant="subheading">입력</Typography>
-							<Typography variant="body2">Lorem ipsum dolor sit amet,
-							consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-								nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-								mollit anim id est laborum.
-							</Typography>
-						</Grid>
-						<Grid item>
-							<Typography variant="subheading">개발자들</Typography>
 							<Grid container direction="row" justify="center" alignItems="center" spacing={24}>
 								<Grid item>
-									<Typography variant="body2">AVATAR는 이곳에</Typography>
+									<div style={{height: "170px", width: "150px", textAlign: "center"}}>
+										<LargeUserAvatar center
+											src="http://picsum.photos/100/101"/>
+										<div>최재현</div>
+										<div style={{fontSize:"0.8rem"}}>Back-end Developer</div>
+									</div>
 								</Grid>
 								<Grid item>
-									<Typography variant="body2">AVATAR는 이곳에</Typography>
+									<div style={{height: "170px", width: "150px", textAlign: "center"}}>
+										<LargeUserAvatar center
+											src="http://picsum.photos/100/100"/>
+										<div>성기훈</div>
+										<div style={{fontSize:"0.8rem"}}>Back-end Developer</div>
+									</div>
 								</Grid>
 								<Grid item>
-									<Typography variant="body2">AVATAR는 이곳에</Typography>
+									<div style={{height: "170px", width: "150px", textAlign: "center"}}>
+										<LargeUserAvatar center
+											src="https://avatars2.githubusercontent.com/u/38662232?s=460&v=4"/>
+										<div>권샘찬</div>
+										<div style={{fontSize:"0.8rem"}}>Back-end Developer</div>
+									</div>
+								</Grid>
+							</Grid>
+							<Grid container direction="row" justify="center" alignItems="center" spacing={24}>
+								<Grid item>
+									<div style={{height: "170px", width: "150px", textAlign: "center"}}>
+										<LargeUserAvatar center
+											src="https://www.jacksonandperkins.com/images/xxl/37940.jpg"/>
+										<div>김성연</div>
+										<div style={{fontSize:"0.8rem"}}>Project Manager<br/>Database Administrator</div>
+									</div>
 								</Grid>
 								<Grid item>
-									<Typography variant="body2">AVATAR는 이곳에</Typography>
-								</Grid>
-								<Grid item>
-									<Typography variant="body2">AVATAR는 이곳에</Typography>
+									<div style={{height: "170px", width: "150px", textAlign: "center"}}>
+										<LargeUserAvatar center
+											src="https://avatars0.githubusercontent.com/u/36601374?s=460&v=4"/>
+										<div>조정우</div>
+										<div style={{fontSize:"0.8rem"}}>Project Lead<br/>Front-end Developer</div>
+									</div>
 								</Grid>
 							</Grid>
 						</Grid>
@@ -98,7 +98,7 @@ class SiteInfo extends React.Component {
 							</Button>
 						</Grid>
 					</Grid>
-				</div> : <span></span>
+				: <span></span>
 			}
 			</Fade>
 		);

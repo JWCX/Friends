@@ -43,8 +43,8 @@ class Landing extends Component {
 				style.height += 225;
 				break;
 			case "/info":
-				style.height += 600;
-				style.maxWidth = 1000;
+				style.height += 570;
+				style.maxWidth = 600;
 				style.top = "50%";
 			break;
 			default:
