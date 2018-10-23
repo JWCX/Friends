@@ -97,6 +97,7 @@ class MyAppBar extends Component {
 			params: { token: this.props.token, page: 1 }
 		})
 		.then(resp => {
+			console.log("DATA.", resp.data);
 			switch(path) {
 				case "board":
 					this.props.getMainPosts(resp.data.posts);

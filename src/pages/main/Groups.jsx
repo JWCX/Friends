@@ -45,6 +45,7 @@ export class Groups extends Component {
 			}
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/groups`, { params })
 			.then(resp => {
+				console.log("그룹리스트", resp.data);
 				this.props.updateMainGroups(this.props.groups, resp.data.groups);
 				this.props.setNextPageNum(this.props.nextPageNum+1);
 				this.props.setHasMorePages(resp.data.hasMorePages);

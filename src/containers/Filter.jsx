@@ -88,6 +88,7 @@ class Filter extends Component {
 					interest, si, gu, gender, minAge, maxAge, keyword }
 		})
 		.then(resp => {
+			console.log("그룹리스트", resp.data);
 			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
 			this.setState({optionFader: true});
 			this.props.setFiltering(true);
@@ -152,6 +153,7 @@ class Filter extends Component {
 
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/${this.props.path}`, { params })
 		.then(resp => {
+			console.log("그룹리스트", resp.data);
 			if(interest || si || gu || gender!=="0" || minAge || maxAge!==100 || keyword)
 				this.setState({optionFader: true});
 			this.props.setFiltering(true);

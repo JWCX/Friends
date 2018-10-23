@@ -62,6 +62,11 @@ class GroupMain extends Component {
 		})
 	}
 	handleJoinSubmit = () => {
+		console.log("request JSON",{
+			token: this.props.token,
+			id: this.props.group.id,
+			message: this.state.dialogJoinMsg
+		});
 		this.setState({dialogJoinProcess: true});
 		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/request`, {
 			token: this.props.token,
@@ -80,7 +85,7 @@ class GroupMain extends Component {
 			});
 			this.props.updateGroupPage({...this.props.group, isMyGroup: 1});
 		}).catch(err => {
-			console.log(err.response);	// FIXME: REMOVE
+			console.log(err);	// FIXME: REMOVE
 			let errorTitle, errorMessage;
 			// if(!err.response || !err.response.data) {
 				errorTitle = "서버와 연결할 수 없습니다";
@@ -190,17 +195,19 @@ class GroupMain extends Component {
 			avgAge,
 			isMyGroup
 		} = group ? group : "";
-		const estDate = group && group.estDate ? group.estDate._i : "";
+		const estDate = group && group.estDate ? group.estDate : "";
 		const si = group && dataSi[group.si] ? dataSi[group.si].name : "전국";
 		const gu = group && dataGu[group.si] ? dataGu[group.si][group.gu] ? dataGu[group.si][group.gu].name : "" : "";
 		const interests = group && group.interests.length ? group.interests.map(interest => dataInterest[interest].name) : [];
 		const images = group && group.images.length ? group.images : [];
 		let restrict;
 		if(group && myInfo) {
-			if(gender != 0 && myInfo.gender != gender)
+			if(gender != 0 && myInfo.gender != gender) {
 				restrict = true;
-			if((minAge !== 1 || maxAge !== 100) && (myInfo.age < minAge || myInfo.age > maxAge))
+			}
+			if((minAge !== 1 || maxAge !== 100) && (myInfo.age < minAge || myInfo.age > maxAge)){
 				restrict = true;
+			}
 		}
 		return (
 			<Fade in={group} timeout={{enter: 500, exit: 500}}>

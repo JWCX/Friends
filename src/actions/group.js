@@ -10,8 +10,8 @@ export const setGroupHasMorePages = hasMorePages => ({
 export const openGroupPage = data => ({
 	type: "OPEN_GROUP_PAGE",
 	group: data.group,
-	groupMembers: data.members,
-	groupPosts: data.posts,
+	groupMembers: data.members || null,
+	groupPosts: data.posts || null,
 });
 export const updateGroupPage = group => ({
 	type: "UPDATE_GROUP_PAGE",

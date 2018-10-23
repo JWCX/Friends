@@ -242,6 +242,7 @@ class Group extends React.Component {
 			});
 			this.updatePageNums(resp.data.memberPages);
 		}).catch(err => {
+			console.log("err",err);
 			console.log(err.response);	// FIXME: REMOVE
 			let errorTitle, errorMessage;
 			// if(!err.response || !err.response.data) {
