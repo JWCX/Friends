@@ -7,7 +7,7 @@ import { MenuItem,
 		Fade
 	} from '@material-ui/core';
 
-import { updateMyInfo } from 'actions';
+import { openGroupPage } from 'actions';
 import { TextField,
 		Select,
 		SelectInterest,
@@ -142,7 +142,16 @@ export class GroupInfo extends Component {
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
 
-			// this.props.updateMyInfo(resp.data.myInfo);	// TODO: store.myInfo 업데이트 데이터를 받아서 업데이트 할 것.
+			this.props.openGroupPage({
+				group: {
+					...resp.data.group,
+					isMyGroup: resp.data.isMyGroup,
+					memberPages: resp.data.memberPages,
+					hasMorePages: resp.data.hasMorePages
+				},
+				members: resp.data.members,
+				posts: resp.data.posts
+			});
 
 			this.setState({
 				updateProcess: false,
@@ -397,7 +406,7 @@ const mapStateToProps = state => ({
 	token: state.token,
 })
 const mapDispatchToProps = {
-	updateMyInfo
+	openGroupPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupInfo);

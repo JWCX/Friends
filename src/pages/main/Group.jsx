@@ -195,7 +195,7 @@ class Group extends React.Component {
 		this.props.clearGroupMembers();
 
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/group/member`, {
-				token: this.props.token,
+				// token: this.props.token,
 				id: this.props.group.id,
 				page: currentPage
 			}).then(resp => {
@@ -222,9 +222,6 @@ class Group extends React.Component {
 
 	getGroupInfo = id => {
 		this.setState({currentPage: 1});
-
-		// this.updatePageNums(this.props.group.memberPages); //TODO: DELETETETAS
-
 
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/group`, {
 			params: { token: this.props.token, id }
@@ -435,7 +432,7 @@ class Group extends React.Component {
 						</Grid>
 					</Grid>
 					{
-						currentView === 2 ? <GroupInfo establish={true} history={history} match={match} handleSwitchView={this.handleSwitchView}/>
+						currentView === 2 ? <GroupInfo history={history} match={match} handleSwitchView={this.handleSwitchView}/>
 						: 	<Grid container
 								classes={{container:classes.container}}
 								direction="row"
