@@ -161,7 +161,8 @@ class Group extends React.Component {
 		if(this.props.match.params.id === "new") {
 			this.setState({currentView: 2,
 				dialogOpen: true,
-				dialogTitle: "새로운 그룹을 개설합니다",
+				dialogTitle: "그룹 개설",
+				dialogContent: "새로운 그룹을 개설합니다",
 			});
 			return this.props.closeGroupPage();
 		}
@@ -477,99 +478,104 @@ class Group extends React.Component {
 										<div style={{padding:"10px 10px 10px 10px", boxShadow: group && "0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px", width:"865px", height:"787px", overflowY:"scroll"}}
 											ref={scrollContainer => this.scrollContainer = scrollContainer}
 											onScroll={ !loadingContents && hasMorePages ? this.handleScroll : null}>
-											<Grid item>
 											{
-												 _.orderBy(groupPosts, "id", "desc")
-												 .map(post =>
-													<Grid item
-														style={{width: "100%", minWidth: "390px"}}>
-														<ExpansionPost
-															group
-															id={post.id}
-															onClick={this.expandPost}
-															expanded={this.state[`expanded${post.id}`]}
-															icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
-															summary={
-																<PostHeader
-																	expanded={this.state[`expanded${post.id}`]}
-																	handleLink={()=>{this.props.history.push(`${this.props.match.params[0]}/me/${post.user.id}`)}}
-																	title={post.title}
-																	writedate={moment(post.writedate).fromNow()}
-																	user={post.user}
-																	views={post.views}
-																	comments={_.values(post.comments).length}
-																	likes={post.likes}/>
-															}>
-															<div>
-																{
-																	this.state[`expanded${post.id}`] &&
-																		<div className={editorStyles.readerGroup}>
-																			<Editor editorState={this.state[`editorState${post.id}`]}
-																				onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-																				plugins={[
-																					myMapPlugin,
-																					emojiPlugin,
-																					linkifyPlugin,
-																					videoPlugin,
-																					imagePlugin,
-																					resizeablePlugin,
-																					alignmentPlugin,
-																					anchorPlugin,
-																					this.mentionPlugin,
-																				]}
-																				readOnly={true}/>
-																		</div>
-																}
-																<div style={{paddingTop: "15px"}}>
+												groupPosts ? Object.keys(groupPosts).length ?
+												<Grid item>
+												{
+													_.orderBy(groupPosts, "id", "desc")
+													.map(post =>
+														<Grid item
+															style={{width: "100%", minWidth: "390px"}}>
+															<ExpansionPost
+																group
+																id={post.id}
+																onClick={this.expandPost}
+																expanded={this.state[`expanded${post.id}`]}
+																icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
+																summary={
+																	<PostHeader
+																		expanded={this.state[`expanded${post.id}`]}
+																		handleLink={()=>{this.props.history.push(`${this.props.match.params[0]}/me/${post.user.id}`)}}
+																		title={post.title}
+																		writedate={moment(post.writedate).fromNow()}
+																		user={post.user}
+																		views={post.views}
+																		comments={_.values(post.comments).length}
+																		likes={post.likes}/>
+																}>
+																<div>
 																	{
-																		_.map(post.comments, comment => <React.Fragment>
-																				<Comments
-																					comment={comment}
-																					group/>
-																				<Divider style={{margin: "15px 1px 5px 2px"}}/>
-																			</React.Fragment>
-																		)
+																		this.state[`expanded${post.id}`] &&
+																			<div className={editorStyles.readerGroup}>
+																				<Editor editorState={this.state[`editorState${post.id}`]}
+																					onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
+																					plugins={[
+																						myMapPlugin,
+																						emojiPlugin,
+																						linkifyPlugin,
+																						videoPlugin,
+																						imagePlugin,
+																						resizeablePlugin,
+																						alignmentPlugin,
+																						anchorPlugin,
+																						this.mentionPlugin,
+																					]}
+																					readOnly={true}/>
+																			</div>
 																	}
+																	<div style={{paddingTop: "15px"}}>
+																		{
+																			_.map(post.comments, comment => <React.Fragment>
+																					<Comments
+																						comment={comment}
+																						group/>
+																					<Divider style={{margin: "15px 1px 5px 2px"}}/>
+																				</React.Fragment>
+																			)
+																		}
+																	</div>
+																	<div style={{position: "relative", height: "80px", width: "780px", textAlign: "center"}}>
+																		<LikeButton
+																			onClick={()=>{this.handleLike(post.id)}}
+																			selected={post.liked}/>
+																		&nbsp;&nbsp;&nbsp;&nbsp;
+																		<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
+																	</div>
 																</div>
-																<div style={{position: "relative", height: "80px", width: "780px", textAlign: "center"}}>
-																	<LikeButton
-																		onClick={()=>{this.handleLike(post.id)}}
-																		selected={post.liked}/>
-																	&nbsp;&nbsp;&nbsp;&nbsp;
-																	<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
-																</div>
-															</div>
-														</ExpansionPost>
-													</Grid>
-												)
+															</ExpansionPost>
+														</Grid>
+													)
+												}
+												{
+													openReply &&
+													<CommentForm
+														type="group"
+														token={token}
+														postId={postIdToReply}
+														open={openReply}
+														handleClose={this.handleCloseCommentForm}/>
+												}
+												{
+													hasMorePages &&
+														<Grid item style={{position: "relative", height: "100px", textAlign:"center"}}>
+														{
+															loadingContents &&
+																<CircularProgress
+																style={{
+																	position: "relative",
+																	top: "35px",
+																	color:"rgba(100, 180, 255)"
+																}}
+																size={30}
+																thickness={5}/>
+														}
+															&nbsp;
+														</Grid>
+												}
+												</Grid>
+												: <div style={{position:"relative", width:"835px", color:"rgb(120,120,120)", top: "50%", textAlign:"center", transform: "translateY(-50%)"}}>아직 등록된 게시글이 없습니다. 처음으로 작성해보세요!</div>
+												: ""
 											}
-											{
-												openReply &&
-												<CommentForm
-													type="group"
-													token={token}
-													postId={postIdToReply}
-													open={openReply}
-													handleClose={this.handleCloseCommentForm}/>
-											}
-											{
-												hasMorePages &&
-													<Grid item style={{position: "relative", height: "100px", textAlign:"center"}}>
-													{
-														loadingContents &&
-															<CircularProgress
-															style={{
-																position: "relative",
-																top: "35px",
-																color:"rgba(100, 180, 255)"
-															}}
-															size={30}
-															thickness={5}/>
-													}
-														&nbsp;
-													</Grid>
-											}
-											</Grid>
 										</div>
 									</Fade>
 								}

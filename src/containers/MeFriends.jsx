@@ -24,33 +24,39 @@ class MeFriends extends Component {
 
 		return (
 			<Fade in={true} timeout={{enter: 500, exit: 500}}>
-				<Grid container
-					direction="column"
-					justify="center"
-					alignItems="center"
-					spacing={8}>
+				<React.Fragment>
 					{
-						_.map(meFriends, x =>
-							<Grid item key={x.id}>
-								<UserMini
-									id={x.id}
-									nickName={x.nickName}
-									gender={x.gender}
-									image={x.image}
-									online={x.online}/>
+						Object.keys(meFriends).length ?
+							<Grid container
+								direction="column"
+								justify="center"
+								alignItems="center"
+								spacing={8}>
+								{
+									_.map(meFriends, x =>
+										<Grid item key={x.id}>
+											<UserMini
+												id={x.id}
+												nickName={x.nickName}
+												gender={x.gender}
+												image={x.image}
+												online={x.online}/>
+										</Grid>
+									)}
 							</Grid>
-						)}
-					<Grid item>
+							: <div style={{position:"relative", width:"300px", color:"rgb(120,120,120)", top: "50%", textAlign:"center", transform: "translateY(-50%)"}}>아직 친구가 없습니다</div>
+					}
 					{
 						friendsPages > 1 &&
-						<Pagination
-							pages={pages}
-							currentPage={currentPage}
-							color="info"
-							/>
+						<div style={{position:"absolute", bottom: "0px", left: "50%", transform: "translateX(-50%)"}}>
+							<Pagination
+								pages={pages}
+								currentPage={currentPage}
+								color="info"
+								/>
+						</div>
 					}
-					</Grid>
-				</Grid>
+				</React.Fragment>
 			</Fade>
 		)
 	}

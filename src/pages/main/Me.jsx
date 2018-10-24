@@ -384,7 +384,7 @@ class Me extends React.Component {
 								}
 								</Grid>
 								<Grid item
-									style={{padding:"10px 10px 10px 10px", boxShadow: this.props.me && "0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px", minWidth:"320px", maxHeight:"787px"}}>
+									style={{padding:"10px 10px 10px 10px", boxShadow: this.props.me && "0 1px 10px -2px rgb(150,150,150)", borderRadius:"10px", minWidth:"320px", minHeight:"785px", maxHeight:"787px"}}>
 									<Grid container
 										direction="column"
 										justify="space-evenly"
@@ -400,10 +400,11 @@ class Me extends React.Component {
 												onClick={() => {this.handleSwitchView(1)}}
 												selected={this.props.me && currentView===1}/>
 										</Grid>
-										<Grid item>
-										{
-											this.friendsOrGroups()
-										}
+										<Grid item
+											style={{position: "relative", height: "725px"}}>
+											{
+												this.friendsOrGroups()
+											}
 										</Grid>
 									</Grid>
 								</Grid>

@@ -157,8 +157,8 @@ export class GroupInfo extends Component {
 				updateProcess: false,
 				dialogOpen: true,
 				dialogIcon: 1,
-				dialogTitle: "그룹 개설",
-				dialogContent: "그룹을 개설하였습니다.",
+				// dialogTitle: "그룹 개설",
+				dialogContent: "그룹 정보를 등록하였습니다.",
 			});
 		}).catch(err => {
 			console.log(err);	// FIXME: REMOVE
