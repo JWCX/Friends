@@ -7,7 +7,8 @@ import { Dialog as MuiDialog,
 	Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import { getGroupPosts,
+import { clearGroupPosts,
+	getGroupPosts,
 	setGroupNextPageNum,
 	setGroupHasMorePages } from 'actions';
 import { Button,
@@ -169,6 +170,7 @@ export class PostForm extends Component {
 			content: JSON.stringify(convertToRaw(this.state.editorState.getCurrentContent()))
 		}).then(resp => {
 			console.log(resp);	// FIXME: 지워주세용
+			this.props.clearGroupPosts();
 			this.props.getGroupPosts(resp.data.posts);
 			this.props.setGroupHasMorePages(resp.data.hasMorePages);
 			this.props.setGroupNextPageNum(2);
@@ -352,6 +354,7 @@ const mapStateToProps = state => ({
 	group: state.group,
 })
 const mapDispatchToProps = {
+	clearGroupPosts,
 	getGroupPosts,
 	setGroupNextPageNum,
 	setGroupHasMorePages
