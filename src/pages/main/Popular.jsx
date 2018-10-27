@@ -194,6 +194,7 @@ export class Popular extends Component {
 									key={posts[x].id}
 									style={{width: "100%"}}>
 									<ExpansionPost
+										popular
 										id={posts[x].id}
 										views={posts[x].views}
 										likes={posts[x].likes}
