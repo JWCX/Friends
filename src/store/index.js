@@ -6,6 +6,5 @@ export default createStore(
 	compose(
 		applyMiddleware(),
 		window.devToolsExtension && window.devToolsExtension(),
-		window.nodemon
 	)
 );

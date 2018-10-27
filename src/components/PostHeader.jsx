@@ -44,8 +44,14 @@ export class PostHeader extends Component {
 			this.props.views !== nextProps.views ||
 			this.props.comments !== nextProps.comments ||
 			this.props.likes !== nextProps.likes ||
-			this.props.expanded !== nextProps.expanded )
-			return true;
+			this.props.expanded !== nextProps.expanded ) {
+				console.log("postheader:writedate : ", this.props.writedate !== nextProps.writedate)
+				console.log("postheader:views : ", this.props.views !== nextProps.views)
+				console.log("postheader:comments : ", this.props.comments !== nextProps.comments)
+				console.log("postheader:likes : ", this.props.likes !== nextProps.likes)
+				console.log("postheader:expanded : ", this.props.expanded !== nextProps.expanded)
+				return true;
+		}
 		return false;
 	}
 	render() {

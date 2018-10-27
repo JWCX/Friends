@@ -159,7 +159,7 @@ class MeMain extends Component {
 	}
 	handleRemoveSubmit = () => {
 		this.setState({dialogYnProcess: true});
-		Axios.delete(`${process.env.REACT_APP_DEV_API_URL}/friend`, {
+		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/friend/delete`, {
 			token: this.props.token,
 			id: this.props.me.id
 		}).then(resp => {

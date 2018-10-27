@@ -203,7 +203,8 @@ export class Board extends Component {
 						alignItems="center"
 						spacing={0}>
 						{
-							_.map(posts, post =>
+							_.orderBy(posts, "id", "desc")
+							.map(post =>
 								<Grid item
 									key={post.id}
 									style={{width: "100%", minWidth: "390px"}}>
