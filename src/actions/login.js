@@ -12,6 +12,7 @@ export const userLoggedIn = data => ({
 	popularUsers: data.popularUsers,	// 인기 유저 리스트
 	popularGroups: data.popularGroups,	// 인기 그룹 리스트
 	popularPosts: data.popularPosts,	// 인기 게시글 리스트
+	popularPostsIndex: data.popularPostsIndex,	// 인기 게시글 Index
 });
 export const userLoggedOut = () => ({
 	type: "USER_LOGGED_OUT",

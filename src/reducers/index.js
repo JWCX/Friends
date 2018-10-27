@@ -11,6 +11,7 @@ import myFriends from './myFriendsReducer';
 import popularUsers from './popularUsersReducer';
 import popularGroups from './popularGroupsReducer';
 import popularPosts from './popularPostsReducer';
+import popularPostsIndex from './popularPostsIndexReducer';
 
 import group from './groupReducer';
 import groupMembers from './groupMembersReducer';
@@ -49,6 +50,7 @@ export default combineReducers({
 	popularUsers,	// 인기 유저 리스트
 	popularGroups,	// 인기 그룹 리스트
 	popularPosts,	// 인기 게시글 리스트
+	popularPostsIndex,  // 인기 게시글 index
 
 	group,			// group페이지 접근시 해당 그룹의 정보
 	groupMembers,	// group페이지 접근시 해당 그룹의 멤버 리스트

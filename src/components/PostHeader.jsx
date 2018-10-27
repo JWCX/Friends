@@ -90,8 +90,6 @@ export class PostHeader extends Component {
 					<NanoCommentIcon fill={ expanded ? "rgb(100,100,255)" : "rgb(180,180,180)"}/>
 					<span style={{verticalAlign:"top"}}>{comments}</span>
 				</CountsContainer>
-				<div>
-				</div>
 			</React.Fragment>
 		)
 	}

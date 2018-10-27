@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import defaultImage from 'assets/user_default.png';
+import defaultGroupImage from 'assets/group_default.png';
 
 const UserAvatar = styled.img`
 width: ${props => props.width};
@@ -48,7 +49,7 @@ export const SmallGroupAvatar = ({alt, src}) => {
 	return (
 		<GroupAvatar
 			// alt={alt}
-			src={src}
+			src={src || defaultGroupImage}
 			width="83px"
 			// width="50px"
 			height="50px"/>
@@ -58,7 +59,7 @@ export const LargeGroupAvatar = ({alt, src}) => {
 	return (
 		<GroupAvatar
 			// alt={alt}
-			src={src}
+			src={src || defaultGroupImage}
 			width="250px"
 			height="150px"
 			margin="10px 0 10px 15px"/>
@@ -68,7 +69,7 @@ export const PopularGroupAvatar = ({alt, src}) => {
 	return (
 		<GroupAvatar
 			// alt={alt}
-			src={src}
+			src={src || defaultGroupImage}
 			width="167px"
 			height="100px"
 			margin="10px 0 10px 0"/>
