@@ -84,7 +84,7 @@ class ExpansionPost extends React.Component {
 		return false;
 	}
 	render() {
-		const { group, id, icon, commentsCounter,
+		const { popular, group, id, icon, commentsCounter,
 			post, editorState, expanded, mentionPlugin,
 			handleLike, openReplyForm,
 			onChange, onClick,
@@ -103,7 +103,7 @@ class ExpansionPost extends React.Component {
 					expandIcon={icon}>
 					<PostHeader
 						expanded={expanded}
-						handleLink={()=>{ group ? history.push(`${match.params[0]}/me/${post.user.id}`) : history.push(`${match.path}/me/${post.user.id}`) }}
+						handleLink={()=>{ popular ? history.push(`/me/${post.user.id}`) : group ? history.push(`${match.params[0]}/me/${post.user.id}`) : history.push(`${match.path}/me/${post.user.id}`) }}
 						title={post.title}
 						writedate={moment(post.writedate).fromNow()}
 						user={post.user}
