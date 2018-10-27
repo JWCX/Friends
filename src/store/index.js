@@ -5,6 +5,7 @@ export default createStore(
 	reducers,
 	compose(
 		applyMiddleware(),
-		window.devToolsExtension && window.devToolsExtension()
+		window.devToolsExtension && window.devToolsExtension(),
+		window.nodemon
 	)
 );

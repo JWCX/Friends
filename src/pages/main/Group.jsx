@@ -148,6 +148,8 @@ class Group extends React.Component {
 		memberPages: 0,
 		st: 0,
 		ed: 0,
+
+		expanded: {}
 	}
 	mentionPlugin = createMentionPlugin({
 		mentionComponent: (mentionProps) =>
@@ -194,11 +196,12 @@ class Group extends React.Component {
 		}));
 
 		this.props.clearGroupMembers();
-
 		Axios.get(`${process.env.REACT_APP_DEV_API_URL}/group/member`, {
-				// token: this.props.token,
-				id: this.props.group.id,
-				page: currentPage
+				params: {
+					token: this.props.token,
+					id: this.props.group.id,
+					page: currentPage
+				}
 			}).then(resp => {
 				console.log(resp);	// FIXME: 지워주세용
 				this.props.updateGroupMembers(resp.data.members);
@@ -286,7 +289,7 @@ class Group extends React.Component {
 		}
 	}
 	handleSwitchView = view => {
-		this.setState({currentView: view, currentPage:1});
+		this.setState({currentView: view, currentPage:1, expanded: {}});
 		if(view === 1) {
 			this.loadMore(1);
 		} else if(view === 0) {
@@ -305,7 +308,7 @@ class Group extends React.Component {
 		});
 	};
 	expandPost = id => {
-		if(!this.state[`expanded${id}`]) {
+		if(!this.state.expanded[id]) {
 			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/board/read`, {
 				token: this.props.token,
 				id: id
@@ -319,9 +322,11 @@ class Group extends React.Component {
 			}).catch(err => {
 				console.log(err.response);
 			}); // FIXME: REMOVE LOG
+			this.setState(state => ({expanded: {...state.expanded, [id]: true}}));
 		}
-
-		this.setState(state => ({[`expanded${id}`]: !state[`expanded${id}`]}));
+		else {
+			this.setState(state => ({expanded: {...state.expanded, [id]: false}}));
+		}
 		this.setState({[`editorState${id}`]: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.groupPosts[id].content)))})
 	}
 	handleLike = id => {
@@ -490,11 +495,11 @@ class Group extends React.Component {
 																group
 																id={post.id}
 																onClick={this.expandPost}
-																expanded={this.state[`expanded${post.id}`]}
+																expanded={this.state.expanded[post.id] === true}
 																icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
 																summary={
 																	<PostHeader
-																		expanded={this.state[`expanded${post.id}`]}
+																		expanded={this.state.expanded[post.id] === true}
 																		handleLink={()=>{this.props.history.push(`${this.props.match.params[0]}/me/${post.user.id}`)}}
 																		title={post.title}
 																		writedate={moment(post.writedate).fromNow()}
@@ -503,45 +508,45 @@ class Group extends React.Component {
 																		comments={_.values(post.comments).length}
 																		likes={post.likes}/>
 																}>
-																<div>
-																	{
-																		this.state[`expanded${post.id}`] &&
-																			<div className={editorStyles.readerGroup}>
-																				<Editor editorState={this.state[`editorState${post.id}`]}
-																					onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-																					plugins={[
-																						myMapPlugin,
-																						emojiPlugin,
-																						linkifyPlugin,
-																						videoPlugin,
-																						imagePlugin,
-																						resizeablePlugin,
-																						alignmentPlugin,
-																						anchorPlugin,
-																						this.mentionPlugin,
-																					]}
-																					readOnly={true}/>
-																			</div>
-																	}
-																	<div style={{paddingTop: "15px"}}>
-																		{
-																			_.map(post.comments, comment => <React.Fragment>
-																					<Comments
-																						comment={comment}
-																						group/>
-																					<Divider style={{margin: "15px 1px 5px 2px"}}/>
-																				</React.Fragment>
-																			)
-																		}
+																{
+																	this.state.expanded[post.id] === true &&
+																	<div>
+																		<div className={editorStyles.readerGroup}>
+																			<Editor editorState={this.state[`editorState${post.id}`]}
+																				onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
+																				plugins={[
+																					myMapPlugin,
+																					emojiPlugin,
+																					linkifyPlugin,
+																					videoPlugin,
+																					imagePlugin,
+																					resizeablePlugin,
+																					alignmentPlugin,
+																					anchorPlugin,
+																					this.mentionPlugin,
+																				]}
+																				readOnly={true}/>
+																		</div>
+																		<div style={{paddingTop: "15px"}}>
+																			{
+																				_.map(post.comments, comment => <React.Fragment>
+																						<Comments
+																							comment={comment}
+																							group/>
+																						<Divider style={{margin: "15px 1px 5px 2px"}}/>
+																					</React.Fragment>
+																				)
+																			}
+																		</div>
+																		<div style={{position: "relative", height: "80px", width: "780px", textAlign: "center"}}>
+																			<LikeButton
+																				onClick={()=>{this.handleLike(post.id)}}
+																				selected={post.liked}/>
+																			&nbsp;&nbsp;&nbsp;&nbsp;
+																			<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
+																		</div>
 																	</div>
-																	<div style={{position: "relative", height: "80px", width: "780px", textAlign: "center"}}>
-																		<LikeButton
-																			onClick={()=>{this.handleLike(post.id)}}
-																			selected={post.liked}/>
-																		&nbsp;&nbsp;&nbsp;&nbsp;
-																		<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
-																	</div>
-																</div>
+																}
 															</ExpansionPost>
 														</Grid>
 													)
@@ -606,6 +611,7 @@ class Group extends React.Component {
 						postFormOpen &&	<GroupPostForm
 							open={postFormOpen}
 							handleClose={this.handleCloseWritePost}
+							// loadMore={this.loadMore}
 							token={token}
 							/>
 					}

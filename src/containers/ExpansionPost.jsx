@@ -28,7 +28,7 @@ const styles = {
 	}
 }
 
-class ExpansionFriendRequest extends React.Component {
+class ExpansionPost extends React.Component {
 
 	render() {
 		const {expanded, icon, summary, children, position,
@@ -55,4 +55,4 @@ class ExpansionFriendRequest extends React.Component {
 		)
 	}
 }
-export default withStyles(styles)(ExpansionFriendRequest);
+export default withStyles(styles)(ExpansionPost);
