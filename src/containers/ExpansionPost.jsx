@@ -29,7 +29,19 @@ const styles = {
 }
 
 class ExpansionPost extends React.Component {
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log("expanded", this.props.expanded !== nextProps.expanded)
+		console.log("summary", this.props.summary !== nextProps.summary)
+		console.log("children", this.props.children !== nextProps.children)
+		console.log("id", this.props.id !== nextProps.id)
 
+		if(this.props.expanded !== nextProps.expanded ||
+			this.props.summary !== nextProps.summary ||
+			this.props.children !== nextProps.children ||
+			this.props.id !== nextProps.id)
+			return true;
+		return false;
+	}
 	render() {
 		const {expanded, icon, summary, children, position,
 			top, onClick, id, } = this.props;

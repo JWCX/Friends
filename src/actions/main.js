@@ -9,7 +9,7 @@ export const setHasMorePages = hasMorePages => ({
 
 export const getMainPosts = posts => ({
 	type: "GET_MAIN_POSTS",
-	mainPosts: posts
+	mainPosts: posts || null,
 })
 export const updateMainPosts = (currentPosts, posts) => ({
 	type: "UPDATE_MAIN_POSTS",
