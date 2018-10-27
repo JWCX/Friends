@@ -3,10 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Axios from 'axios';
 import _ from 'lodash';
-import { Grid,
-	Divider } from '@material-ui/core';
-import moment from 'moment';
-import Editor, { composeDecorators } from 'draft-js-plugins-editor';
+import { Grid } from '@material-ui/core';
+import { composeDecorators } from 'draft-js-plugins-editor';
 import { EditorState,
 	convertFromRaw } from 'draft-js';
 
@@ -14,46 +12,11 @@ import { getPopularPosts } from 'actions';
 import { PopularUser,
 	PopularGroup,
 	ExpansionPost } from 'containers';
-import { PostHeader,
-	LikeButton,
-	ReplyButton,
-	Comments,
-	CommentForm } from 'components';
+import { CommentForm } from 'components';
 import { NanoMedalIcon,
 	NanoExpandIcon } from 'components/AppBarIcons';
 
-import createEmojiPlugin from 'draft-js-emoji-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import createAnchorPlugin from 'draft-js-anchor-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
-
-import createVideoPlugin from 'draft-js-video-plugin';
-import createImagePlugin from 'draft-js-image-plugin';
-
-import createAlignmentPlugin from 'draft-js-alignment-plugin';
-import createResizeablePlugin from 'draft-js-resizeable-plugin';
-
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import 'draft-js-image-plugin/lib/plugin.css';
-import 'draft-js-alignment-plugin/lib/plugin.css';
-import 'draft-js-anchor-plugin/lib/plugin.css';
-import 'assets/draftjs/draft-js-emoji-plugin/styles.css';
-import 'assets/draftjs/draft-js-mention-plugin/styles.css';
-import editorStyles from 'assets/draftjs/editorStyles.css';
-import transitions from '@material-ui/core/styles/transitions';
-
-const emojiPlugin = createEmojiPlugin();
-const linkifyPlugin = createLinkifyPlugin();
-const anchorPlugin = createAnchorPlugin();
-const resizeablePlugin = createResizeablePlugin();
-const alignmentPlugin = createAlignmentPlugin();
-
-const decorator = composeDecorators(
-	resizeablePlugin.decorator,
-	alignmentPlugin.decorator,
-)
-const imagePlugin = createImagePlugin({decorator});
-const videoPlugin = createVideoPlugin({decorator});
 
 export class Popular extends Component {
 	state = {
