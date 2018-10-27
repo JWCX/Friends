@@ -4,14 +4,11 @@ import { withRouter } from 'react-router-dom';
 import { Dialog as MuiDialog,
 		Grid,
 		Fade,
-		Divider,
 		CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import moment from 'moment';
 import Axios from 'axios';
 import _ from 'lodash';
 
-import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 import { EditorState,
 	convertFromRaw } from 'draft-js';
 
@@ -39,47 +36,13 @@ import { CancelButton,
 		Dialog,
 		GroupMainLoader,
 		MeFriendsGroupsLoader,
-		PostHeader,
 		DialogGroupApplicants,
-		LikeButton,
-		ReplyButton,
-		Comments,
 		CommentForm } from 'components';
 import { NanoExpandIcon } from 'components/AppBarIcons';
 
-import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
-import createEmojiPlugin from 'draft-js-emoji-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import createAnchorPlugin from 'draft-js-anchor-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
 
-import createVideoPlugin from 'draft-js-video-plugin';
-import createImagePlugin from 'draft-js-image-plugin';
 
-import createAlignmentPlugin from 'draft-js-alignment-plugin';
-import createResizeablePlugin from 'draft-js-resizeable-plugin';
-
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import 'draft-js-image-plugin/lib/plugin.css';
-import 'draft-js-alignment-plugin/lib/plugin.css';
-import 'draft-js-anchor-plugin/lib/plugin.css';
-import 'assets/draftjs/draft-js-emoji-plugin/styles.css';
-import 'assets/draftjs/draft-js-mention-plugin/styles.css';
-import editorStyles from 'assets/draftjs/editorStyles.css';
-
-const emojiPlugin = createEmojiPlugin();
-const linkifyPlugin = createLinkifyPlugin();
-const anchorPlugin = createAnchorPlugin();
-const resizeablePlugin = createResizeablePlugin();
-const alignmentPlugin = createAlignmentPlugin();
-
-const decorator = composeDecorators(
-	resizeablePlugin.decorator,
-	alignmentPlugin.decorator,
-)
-const myMapPlugin = createMyMapPlugin({decorator});
-const imagePlugin = createImagePlugin({decorator});
-const videoPlugin = createVideoPlugin({decorator});
 
 const styles = {
 	paper: {
@@ -494,60 +457,20 @@ class Group extends React.Component {
 															<ExpansionPost
 																group
 																id={post.id}
-																onClick={this.expandPost}
+																views={post.views}
+																likes={post.likes}
+																commentsCounter={_.values(post.comments).length}
+																post={post}
+																editorState={this.state[`editorState${post.id}`]}
 																expanded={this.state.expanded[post.id] === true}
+																handleLike={()=>{this.handleLike(post.id)}}
+																openReplyForm={() => this.openReplyForm(post.id)}
+																onClick={this.expandPost}
+																onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) }}
 																icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
-																summary={
-																	<PostHeader
-																		expanded={this.state.expanded[post.id] === true}
-																		handleLink={()=>{this.props.history.push(`${this.props.match.params[0]}/me/${post.user.id}`)}}
-																		title={post.title}
-																		writedate={moment(post.writedate).fromNow()}
-																		user={post.user}
-																		views={post.views}
-																		comments={_.values(post.comments).length}
-																		likes={post.likes}/>
-																}>
-																{
-																	this.state.expanded[post.id] === true &&
-																	<div>
-																		<div className={editorStyles.readerGroup}>
-																			<Editor editorState={this.state[`editorState${post.id}`]}
-																				onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-																				plugins={[
-																					myMapPlugin,
-																					emojiPlugin,
-																					linkifyPlugin,
-																					videoPlugin,
-																					imagePlugin,
-																					resizeablePlugin,
-																					alignmentPlugin,
-																					anchorPlugin,
-																					this.mentionPlugin,
-																				]}
-																				readOnly={true}/>
-																		</div>
-																		<div style={{paddingTop: "15px"}}>
-																			{
-																				_.map(post.comments, comment => <React.Fragment>
-																						<Comments
-																							comment={comment}
-																							group/>
-																						<Divider style={{margin: "15px 1px 5px 2px"}}/>
-																					</React.Fragment>
-																				)
-																			}
-																		</div>
-																		<div style={{position: "relative", height: "80px", width: "780px", textAlign: "center"}}>
-																			<LikeButton
-																				onClick={()=>{this.handleLike(post.id)}}
-																				selected={post.liked}/>
-																			&nbsp;&nbsp;&nbsp;&nbsp;
-																			<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
-																		</div>
-																	</div>
-																}
-															</ExpansionPost>
+																mentionPlugin={this.mentionPlugin}
+																history={this.props.history}
+																match={this.props.match}/>
 														</Grid>
 													)
 												}

@@ -58,7 +58,9 @@ const videoPlugin = createVideoPlugin({decorator});
 export class Popular extends Component {
 	state = {
 		openReply: false,
-		postIdToReply: null
+		postIdToReply: null,
+
+		expanded: {}
 	}
 	mentionPlugin = createMentionPlugin({
 		mentionComponent: (mentionProps) =>
@@ -69,7 +71,7 @@ export class Popular extends Component {
 		</span>
 	});
 	expandPost = id => {
-		if(!this.state[`expanded${id}`]) {
+		if(!this.state.expanded[id]) {
 			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/board/read`, {
 				token: this.props.token,
 				id: id
@@ -83,8 +85,11 @@ export class Popular extends Component {
 			}).catch(err => {
 				console.log(err.response);
 			}); // FIXME: REMOVE LOG
+			this.setState(state => ({expanded: {...state.expanded, [id]: true}}));
 		}
-		this.setState(state => ({[`expanded${id}`]: !state[`expanded${id}`]}));
+		else {
+			this.setState(state => ({expanded: {...state.expanded, [id]: false}}));
+		}
 		this.setState({[`editorState${id}`]: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.posts[id].content)))})
 	}
 	handleLike = id => {
@@ -110,7 +115,7 @@ export class Popular extends Component {
 	}
   render() {
 	const { openReply, postIdToReply } = this.state;
-	const { contentStyles, users, groups, posts, token } = this.props;
+	const { contentStyles, users, groups, posts, index, token } = this.props;
 	return (
 		<React.Fragment>
 			<div style={{position:"relative", paddingTop:"5px"}}>
@@ -221,65 +226,26 @@ export class Popular extends Component {
 						alignItems="center"
 						spacing={0}>
 						{
-							_.map(posts, post =>
+							index.map(x =>
 								<Grid item
-									key={post.id}
+									key={posts[x].id}
 									style={{width: "100%"}}>
 									<ExpansionPost
-										id={post.id}
+										id={posts[x].id}
+										views={posts[x].views}
+										likes={posts[x].likes}
+										commentsCounter={_.values(posts[x].comments).length}
+										post={posts[x]}
+										editorState={this.state[`editorState${posts[x].id}`]}
+										expanded={this.state.expanded[posts[x].id] === true}
+										handleLike={()=>{this.handleLike(posts[x].id)}}
+										openReplyForm={() => this.openReplyForm(posts[x].id)}
 										onClick={this.expandPost}
-										expanded={this.state[`expanded${post.id}`]}
+										onChange={editorState =>{ this.setState({[`editorState${posts[x].id}`]: editorState}) }}
 										icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
-										summary={
-											<PostHeader
-												expanded={this.state[`expanded${post.id}`]}
-												handleLink={()=>{this.props.history.push(`/me/${post.user.id}`)}}
-												title={post.title}
-												writedate={moment(post.writedate).fromNow()}
-												user={post.user}
-												views={post.views}
-												comments={_.values(post.comments).length}
-												likes={post.likes}/>
-										}>
-										<div>
-											{
-												// <div className={editorStyles.reader}>
-												// </div>
-												this.state[`expanded${post.id}`] &&
-												<div className={editorStyles.reader}>
-													<Editor editorState={this.state[`editorState${post.id}`]}
-														onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-														plugins={[
-															emojiPlugin,
-															linkifyPlugin,
-															videoPlugin,
-															imagePlugin,
-															resizeablePlugin,
-															alignmentPlugin,
-															anchorPlugin,
-															this.mentionPlugin,
-														]}
-														readOnly={true}/>
-												</div>
-											}
-											<div style={{paddingTop: "15px"}}>
-												{
-													_.map(post.comments, comment => <React.Fragment>
-															<Comments comment={comment}/>
-															<Divider style={{margin: "15px 1px 5px 2px"}}/>
-														</React.Fragment>
-													)
-												}
-											</div>
-											<div style={{position: "relative", height: "80px", width: "975px", textAlign: "center"}}>
-												<LikeButton
-													onClick={() => this.handleLike(post.id)}
-													selected={post.liked}/>
-												&nbsp;&nbsp;&nbsp;&nbsp;
-												<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
-											</div>
-										</div>
-									</ExpansionPost>
+										mentionPlugin={this.mentionPlugin}
+										history={this.props.history}
+										match={this.props.match}/>
 								</Grid>
 							)
 						}
@@ -304,7 +270,8 @@ const mapStateToProps = state => ({
 	token: state.token,
 	users: state.popularUsers,
 	groups: state.popularGroups,
-	posts: state.popularPosts
+	posts: state.popularPosts,
+	index: state.popularPostsIndex
 })
 const mapDispatchToProps = {
 	getPopularPosts

@@ -3,11 +3,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import _ from 'lodash';
 import Axios from 'axios';
-import moment from 'moment';
 import { Grid,
-	Divider,
 	CircularProgress } from '@material-ui/core';
-import Editor, { composeDecorators } from 'draft-js-plugins-editor';
 import { EditorState,
 	convertFromRaw } from 'draft-js';
 
@@ -16,49 +13,13 @@ import { getMainPosts,
 	setHasMorePages,
 	setNextPageNum } from 'actions';
 import { Dialog,
-	PostHeader,
 	WritePostButton,
-	LikeButton,
-	ReplyButton,
-	Comments,
 	CommentForm } from 'components';
 import { ExpansionPost,
 	PostForm } from 'containers';
 import { NanoExpandIcon } from 'components/AppBarIcons';
 
-import createMyMapPlugin from 'assets/draftjs/draft-js-mymap-plugin';
-import createEmojiPlugin from 'draft-js-emoji-plugin';
-import createLinkifyPlugin from 'draft-js-linkify-plugin';
-import createAnchorPlugin from 'draft-js-anchor-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin';
-
-import createVideoPlugin from 'draft-js-video-plugin';
-import createImagePlugin from 'draft-js-image-plugin';
-
-import createAlignmentPlugin from 'draft-js-alignment-plugin';
-import createResizeablePlugin from 'draft-js-resizeable-plugin';
-
-import 'draft-js-linkify-plugin/lib/plugin.css';
-import 'draft-js-image-plugin/lib/plugin.css';
-import 'draft-js-alignment-plugin/lib/plugin.css';
-import 'draft-js-anchor-plugin/lib/plugin.css';
-import 'assets/draftjs/draft-js-emoji-plugin/styles.css';
-import 'assets/draftjs/draft-js-mention-plugin/styles.css';
-import editorStyles from 'assets/draftjs/editorStyles.css';
-
-const emojiPlugin = createEmojiPlugin();
-const linkifyPlugin = createLinkifyPlugin();
-const anchorPlugin = createAnchorPlugin();
-const resizeablePlugin = createResizeablePlugin();
-const alignmentPlugin = createAlignmentPlugin();
-
-const decorator = composeDecorators(
-	resizeablePlugin.decorator,
-	alignmentPlugin.decorator,
-)
-const myMapPlugin = createMyMapPlugin({decorator});
-const imagePlugin = createImagePlugin({decorator});
-const videoPlugin = createVideoPlugin({decorator});
 
 export class Board extends Component {
 	state = {
@@ -72,7 +33,9 @@ export class Board extends Component {
 		dialogOpen: false,
 		dialogIcon: null,
 		dialogTitle: "",
-		dialogContent: ""
+		dialogContent: "",
+
+		expanded: {}
 	}
 	mentionPlugin = createMentionPlugin({
 		mentionComponent: (mentionProps) =>
@@ -88,7 +51,7 @@ export class Board extends Component {
 		this.props.setNextPageNum(this.props.nextPageNum+1);
 	}
 	expandPost = id => {
-		if(!this.state[`expanded${id}`]) {
+		if(!this.state.expanded[id]) {
 			Axios.post(`${process.env.REACT_APP_DEV_API_URL}/board/read`, {
 				token: this.props.token,
 				id: id
@@ -102,9 +65,11 @@ export class Board extends Component {
 			}).catch(err => {
 				console.log(err.response);
 			}); // FIXME: REMOVE LOG
+			this.setState(state => ({expanded: {...state.expanded, [id]: true}}));
 		}
-
-		this.setState(state => ({[`expanded${id}`]: !state[`expanded${id}`]}));
+		else {
+			this.setState(state => ({expanded: {...state.expanded, [id]: false}}));
+		}
 		this.setState({[`editorState${id}`]: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.posts[id].content)))})
 	}
 	handleLike = id => {
@@ -210,58 +175,20 @@ export class Board extends Component {
 									style={{width: "100%", minWidth: "390px"}}>
 									<ExpansionPost
 										id={post.id}
+										views={post.views}
+										likes={post.likes}
+										commentsCounter={_.values(post.comments).length}
+										post={post}
+										editorState={this.state[`editorState${post.id}`]}
+										expanded={this.state.expanded[post.id] === true}
+										handleLike={()=>{this.handleLike(post.id)}}
+										openReplyForm={() => this.openReplyForm(post.id)}
 										onClick={this.expandPost}
-										expanded={this.state[`expanded${post.id}`]}
+										onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) }}
 										icon={<NanoExpandIcon fill="rgb(150,150,150)"/>}
-										summary={
-											<PostHeader
-												expanded={this.state[`expanded${post.id}`]}
-												handleLink={()=>{this.props.history.push(`${this.props.match.path}/me/${post.user.id}`)}}
-												title={post.title}
-												writedate={moment(post.writedate).fromNow()}
-												user={post.user}
-												views={post.views}
-												comments={_.values(post.comments).length}
-												likes={post.likes}/>
-										}>
-										<div>
-											{
-												this.state[`expanded${post.id}`] &&
-													<div className={editorStyles.reader}>
-														<Editor editorState={this.state[`editorState${post.id}`]}
-															onChange={editorState =>{ this.setState({[`editorState${post.id}`]: editorState}) } }
-															plugins={[
-																myMapPlugin,
-																emojiPlugin,
-																linkifyPlugin,
-																videoPlugin,
-																imagePlugin,
-																resizeablePlugin,
-																alignmentPlugin,
-																anchorPlugin,
-																this.mentionPlugin,
-															]}
-															readOnly={true}/>
-													</div>
-											}
-											<div style={{paddingTop: "15px"}}>
-												{
-													_.map(post.comments, comment => <React.Fragment>
-															<Comments comment={comment}/>
-															<Divider style={{margin: "15px 1px 5px 2px"}}/>
-														</React.Fragment>
-													)
-												}
-											</div>
-											<div style={{position: "relative", height: "80px", width: "975px", textAlign: "center"}}>
-												<LikeButton
-													onClick={()=>{this.handleLike(post.id)}}
-													selected={post.liked}/>
-												&nbsp;&nbsp;&nbsp;&nbsp;
-												<ReplyButton onClick={() => this.openReplyForm(post.id)}/>
-											</div>
-										</div>
-									</ExpansionPost>
+										mentionPlugin={this.mentionPlugin}
+										history={this.props.history}
+										match={this.props.match}/>
 								</Grid>
 							)
 						}

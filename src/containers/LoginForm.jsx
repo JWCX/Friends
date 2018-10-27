@@ -115,6 +115,7 @@ class JoinForm extends React.Component {
 				popularUsers: resp.data.popularUsers || null,
 				popularGroups: resp.data.popularGroups || null,
 				popularPosts: resp.data.popularPosts || null,
+				popularPostsIndex: resp.data.popularPostsIndex || null,
 			});
 			this.handleRedirect("/");
 		}).catch(err => {
