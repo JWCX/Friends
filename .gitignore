@@ -1,5 +1,9 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+*.env
+*.stylelintrc
+/package-lock.json
+
 # dependencies
 /node_modules/*
 !/node_modules/draft-js-alignment-plugin
@@ -25,9 +29,6 @@
 .env.development.local
 .env.test.local
 .env.production.local
-.env
-.stylelintrc
-package-lock.json
 
 npm-debug.log*
 yarn-debug.log*
