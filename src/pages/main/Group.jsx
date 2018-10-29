@@ -553,9 +553,13 @@ class Group extends React.Component {
 						content={dialogContent}
 						disableBackdrop={true}
 						icon={dialogIcon}/>
-					<DialogGroupApplicants
-						open={dialogGroupApplicantsOpen}
-						closeGroupApplicants={this.closeGroupApplicants}/>
+					{
+						group &&
+						<DialogGroupApplicants
+							groupid={group.id}
+							open={dialogGroupApplicantsOpen}
+							closeGroupApplicants={this.closeGroupApplicants}/>
+					}
 			</MuiDialog>
 		);
 	}

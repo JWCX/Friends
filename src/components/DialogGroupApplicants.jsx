@@ -49,7 +49,7 @@ class DialogGroupApplicants extends React.Component {
 		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/accept`, {
 			token: this.props.token,
 			id: this.props.notifications[id].id,
-			groupId: this.props.notifications[id].groupId,
+			groupId: this.props.notifications[id].groupid,
 			notification: this.props.notifications[id].notification
 		})
 		.then(resp => {
@@ -82,7 +82,7 @@ class DialogGroupApplicants extends React.Component {
 		Axios.post(`${process.env.REACT_APP_DEV_API_URL}/group/reject`, {
 			token: this.props.token,
 			id: this.props.notifications[id].id,
-			groupId: this.props.notifications[id].groupId,
+			groupId: this.props.notifications[id].groupid,
 			notification: this.props.notifications[id].notification
 		})
 		.then(resp => {
@@ -125,7 +125,7 @@ class DialogGroupApplicants extends React.Component {
 			dialogContent,
 			dialogIcon
 		} = this.state;
-		const { notifications,
+		const { groupid, notifications,
 			classes, closeGroupApplicants, open, process } = this.props;
 		return (
 			<MuiDialog
@@ -146,10 +146,10 @@ class DialogGroupApplicants extends React.Component {
 							</DialogTitle>
 						</Grid>
 						{
-							_.filter(notifications, notification => notification.gubun === 1).length ?
+							_.filter(notifications, notification => notification.gubun === 1 && notification.groupid === groupid).length ?
 								<Grid item>
 								{
-									_.filter(notifications, notification => notification.gubun === 1)
+									_.filter(notifications, notification => notification.gubun === 1 && notification.groupid === groupid)
 									 .map(notification => {
 										if(!notification) return;
 										return <ExpansionFriendRequest

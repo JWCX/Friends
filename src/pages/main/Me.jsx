@@ -65,8 +65,8 @@ class Me extends React.Component {
 		ed: 0,
 	}
 	componentDidMount = () => {
+		this.props.closeMePage();
 		this.getUserInfo(this.props.match.params.id);
-
 		if(!this.props.myInfo.nickName)
 			this.setState({currentView: 2});
 		// this.updatePageNums();

@@ -321,9 +321,7 @@ class MeMain extends Component {
 									onClick={isFriend === 0 ? this.handleSendRequestClick : this.handleRemoveClick }
 									disabled={isFriend===1}
 									margin="20px 5px 5px 5px">
-									{isFriend===0 && "친구신청"}
-									{isFriend===1 && "수락대기중..."}
-									{isFriend===2 && "친구삭제"}
+									{isFriend===0 ? "친구신청" : isFriend===1 ? "수락대기중..." : isFriend===2 ? "친구삭제" : ""}
 								</Button>
 							{
 								!isFriend && !isCurious && <Button

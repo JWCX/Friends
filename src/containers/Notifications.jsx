@@ -47,7 +47,7 @@ class Notifications extends React.Component {
 								.map(notification => {
 									switch(notification.gubun) {
 										case 1:
-											return <MenuItem style={{padding: "5px 15px"}} id={notification.groupId} onClick={handleNotificationSelect}>[<span style={{color:"rgb(80,100,200)", cursor:"pointer"}}>{notification.nickName}</span>] 님의 그룹 가입신청을 확인하세요.</MenuItem>
+											return <MenuItem style={{padding: "5px 15px"}} id={notification.groupid} onClick={handleNotificationSelect}>[<span style={{color:"rgb(80,100,200)", cursor:"pointer"}}>{notification.nickName}</span>] 님의 그룹 가입신청을 확인하세요.</MenuItem>
 										case 2:
 											return <div style={{padding: "5px 15px", height: "34px"}}>
 												[<span style={{color:"rgb(80,100,200)"}}>{notification.nickName}</span>] 님과 친구가 되었습니다.&nbsp;

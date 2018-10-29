@@ -184,6 +184,7 @@ class GroupMain extends Component {
 		 } = this.state;
 		const { dataInterest, dataSi, dataGu, group, myInfo, token, notifications, openGroupApplicants } = this.props;
 		const {
+			id,
 			groupName,
 			master,
 			minAge,
@@ -277,11 +278,11 @@ class GroupMain extends Component {
 									icon={<NanoTargetIcon fill="#5c5c8a"/>}
 									label={<React.Fragment>
 										{
-											gender==0 && minAge===1 && maxAge===100 ? <span style={{fontSize: "0.8em", color: "rgb(120,120,120)"}}>누구나 가입할 수 있습니다.</span>
+											gender==0 && minAge<=1 && maxAge==100 ? <span style={{fontSize: "0.8em", color: "rgb(120,120,120)"}}>누구나 가입할 수 있습니다.</span>
 											: <React.Fragment>
 												<span style={{color: "rgb(120,120,120)"}}>이 그룹은 <span style={{color:"rgb(220,70,100)"}}>가입 조건</span>이 있습니다.</span>
 												{ gender != 0 && <span style={{fontSize: "0.8em", color:"rgb(220,70,100)"}}>&nbsp;&nbsp;성별제한:{gender == 1 ? <NanoMarsIcon /> : < NanoVenusIcon />}</span>}
-												{ !(minAge === 1 && maxAge === 100) && <span style={{fontSize: "0.8em", color:"rgb(220,70,100)"}}>&nbsp;&nbsp;연령제한: <span style={{color: "rgb(120,120,120)"}}>{minAge} ~ {maxAge}세</span></span> }
+												{ !(minAge <= 1 && maxAge == 100) && <span style={{fontSize: "0.8em", color:"rgb(220,70,100)"}}>&nbsp;&nbsp;연령제한: <span style={{color: "rgb(120,120,120)"}}>{minAge} ~ {maxAge}세</span></span> }
 											</React.Fragment>
 										}
 									</React.Fragment>}
@@ -296,8 +297,8 @@ class GroupMain extends Component {
 						spacing={8}>
 						<Grid item>		{/* 가입신청 버튼 */}
 						{
-							_.filter(notifications, notification => notification.gubun === 1).length ?
-								<NumberBadge button content={_.filter(notifications, notification => notification.gubun === 1).length}>
+							_.filter(notifications, notification => notification.gubun === 1 && notification.groupid === id).length ?
+								<NumberBadge button content={_.filter(notifications, notification => notification.gubun === 1 && notification.groupid === id).length}>
 									<Button
 										type="button"
 										onClick={token === master.id ? openGroupApplicants : isMyGroup === 0 ? this.handleSendRequestClick : this.handleDropOutClick }

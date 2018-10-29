@@ -176,6 +176,7 @@ class MyAppBar extends Component {
 		if(e) {
 			const path = this.props.location.pathname === "/" ? "" : this.props.location.pathname;
 			this.props.history.push(`${path}/group/${e.target.id}`);
+			console.log(e.target.id);
 		}
 		this.setState({ openNotifications: false });
 	}
