@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export default (myInfo = {
 	id: "",
-	nickName: "a",
+	nickName: "",
 	si: 0,
 	gu: 0,
 	birth: null,
